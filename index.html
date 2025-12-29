@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko">
+
+<head>
+    <link href="..." rel="stylesheet">
+
+    <link href="assets/css/style.css" rel="stylesheet"> 
+</head>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,14 +26,11 @@
         }
         main { flex: 1; }
         .navbar-brand { font-weight: 800; letter-spacing: -0.5px; }
-        .footer {
-            background-color: #212529;
-            color: #adb5bd;
-            padding: 3rem 0;
-            font-size: 0.9rem;
-        }   
+
         /* 5. 네비게이션 바 색상 변경 */
-        .navbar { background-color: #4c4c4c; }
+        .navbar {
+            background-color: var(--primary-color) !important;
+        }
 
         /* 1. 화살표(▼) 제거 (::after 자리에 있는 녀석을 없앰) */
         .dropdown-toggle::after { 
@@ -125,91 +129,15 @@
         }
         
         .insta-hover:hover {
-            color: #7fb8eb !important; /* 인스타그램 브랜드 컬러 (핑크) */
-            transform: scale(1.1);     /* 1.1배 살짝 커짐 */
+            color: var(--primary-hover) !important;
+            transform: scale(1.1);
         }
 
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm p-0">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <i class="bi bi-building-check me-1"></i> 중앙감사위원회
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="mainNavbar">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            소개
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="intro-greeting.html">인사말</a></li>
-                            <li><a class="dropdown-item" href="intro-org.html">조직도</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            알림
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="notice-general.html">공지사항</a></li>
-                            <li><a class="dropdown-item" href="notice-vote.html">위원 선출 공고</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            규정
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="rules-audit.html">감사 시행 세칙</a></li>
-                            <li><a class="dropdown-item" href="rules-guide.html">지출 증빙 가이드</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            자료실
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="resources-forms.html">자료 다운로드</a></li>
-                            <li><a class="dropdown-item" href="resources-faq.html">자주 묻는 질문</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            감사 결과
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="results-2026.html">2026년도</a></li>
-                            <li><a class="dropdown-item" href="results-2025.html">2025년도</a></li>
-                        </ul>
-                    </li>
-
-                </ul>
-                
-                <a href="https://www.instagram.com/hyu_erica_audit/" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   class="text-white text-decoration-none ms-lg-4 d-flex align-items-center insta-hover"
-                   aria-label="Instagram">
-                    
-                    <i class="bi bi-instagram fs-3"></i>
-                </a>
-            </div>
-        </div>
-    </nav>
-
+    <div id="navbar-placeholder"></div>
 
     <main>
         <div class="container py-5 text-center">
@@ -218,43 +146,10 @@
         </div>
     </main>
 
-
-    <footer class="footer">
-        <div class="container">
-            <div class="row gy-4">
-                <div class="col-md-6 text-center text-md-start">
-                    <h6 class="fw-bold text-white mb-1">한양대학교 ERICA 중앙감사위원회</h6>
-                    <address class="mb-2">
-                        경기도 안산시 상록구 한양대학로 55 [미배정]<br>
-                    </address>
-                    <p class="mb-0">
-                        <i class="bi bi-envelope me-1"></i> hanyangerica@hanyang.ac.kr
-                    </p>
-                </div>
-
-                <div class="col-md-6 text-center text-md-end d-flex flex-column justify-content-center">
-                    <div class="mb-3">
-                        <a href="https://instagram.com/hyu_erica_audit/" target="_blank" rel="noopener noreferrer" class="text-white text-decoration-none fs-4 me-3">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                    </div>
-                    
-                    <p class="small text-white-50 mb-1">
-                        © 2025 Central Audit Committee of Hanyang University ERICA.
-                    </p>
-
-                    <ul class="list-inline mb-0 small">
-                        <li class="list-inline-item">
-                            <a href="privacy.html" class="text-decoration-none text-white-50">Privacy Policy</a>
-                        </li>
-                        <li class="list-inline-item text-white-50">|</li>
-                        <li class="list-inline-item text-white-50">All Rights Reserved.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/assets/js/main.js"></script>
 </body>
 </html>

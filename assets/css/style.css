@@ -1,0 +1,72 @@
+:root {
+    /* 브랜드 컬러 */
+    --primary-color: #2c2c2c;       /* 메인 컬러 */
+    --primary-hover: #4A90E2;       /* 마우스 호버 컬러 (파란색) */
+    
+    /* 텍스트 컬러 */
+    --text-dark: #212529;         
+    --text-light: #adb5bd;
+    --text-white: #ffffff;
+
+    /* 배경 컬러 */
+    --bg-light: #f8f9fa;  
+    --bg-dark: #212529;    
+    
+    /* 푸터 컬러 */
+    --footer-bg: #212529;        /* 푸터 배경색 */
+    --footer-text: #ffffff;      /* 푸터 텍스트색 (흰색) */
+    --footer-lore: #adb5bd;      /* 푸터 설명 텍스트색 (회색) */
+    
+    /* 공통 수치 */
+    --navbar-height: 80px;          /* 상단바 높이 통일 */
+    --border-radius: 0.5rem;        /* 둥근 모서리 통일 */
+}
+
+/* 아래부터 일반 CSS 작성 */
+body {
+    color: var(--text-dark);
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+.footer {
+    background-color: var(--footer-bg); 
+    
+    /* 기본 글자색을 '연회색'으로 설정 */
+    color: var(--footer-lore);
+    
+    padding: 3rem 0;
+    font-size: 0.9rem;
+}
+
+/* (1) 제목(h6)과 아이콘(i)은 '흰색'으로 강조 */
+.footer h6{
+    color: var(--footer-text);
+}
+.footer i {
+    color: var(--footer-lore);
+}
+
+/* (2) 푸터 내의 모든 링크(a) 스타일 */
+.footer a {
+    /* [수정] 오타 수정: --footer-text-sub -> --footer-lore */
+    color: var(--footer-lore);  
+    transition: color 0.3s ease;    
+    text-decoration: none; /* 밑줄 제거 (필요시) */
+}
+
+/* (3) 링크에 마우스 올렸을 때(hover) */
+.footer a:hover {
+    color: var(--footer-text); /* 흰색으로 하이라이트 */
+}
+
+/* (4) 인스타그램 아이콘 스타일 정의 */
+/* 평소 상태: 회색 */
+.footer .bi-instagram {
+    color: var(--footer-lore) !important; /* !important로 위의 .footer i 설정을 덮어씀 */
+    transition: color 0.3s ease, transform 0.3s ease; /* 색상과 크기 애니메이션 */
+}
+
+/* 링크(a)에 마우스를 올렸을 때, 그 안의 아이콘(.bi-instagram) 색상을 변경 */
+.footer a:hover .bi-instagram {
+    color: var(--footer-text) !important; /* 마우스 올리면 브랜드 파란색으로 변경 */
+}
