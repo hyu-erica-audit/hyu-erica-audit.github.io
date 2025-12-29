@@ -60,3 +60,29 @@ document.addEventListener('click', function(event) {
         bsCollapse.hide();
     }
 });
+
+
+/* =========================================
+   서프페이지 헤더 생성. 사용방법 해당 페이지 참조
+   ========================================= */
+document.addEventListener("DOMContentLoaded", function() {
+    const headerPlaceholder = document.getElementById('page-header-placeholder');
+
+    if (headerPlaceholder) {
+        const title = headerPlaceholder.getAttribute('data-title');
+        const subtitle = headerPlaceholder.getAttribute('data-subtitle');
+        const headerHTML = `
+            <section class="page-header text-white py-5" style="background-color: var(--bg-darkgray);">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h2 class="fw-bold mb-2">${title}</h2>
+                            <p class="text-white-50 mb-0">${subtitle}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        `;
+        headerPlaceholder.innerHTML = headerHTML;
+    }
+});
