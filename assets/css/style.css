@@ -1,3 +1,6 @@
+/* =========================================
+   1. 기본 설정 및 변수 (:root)
+   ========================================= */
 :root {
     /* 브랜드 컬러 */
     --primary-color: #2c2c2c;       /* 메인 컬러 */
@@ -13,60 +16,248 @@
     --bg-dark: #212529;    
     
     /* 푸터 컬러 */
-    --footer-bg: #212529;        /* 푸터 배경색 */
-    --footer-text: #ffffff;      /* 푸터 텍스트색 (흰색) */
-    --footer-lore: #adb5bd;      /* 푸터 설명 텍스트색 (회색) */
+    --footer-bg: #212529;
+    --footer-text: #ffffff;
+    --footer-lore: #adb5bd;
     
     /* 공통 수치 */
-    --navbar-height: 80px;          /* 상단바 높이 통일 */
-    --border-radius: 0.5rem;        /* 둥근 모서리 통일 */
+    --navbar-height: 80px;
+    --border-radius: 0.5rem;
 }
 
-/* 아래부터 일반 CSS 작성 */
+/* 기본 폰트 및 레이아웃 설정 */
 body {
+    font-family: 'Nanum Gothic', "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     color: var(--text-dark);
-    font-family: 'Nanum Gothic', sans-serif;
 }
 
+main { 
+    flex: 1; 
+}
+
+/* =========================================
+   2. 네비게이션 바 (Navbar) 스타일
+   ========================================= */
+.navbar {
+    background-color: var(--primary-color) !important;
+}
+
+.navbar-logo {
+    height: 30px;       /* 높이를 고정 (보통 30~40px 추천) */
+    width: auto;        /* 너비는 비율에 맞춰 자동 조절 */
+    object-fit: contain; /* 찌그러짐 방지 */
+}
+
+.navbar-brand { 
+    font-weight: 800; 
+    letter-spacing: -0.5px; 
+}
+
+/* 드롭다운 화살표(▼) 제거 */
+.dropdown-toggle::after { 
+    display: none !important; 
+}
+
+/* --- 모바일 화면 설정 (991px 이하) --- */
+@media (max-width: 991px) {
+    .navbar {
+        padding-top: 15px !important; 
+        padding-bottom: 15px !important;
+    }
+
+    .navbar-nav .dropdown-menu {
+        display: block; 
+        border: none;
+        background-color: transparent;
+        padding-left: 20px;
+        padding-top: 0;
+        padding-bottom: 10px;
+        box-shadow: none;
+    }
+    
+    .navbar-nav .nav-link { 
+        color: rgba(255,255,255, 0.9) !important; 
+        font-weight: bold; 
+    }
+    
+    .navbar-nav .dropdown-item { 
+        color: rgba(255,255,255, 0.7); 
+        padding: 5px 0; 
+    }
+    
+    .navbar-nav .dropdown-item:hover { 
+        background-color: transparent; 
+        color: #fff; 
+    }
+}
+
+/* --- PC 화면 설정 (992px 이상) --- */
+@media (min-width: 992px) {
+    /* 드롭다운 메뉴 위치 */
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+        top: 100%;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    /* 메뉴 버튼 크기 & 간격 */
+    .navbar-nav .nav-link {
+        padding-top: 25px !important; 
+        padding-bottom: 25px !important; 
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+        position: relative;
+        display: flex;
+        align-items: center; 
+        height: 100%; 
+        font-weight: 500;
+    }
+    
+    .navbar-nav > .nav-item { margin: 0; }
+
+    /* 밑줄 애니메이션 (::before) */
+    .navbar-nav .nav-link::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 4px;
+        background-color: #fff;
+        transition: width 0.3s ease-in-out;
+        z-index: 100;
+    }
+
+    /* 호버 시 밑줄 길어짐 */
+    .nav-item:hover .nav-link::before {
+        width: 80%;
+    }
+    
+    /* 현재 페이지 활성화(Active) 시 밑줄 유지 (JS 연동) */
+    .navbar-nav .nav-link.active::before {
+        width: 80%;
+    }
+
+    /* 드롭다운 아이템 간격 */
+    .dropdown-item {
+        font-size: 14px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+}
+
+/* 현재 페이지(Active) 텍스트 강조 */
+.navbar-nav .nav-link.active,
+.navbar-nav .dropdown-item.active {
+    color: #ffffff !important;
+    font-weight: 800;
+    opacity: 1;
+}
+
+/* =========================================
+   3. 인스타그램 아이콘 호버 효과
+   ========================================= */
+.insta-hover {
+    transition: all 0.3s ease;
+}
+
+.insta-hover:hover {
+    color: var(--primary-hover) !important;
+    transform: scale(1.1);
+}
+
+/* =========================================
+   4. 푸터 (Footer) 스타일
+   ========================================= */
 .footer {
-    background-color: var(--footer-bg); 
-    
-    /* 기본 글자색을 '연회색'으로 설정 */
+    background-color: var(--footer-bg);
     color: var(--footer-lore);
-    
     padding: 3rem 0;
     font-size: 0.9rem;
 }
 
-/* (1) 제목(h6)과 아이콘(i)은 '흰색'으로 강조 */
-.footer h6{
+.footer h6,
+.footer i {
     color: var(--footer-text);
 }
-.footer i {
-    color: var(--footer-lore);
-}
 
-/* (2) 푸터 내의 모든 링크(a) 스타일 */
 .footer a {
-    /* [수정] 오타 수정: --footer-text-sub -> --footer-lore */
-    color: var(--footer-lore);  
-    transition: color 0.3s ease;    
-    text-decoration: none; /* 밑줄 제거 (필요시) */
+    color: var(--footer-lore);
+    transition: color 0.3s ease;
+    text-decoration: none;
 }
 
-/* (3) 링크에 마우스 올렸을 때(hover) */
 .footer a:hover {
-    color: var(--footer-text); /* 흰색으로 하이라이트 */
+    color: var(--footer-text);
 }
 
-/* (4) 인스타그램 아이콘 스타일 정의 */
-/* 평소 상태: 회색 */
 .footer .bi-instagram {
-    color: var(--footer-lore) !important; /* !important로 위의 .footer i 설정을 덮어씀 */
-    transition: color 0.3s ease, transform 0.3s ease; /* 색상과 크기 애니메이션 */
+    color: var(--footer-lore) !important;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
-/* 링크(a)에 마우스를 올렸을 때, 그 안의 아이콘(.bi-instagram) 색상을 변경 */
 .footer a:hover .bi-instagram {
-    color: var(--footer-text) !important; /* 마우스 올리면 브랜드 파란색으로 변경 */
+    color: var(--footer-text) !important;
+    transform: scale(1.1);
+}
+
+     /* =========================================
+   5. 약관 및 개인정보처리방침 스타일
+   ========================================= */
+
+/* 약관 본문 영역 */
+.policy-content {
+    line-height: 1.8;          /* 줄 간격을 넓게 해서 읽기 편하게 */
+    word-break: keep-all;      /* 한글 단어가 중간에 끊기지 않게 (매우 중요) */
+    color: #495057;            /* 너무 새까만 색보다는 진한 회색이 눈에 편함 */
+}
+
+/* 조항 제목 (제1조, 제2조...) */
+.policy-title {
+    margin-top: 2.5rem;        /* 위쪽 여백을 넉넉히 */
+    margin-bottom: 1rem;       /* 아래쪽 여백 */
+    font-weight: 700;          /* 굵게 */
+    color: var(--primary-color); /* 브랜드 컬러로 포인트 */
+    border-left: 4px solid var(--primary-color); /* 왼쪽에 파란색 띠 */
+    padding-left: 10px;        /* 띠와 글자 사이 간격 */
+}
+
+/* =========================================
+   6. 리스트 스타일 (중첩 목록)
+   ========================================= */
+
+/* 1단계: 숫자 목록 (1. 2. 3.) */
+.policy-list > li {
+    font-size: 1.05rem;     /* 제목은 조금 크게 */
+    margin-bottom: 1.5rem;  /* 항목 간 간격 넓게 */
+    font-weight: bold;      /* 번호도 굵게 */
+}
+
+/* 제목 텍스트 (strong 태그) */
+.policy-list > li > strong {
+    display: block;         /* 줄바꿈 효과 (제목을 한 줄 차지하게) */
+    margin-bottom: 0.5rem;  /* 제목과 하위 리스트 사이 간격 */
+    color: var(--text-dark);
+}
+
+/* 2단계: 하위 점 목록 (Bullet points) */
+.policy-sublist {
+    list-style-type: disc;  /* 꽉 찬 원형 점 (•) */
+    padding-left: 1.5rem;   /* 들여쓰기 */
+    margin-bottom: 0;
+}
+
+.policy-sublist li {
+    font-size: 0.95rem;     /* 본문 크기 */
+    font-weight: normal;    /* 글자 굵기 정상으로 */
+    color: #555;            /* 약간 연한 회색 */
+    margin-bottom: 0.3rem;  /* 점들 사이의 간격 */
+    line-height: 1.6;       /* 줄 간격 */
 }
