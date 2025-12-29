@@ -5,7 +5,7 @@
 :root {
     /* --- 브랜드 컬러 --- */
     --primary-color: #2c2c2c;       /* 메인 컬러 */
-    --primary-hover: #4A90E2;       /* 마우스 호버 컬러 */
+    --primary-point: #4A90E2;       /* 마우스 호버 컬러 */
     
     /* --- 텍스트 컬러 --- */
     --text-dark: #212529;           /* 기본 검정 텍스트 */
@@ -17,7 +17,10 @@
     /* --- 배경 컬러 --- */
     --bg-light: #f8f9fa;            /* 연한 회색 배경 */
     --bg-dark: #212529;             /* 어두운 배경 */
+    --bg-darkgray: #343a40;
     --bg-gray: #c5c5c5;             /* 중간 회색 배경 */
+    --bg-whitegray: #f1f1f1;        /* 아주 연한 회색 배경 */
+
     
     /* --- 푸터 전용 --- */
     --footer-bg: #212529;
@@ -172,9 +175,8 @@ main {
         color: var(--text-dark) !important; 
         font-weight: 800;
     }
-
-    .navbar-nav .dropdown-item:active {
-        background-color: var(--bg-gray) !important;
+    .navbar-nav .dropdown-item:hover {
+        background-color: var(--bg-whitegray) !important;
         color: var(--primary-color) !important; 
     }
 
@@ -199,7 +201,7 @@ main {
 
 @media (min-width: 992px) {
     .insta-hover:hover {
-        color: var(--primary-hover) !important;
+        color: var(--primary-point) !important;
         transform: scale(1.1);
     }
 }
@@ -291,4 +293,209 @@ main {
     color: var(--text-subtle);
     margin-bottom: 0.3rem;  
     line-height: 1.6;       
+}
+
+/* =========================================
+   메인 화면 (Hero Section) 스타일
+   ========================================= */
+
+/* Hero 영역 설정 */
+.hero-section {
+    position: relative;
+    width: 100%;
+    /* 네비게이션 바 높이(약 80px)를 뺀 나머지 화면을 꽉 채움 */
+    min-height: calc(100vh - 70px); 
+    
+    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darkgray) 100%);
+    color: var(--text-white);
+    overflow: hidden;
+}
+
+/* 메인 타이틀 (슬로건) */
+.hero-title {
+    font-size: 3.5rem; 
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -1px;
+    
+    /* 등장 애니메이션 적용 */
+    animation: fadeUp 1s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* 강조 텍스트 */
+.text-highlight {
+    color: var(--primary-point);
+}
+
+/* 서브 타이틀 */
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-light);
+    font-weight: 300;
+    
+    /* 등장 애니메이션 (0.5초 늦게 등장) */
+    animation: fadeUp 1s ease-out 0.5s forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* 스크롤 유도 화살표 */
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;           /* 바닥에서 30px 위 */
+    left: 50%;
+    transform: translateX(-50%); /* 정확히 가운데 정렬 */
+    
+    /* 둥둥 떠다니는 애니메이션 */
+    animation: bounce 2s infinite;
+    cursor: pointer;
+}
+
+/* --- 애니메이션 정의 (Keyframes) --- */
+
+/* 1. 위로 서서히 떠오르는 효과 */
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 2. 위아래로 둥둥 떠다니는 효과 */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    40% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+    60% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+/* --- 모바일 반응형 처리 --- */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.2rem; /* 모바일에서는 글자 크기 줄임 */
+    }
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+}
+
+/* =========================================
+   소개 섹션 (Intro Section) 스타일
+   ========================================= */
+
+/* 섹션 패딩 조절 */
+.intro-section {
+    padding-top: 120px;  
+    padding-bottom: 180px; 
+}
+
+/* 소개글 줄 간격 넓히기 */
+.intro-desc {
+    line-height: 1.8; 
+}
+
+/* 설명과 카드 섹션 간격 조절 */
+.intro-header {
+    margin-bottom: 160px; 
+}
+
+/* 모바일에서는 간격을 조금 줄여서 비율을 맞춤 */
+@media (max-width: 768px) {
+    .intro-header {
+        margin-bottom: 60px; 
+    }
+}
+
+/* 줄바꿈 제어 (단어 중간 끊김 방지) */
+.keep-all {
+    word-break: keep-all;
+}
+
+/* 핵심 가치 카드 기본 설정 */
+.value-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--text-white);
+}
+
+/* 호버 효과: 카드가 살짝 위로 뜨면서 그림자가 진해짐 */
+.value-card:hover {
+    transform: translateY(-10px); /* 위로 10px 이동 */
+    box-shadow: 0 1rem 3rem rgba(0,0,0,0.15) !important;
+}
+
+/* 4. 아이콘 박스 스타일 */
+.icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* 원형 */
+    background-color: rgba(44, 44, 44, 0.05);
+    color: var(--primary-color); /* 아이콘 색상 (브랜드 컬러) */
+    transition: all 0.3s ease;
+}
+
+/* 카드에 마우스 올리면 아이콘 색상도 바뀜 (포인트) */
+.value-card:hover .icon-box {
+    background-color: var(--primary-point);
+    color: var(--text-white);
+}
+
+/* 5. 'About Us' 작은 텍스트 색상 */
+.text-primary {
+    color: var(--primary-point) !important; /* 파란색 포인트 */
+}
+
+/* =========================================
+   모집 CTA 섹션 (Call To Action) 스타일
+   ========================================= */
+
+.cta-section {
+    position: relative;
+    width: 100%;
+    padding: 100px 0;
+    
+    /* linear-gradient: 이미지 위에 검은색 반투명 막을 씌워서 글씨가 잘 보이게 함 */
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                url('../images/main/recruit_bg.jpg');
+    
+    background-size: cover;      /* 이미지를 꽉 차게 */
+    background-position: center; /* 중앙 정렬 */
+    background-repeat: no-repeat;
+    
+    /* 패럴랙스 효과 (PC에서만 배경 고정) */
+    background-attachment: fixed; 
+}
+
+/* 모집 버튼 꾸미기 */
+.recruit-btn {
+    transition: all 0.3s ease;
+    border-width: 2px; /* 테두리 조금 두껍게 */
+}
+
+.recruit-btn:hover {
+    background-color: var(--text-white);
+    color: var(--bg-dark); /* 호버 시 글자색 반전 */
+    transform: translateY(-3px); /* 버튼이 살짝 올라옴 */
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3); /* 흰색 빛나는 그림자 */
+}
+
+/* 모바일에서는 패럴랙스 효과 해제 및 패딩 조절 */
+@media (max-width: 768px) {
+    .cta-section {
+        background-attachment: scroll;
+        padding: 80px 0;
+    }
+    
+    .cta-section h2 {
+        font-size: 1.8rem; /* 모바일 폰트 조절 */
+    }
 }
