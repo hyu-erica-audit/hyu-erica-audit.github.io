@@ -35,6 +35,65 @@
             data-title="한양대학교 ERICA 중앙감사 세칙" 
             data-subtitle="Bylaws of the Central Audit Committee of Hanyang University ERICA">
         </div>
+
+        <section class="py-5 bg-light">
+            <div class="container">
+                
+                <div class="row justify-content-center g-4">
+                    
+                    <div class="col-md-6 col-lg-5">
+                        <div class="card h-100 border-0 shadow-sm hover-shadow transition-card">
+                            <div class="card-body p-5 text-center">
+                                <div class="mb-4">
+                                    <i class="bi bi-file-earmark-pdf text-primary" style="font-size: 4rem;"></i>
+                                </div>
+                                
+                                <h3 class="fw-bold mb-2">중앙감사 세칙</h3>
+                                <p class="text-muted mb-4">
+                                    Central Audit Bylaws<br>
+                                    <span class="badge bg-secondary mt-2">2025.07.30 개정</span>
+                                </p>
+
+                                <p class="card-text text-secondary mb-5 small keep-all">
+                                    중앙감사위원회의 구성, 권한, 감사 절차 및 징계에 관한<br>
+                                    세부적인 사항을 규정하고 있는 시행 세칙입니다.
+                                </p>
+
+                                <a id="link-bylaws" href="#" class="btn btn-primary w-100 py-3 rounded-pill fw-bold" download>
+                                    <i class="bi bi-download me-2"></i> PDF 다운로드
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-5">
+                        <div class="card h-100 border-0 shadow-sm hover-shadow transition-card">
+                            <div class="card-body p-5 text-center">
+                                <div class="mb-4">
+                                    <i class="bi bi-book text-dark" style="font-size: 4rem;"></i>
+                                </div>
+                                
+                                <h3 class="fw-bold mb-2">한양대학교 ERICA 총학생회칙</h3>
+                                <p class="text-muted mb-4">
+                                    Student Constitution<br>
+                                    <span class="badge bg-light text-dark border mt-2">2025.10.24 개정</span>
+                                </p>
+
+                                <p class="card-text text-secondary mb-5 small keep-all">
+                                    한양대학교 ERICA 총학생회 및 산하 기구의<br>
+                                    조직과 운영에 관한 기본 원칙을 담은 최고 규범입니다.
+                                </p>
+
+                                <a id="link-constitution" href="#" class="btn btn-outline-dark w-100 py-3 rounded-pill fw-bold" download>
+                                    <i class="bi bi-download me-2"></i> PDF 다운로드
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
     </main>
 
 
@@ -45,5 +104,24 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/main.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const BASE_PATH = "/assets/docs/";
+
+            // 중앙감사 세칙 파일명
+            const FILE_BYLAWS = "[2025.07.30.개정] 중앙감사위원회 감사세칙.pdf";
+
+            // 총학생회칙 파일명
+            const FILE_CONSTITUTION = "한양대학교 ERICA 총학생회칙 및 선거시행세칙 (2025.10.24 개정).pdf";
+
+            const linkBylaws = document.getElementById('link-bylaws');
+            const linkConstitution = document.getElementById('link-constitution');
+
+            if (linkBylaws) linkBylaws.href = BASE_PATH + FILE_BYLAWS;
+            if (linkConstitution) linkConstitution.href = BASE_PATH + FILE_CONSTITUTION;
+        });
+    </script>
 </body>
 </html>

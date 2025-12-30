@@ -31,6 +31,7 @@ ERICA-Audit-Committee/
 │   ├── components/         # 상단, 하단 바
 │   ├── css/                # 스타일시트 (style.css)
 │   ├── js/                 # 스크립트 (main.js, notice_data.js)
+│   ├── docs/               # 세칙과 학칙 등 문서
 │   └── images/             # 이미지 파일 모음
 └── pages/                  # 서브 페이지 모음
 ```
@@ -48,6 +49,14 @@ assets/js/notice_data.js에 주석을 참고하세요
 ### 2. 이미지 교체
 
 assets/images 에서 이름을 같게 하여 교체하세요
+
+### 3. 세칙, 학칙 파일 교체
+
+assets/docs에 문서 넣고
+
+pages/resources/rule.html에서 아래쪽 script 확인
+
+각주 참고해서 파일 이름 정확히 일치시키기
 
 ---
 

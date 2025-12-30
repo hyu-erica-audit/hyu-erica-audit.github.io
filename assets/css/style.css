@@ -622,3 +622,15 @@ main {
         font-size: 0.95rem;
     }
 }
+
+/* =========================================
+   카드 호버 효과 (문서 페이지용)
+   ========================================= */
+.transition-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-shadow:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.1) !important; 
+}
