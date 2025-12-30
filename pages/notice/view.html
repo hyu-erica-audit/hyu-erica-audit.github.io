@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 상세</title>
+    
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/common/logo.png?v=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <div id="navbar-placeholder"></div>
+
+    <main>
+        <div id="page-header-placeholder" 
+             data-title="공지사항" 
+             data-subtitle="Notice Detail">
+        </div>
+
+        <section class="py-5 bg-white">
+            <div class="container">
+                
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white p-4 border-bottom">
+                        <div class="mb-2">
+                            <span id="view-type" class="badge bg-secondary">분류</span>
+                            <span id="view-date" class="text-muted small ms-2">2026.01.01</span>
+                        </div>
+                        <h3 id="view-title" class="fw-bold mb-0">제목이 로딩 중입니다...</h3>
+                        <p class="text-muted mt-2 mb-0 small">작성자: <span id="view-author">관리자</span></p>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <div id="view-content" style="min-height: 300px; line-height: 1.8;">
+                            </div>
+                    </div>
+
+                    <div class="card-footer bg-white p-4 text-center border-0">
+                        <a href="/pages/notice/general.html" class="btn btn-secondary px-4 rounded-pill">
+                            목록으로
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="/assets/js/notice_data.js"></script> 
+    <script src="/assets/js/main.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. 현재 주소창에서 '?id=3' 같은 부분을 찾습니다.
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = parseInt(urlParams.get('id')); // '3'을 숫자 3으로 변환
+
+            // 2. notice_data.js의 목록(noticeList)에서 해당 ID를 가진 글을 찾습니다.
+            // (배열에서 find 함수를 사용)
+            const notice = noticeList.find(item => item.id === id);
+
+            // 3. 만약 글을 찾았다면 화면에 뿌려줍니다.
+            if (notice) {
+                document.getElementById('view-type').textContent = notice.type;
+                
+                // 필독이면 배지를 빨간색으로, 아니면 회색으로
+                if(notice.type === '필독') {
+                    document.getElementById('view-type').className = 'badge bg-danger';
+                } else {
+                    document.getElementById('view-type').className = 'badge bg-secondary';
+                }
+
+                document.getElementById('view-date').textContent = notice.date;
+                document.getElementById('view-title').textContent = notice.title;
+                document.getElementById('view-author').textContent = notice.author;
+                
+                // innerHTML을 써야 <br> 태그 등이 먹힙니다.
+                document.getElementById('view-content').innerHTML = notice.content;
+            
+            } else {
+                // 4. 글이 없으면 (예: id=999) 에러 메시지를 띄웁니다.
+                alert("존재하지 않거나 삭제된 게시글입니다.");
+                location.href = '/pages/notice/general.html'; // 목록으로 튕겨냄
+            }
+        });
+    </script>
+</body>
+</html>

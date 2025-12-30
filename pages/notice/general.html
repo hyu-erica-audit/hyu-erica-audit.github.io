@@ -41,7 +41,7 @@
                 
                 <div class="row mb-4 justify-content-between align-items-center">
                     <div class="col-md-4 mb-3 mb-md-0">
-                        <span class="text-muted small">Total <strong>14</strong> 건</span>
+                        <span class="text-muted small">Total <strong id="total-count">0</strong> 건</span>
                     </div>
                     <div class="col-md-4">
                         <div class="input-group">
@@ -71,20 +71,7 @@
                 </div>
 
                 <nav aria-label="Page navigation" class="mt-5">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
+                    <ul class="pagination justify-content-center" id="pagination-wrapper">
                     </ul>
                 </nav>
 
@@ -104,35 +91,113 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // ==========================================
+            // 1. 설정 및 변수 준비
+            // ==========================================
             const tableBody = document.getElementById('notice-list-body');
+            const totalCountElement = document.getElementById('total-count');
+            const paginationWrapper = document.getElementById('pagination-wrapper');
             
             // 데이터가 없으면 종료
             if (!tableBody || typeof noticeList === 'undefined') return;
 
+            // 한 페이지에 보여줄 개수 설정 (10개 추천)
+            const ITEMS_PER_PAGE = 10; 
+
+            // 현재 페이지 번호 가져오기 (주소창 ?page=2 에서 가져옴. 없으면 1)
+            const urlParams = new URLSearchParams(window.location.search);
+            let currentPage = parseInt(urlParams.get('page')) || 1;
+
+            // 전체 글 개수 및 전체 페이지 수 계산
+            const totalItems = noticeList.length;
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+            // ==========================================
+            // 2. 화면 표시 로직
+            // ==========================================
+
+            // (1) 총 게시물 수 표시
+            if (totalCountElement) totalCountElement.textContent = totalItems;
+
+            // (2) 현재 페이지에 해당하는 데이터만 자르기 (Slice)
+            // 예: 1페이지면 0~9번 인덱스, 2페이지면 10~19번 인덱스
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const currentData = noticeList.slice(startIndex, endIndex);
+
+            // (3) 테이블 그리기
             let html = '';
-
-            // noticeList 배열을 하나씩 꺼내서 HTML로 만듦
-            noticeList.forEach(notice => {
-                // 배지 색상 결정 (필독이면 빨강, 아니면 회색) - 이건 유지
-                let badgeClass = notice.type === '필독' ? 'bg-danger' : 'bg-secondary';
-
-                html += `
-                    <tr>
-                        <td class="text-center text-muted d-none d-md-table-cell">${notice.id}</td>
-                        <td>
-                            <a href="${notice.link}" class="text-decoration-none text-dark fw-bold">
-                                <span class="badge ${badgeClass} me-2">${notice.type}</span>
-                                ${notice.title}
-                            </a>
-                        </td>
-                        <td class="text-center text-muted d-none d-md-table-cell">${notice.author}</td>
-                        <td class="text-center text-muted d-none d-md-table-cell">${notice.date}</td>
-                    </tr>
-                `;
-            });
-
-            // 완성된 HTML을 테이블에 집어넣음
+            
+            if (currentData.length === 0) {
+                // 게시글이 없을 때
+                html = '<tr><td colspan="4" class="text-center py-5">게시글이 없습니다.</td></tr>';
+            } else {
+                // 잘라낸 데이터(currentData)만 반복
+                currentData.forEach(notice => {
+                    let badgeClass = notice.type === '필독' ? 'bg-danger' : 'bg-secondary';
+                    
+                    html += `
+                        <tr>
+                            <td class="text-center text-muted d-none d-md-table-cell">${notice.id}</td>
+                            <td>
+                                <a href="${notice.link}" class="text-decoration-none text-dark fw-bold">
+                                    <span class="badge ${badgeClass} me-2">${notice.type}</span>
+                                    ${notice.title}
+                                </a>
+                            </td>
+                            <td class="text-center text-muted d-none d-md-table-cell">${notice.author}</td>
+                            <td class="text-center text-muted d-none d-md-table-cell">${notice.date}</td>
+                        </tr>
+                    `;
+                });
+            }
             tableBody.innerHTML = html;
+
+            // ==========================================
+            // 3. 페이지네이션 버튼 그리기
+            // ==========================================
+            renderPagination(totalPages, currentPage);
+
+            function renderPagination(totalPages, currentPage) {
+                let paginationHtml = '';
+
+                // [이전] 버튼
+                // 1페이지면 비활성화(disabled), 아니면 이전 페이지로 링크
+                const prevDisabled = currentPage === 1 ? 'disabled' : '';
+                const prevPage = currentPage - 1;
+                paginationHtml += `
+                    <li class="page-item ${prevDisabled}">
+                        <a class="page-link" href="?page=${prevPage}" aria-label="Previous">
+                            <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+                        </a>
+                    </li>
+                `;
+
+                // [숫자] 버튼 (1, 2, 3...)
+                for (let i = 1; i <= totalPages; i++) {
+                    // 현재 보고 있는 페이지면 색칠(active)
+                    const activeClass = i === currentPage ? 'active' : '';
+                    paginationHtml += `
+                        <li class="page-item ${activeClass}">
+                            <a class="page-link" href="?page=${i}">${i}</a>
+                        </li>
+                    `;
+                }
+
+                // [다음] 버튼
+                // 마지막 페이지면 비활성화
+                const nextDisabled = currentPage === totalPages ? 'disabled' : '';
+                const nextPage = currentPage + 1;
+                paginationHtml += `
+                    <li class="page-item ${nextDisabled}">
+                        <a class="page-link" href="?page=${nextPage}" aria-label="Next">
+                            <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                        </a>
+                    </li>
+                `;
+
+                paginationWrapper.innerHTML = paginationHtml;
+            }
         });
     </script>
 </body>
