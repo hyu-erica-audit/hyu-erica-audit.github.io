@@ -58,6 +58,12 @@ pages/resources/rule.html에서 아래쪽 script 확인
 
 각주 참고해서 파일 이름 정확히 일치시키기
 
+### 4. 인스타그램 링크 교체
+
+assets/components/에 있는 footer, navbar 파일에서
+
+인스타그램 링크 부분 수정
+
 ---
 
 ## 📞 문의 (Contact)

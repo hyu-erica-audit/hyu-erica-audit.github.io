@@ -1,13 +1,13 @@
 /* =========================================
-   펼쳐짐 애니메이션 (최종 수정: 배경제거/레이어정렬)
+   펼쳐짐 애니메이션
    ========================================= */
 
-/* --- 1. 전체 틀 --- */
+/* --- 전체 틀 --- */
 .spread-container {
     position: relative;
     width: 350px;
     height: 350px;
-    margin: 50px auto 10px; /* 하단 여백 최소화 */
+    margin: 50px auto 10px;
 }
 
 /* --- 2. 중심원 (가장 앞으로 오게 설정) --- */
@@ -21,7 +21,6 @@
     border-radius: 50%;
     transform: translate(-50%, -50%);
     
-    /* [수정] 아이콘(20)보다 높아야 함 */
     z-index: 30; 
     
     display: flex;
@@ -30,7 +29,7 @@
     border: 5px solid rgba(var(--primary-rgb), 0.1);
 }
 
-/* --- 3. 아이콘 공통 스타일 (수정됨) --- */
+/* ---아이콘 공통 스타일 (수정됨) --- */
 .spread-item {
     position: absolute;
     top: 50%;
@@ -38,7 +37,6 @@
     width: 80px;
     text-align: center;
     
-    /* [중요] 처음에는 투명하게 숨김 */
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.5);
     
@@ -73,7 +71,7 @@
     margin-top: 6px; /* 간격 살짝 추가 */
 }
 
-/* --- 4. 호버 및 활성화 효과 --- */
+/* --- 호버 및 활성화 효과 --- */
 .spread-item:hover .icon-box {
     transform: scale(1.15);
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
@@ -85,12 +83,12 @@
     box-shadow: 0 0 0 5px rgba(13, 110, 253, 0.3) !important;
 }
 
-/* --- 5. 아이콘 위치 배치 (딜레이 설정 수정) --- */
+/* --- 아이콘 위치 배치 (딜레이 설정 수정) --- */
 .item-1 {
     --final-transform: translate(-50%, -170px) scale(1);
 }
 
-/* [수정] start-anim 클래스가 있을 때만 딜레이 적용 */
+
 .spread-container.start-anim .item-2 {
     --final-transform: translate(calc(-50% + 130px), calc(-50% + 75px)) scale(1);
     animation-delay: 0.1s;
@@ -106,7 +104,7 @@
     to { opacity: 1; transform: var(--final-transform); }
 }
 
-/* --- 6. 슬라이드 다운 박스 (배경 관련 스타일 없음) --- */
+/* --- 슬라이드 다운 박스 --- */
 .slide-down-box {
     max-height: 0;
     opacity: 0;
@@ -137,7 +135,7 @@
     background: linear-gradient(135deg, #264d74 0%, #0b3d6e 100%);
     position: relative;
     overflow: hidden;
-    margin-bottom: 5rem; /* [해결] 아래 섹션과 간격 벌리기 */
+    margin-bottom: 5rem;
 }
 
 /* 배경 오버레이 */
@@ -149,14 +147,13 @@
     z-index: 1;
 }
 
-/* --- 커서 수정 (글자 사이용 미세 조정) --- */
+/* --- 커서 --- */
 .cursor {
     display: inline-block;
     width: 3px;           /* 두께를 조금 얇게 */
     height: 0.8em;        /* 높이 적절하게 */
     background-color: #ffc107;
     
-    /* [수정] 글자 사이에 들어가므로 간격을 좁힙니다 */
     margin-left: 2px;     
     margin-right: 2px;    /* 커서 뒤 글자('을')와도 간격 살짝 줌 */
     

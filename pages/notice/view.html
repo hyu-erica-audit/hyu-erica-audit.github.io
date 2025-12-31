@@ -58,15 +58,14 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. 현재 주소창에서 '?id=3' 같은 부분을 찾습니다.
+            // 현재 주소창에서 '?id=3' 같은 부분을 찾습니다.
             const urlParams = new URLSearchParams(window.location.search);
             const id = parseInt(urlParams.get('id')); // '3'을 숫자 3으로 변환
 
-            // 2. notice_data.js의 목록(noticeList)에서 해당 ID를 가진 글을 찾습니다.
-            // (배열에서 find 함수를 사용)
+            // notice_data.js의 목록(noticeList)에서 해당 ID를 가진 글을 찾습니다.
             const notice = noticeList.find(item => item.id === id);
 
-            // 3. 만약 글을 찾았다면 화면에 뿌려줍니다.
+            // 만약 글을 찾았다면 화면에 뿌려줍니다.
             if (notice) {
                 document.getElementById('view-type').textContent = notice.type;
                 

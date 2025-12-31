@@ -214,13 +214,13 @@
         document.addEventListener("DOMContentLoaded", function() {
 
             const textElement = document.getElementById("typing-text");
-            // 바꾸고 싶은 단어들을 여기에 적으세요
+            // 타이핑 될 단어 목록
             const words = ["공정", "투명성", "원칙"]; 
             
             let wordIndex = 0;
             let charIndex = 0;
             let isDeleting = false;
-            let typeSpeed = 150; // 글자 써지는 속도
+            let typeSpeed = 150;
 
             function type() {
                 // 현재 순서의 단어 가져오기
@@ -230,12 +230,12 @@
                     // 지우는 중일 때
                     textElement.textContent = currentWord.substring(0, charIndex - 1);
                     charIndex--;
-                    typeSpeed = 100; // 지우는 속도는 좀 더 빠르게
+                    typeSpeed = 100;
                 } else {
                     // 쓰는 중일 때
                     textElement.textContent = currentWord.substring(0, charIndex + 1);
                     charIndex++;
-                    typeSpeed = 150; // 쓰는 속도
+                    typeSpeed = 150;
                 }
 
                 // 단어가 완성되었을 때
@@ -260,7 +260,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // ==========================================
-            // 👀 스크롤 감지 애니메이션 (Intersection Observer)
+            // 스크롤 감지 애니메이션 (Intersection Observer)
             // ==========================================
             const observerOptions = {
                 root: null, 
@@ -273,7 +273,7 @@
                     // 화면에 들어왔고(isIntersecting), 아직 애니메이션이 실행 안 됐다면?
                     if (entry.isIntersecting && !entry.target.classList.contains('start-anim')) {
                         entry.target.classList.add('start-anim'); // 클래스 추가 -> CSS 애니메이션 시작!
-                        observer.unobserve(entry.target); // 한 번 실행했으니 감시 종료 (성능 최적화)
+                        observer.unobserve(entry.target); // 한 번 실행했으니 감시 종료
                     }
                 });
             }, observerOptions);
@@ -307,23 +307,23 @@
 
             if (element.classList.contains('active')) {
                 element.classList.remove('active'); // 강조 끄기
-                container.classList.remove('show'); // 설명창 닫기 (스르륵 올라감)
+                container.classList.remove('show'); // 설명창 닫기
                 return; // 여기서 함수 종료
             }
 
-            // 1. 모든 아이콘의 active 끄기
+            // 모든 아이콘의 active 끄기
             document.querySelectorAll('.spread-item').forEach(item => {
                 item.classList.remove('active');
             });
 
-            // 2. 현재 클릭한 아이콘 켜기
+            // 현재 클릭한 아이콘 켜기
             element.classList.add('active');
 
-            // 3. 내용 교체
+            // 내용 교체
             title.textContent = activityData[id].title;
             text.textContent = activityData[id].text;
 
-            // 4. 설명창 열기 (스르륵 내려옴)
+            // 설명창 열기
             container.classList.add('show');
         }
     </script>
