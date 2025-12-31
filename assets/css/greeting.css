@@ -1,0 +1,70 @@
+/* =========================================
+   인사말 페이지 (Greetings) 스타일
+   ========================================= */
+.greetings-section {
+    background-color: var(--bg-light);
+    padding: 80px 0;
+}
+/* 인사말 본문 타이포그래피 */
+.greeting-text {
+    /* 글을 읽기 편한 최적의 너비 설정 (너무 넓으면 읽기 힘듦) */
+    max-width: 750px; 
+}
+
+/* 인사말 핵심 타이틀 */
+.greeting-title {
+    font-size: 1.75rem;
+    line-height: 1.4;
+    color: var(--primary-color);
+    
+    /* 타이틀 밑에 브랜드 컬러로 밑줄 포인트 주기 */
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.greeting-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px; /* 밑줄 길이 */
+    height: 3px; /* 밑줄 두께 */
+    background-color: var(--primary-hover); /* 파란색 포인트 */
+}
+
+/* 본문 줄글 스타일 */
+.greeting-body p {
+    font-size: 1.05rem;
+    line-height: 1.9; /* 줄 간격을 넓게 해서 가독성 확보 */
+    margin-bottom: 1.5rem; /* 문단 간격 */
+    color: #555; /* 너무 새까만색보다 약간 연한게 눈이 편함 */
+}
+
+.greeting-body strong {
+    color: var(--primary-color); /* 강조 단어는 진한 회색으로 */
+    font-weight: 800;
+}
+
+/* 리스트 스타일 */
+.greeting-body ul li {
+    line-height: 1.8;
+    margin-bottom: 0.5rem;
+}
+
+/* 모바일 반응형 처리 */
+@media (max-width: 991px) {
+    /* 모바일에서는 타이틀 밑줄을 중앙 정렬 */
+    .greeting-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .greeting-text {
+        text-align: left; /* 본문은 다시 왼쪽 정렬 */
+    }
+    
+    /* 모바일에서 프로필 사진 크기 조절 */
+    .chair-img {
+        max-width: 220px;
+    }
+}

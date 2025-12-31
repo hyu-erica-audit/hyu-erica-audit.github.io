@@ -18,7 +18,8 @@
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
 
     <!-- 스타일 불러오기 -->
-    <link href="/assets/css/style.css" rel="stylesheet"> 
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/recruit.css" rel="stylesheet">
 </head>
 
 <body>
@@ -30,13 +31,111 @@
 
     <!-- 메인 -->
     <main>
-        <!-- 페이지 헤더 불러오기 -->
-        <div id="page-header-placeholder" 
-            data-title="위원 선출 공고" 
-            data-subtitle="Notice for Recruitment of Committee Members">
-        </div>
+        <section class="hero-section d-flex align-items-center justify-content-center text-center text-white position-relative">
+            <div class="hero-overlay"></div>
 
-        <section class="py-5 bg-light overflow-hidden" style="min-height: 600px;">
+                <div class="container position-relative z-2">
+                    <span class="badge border border-light rounded-pill px-3 py-2 mb-5 fade-in-up" style="background: rgba(255,255,255,0.1);">
+                        2026 RECRUITING
+                    </span>
+
+                <h1 class="display-3 fw-bold mb-4 fade-in-up delay-1" style="line-height: 1.3;">
+                    <span class="d-inline-block position-relative">
+                        우리는 <span class="text-warning" id="typing-text"></span><span class="cursor"></span>을<br class="d-md-none"> 만듭니다
+                    </span>
+                </h1>
+
+                    <p class="lead text-white-50 mb-5 fade-in-up delay-2 keep-all w-75 mx-auto">
+                        한양대학교 ERICA 제7대 중앙감사위원회와 함께<br>
+                        공정한 감사의 기준을 세워갈 신입 위원을 모집합니다.
+                    </p>
+                </div>
+
+                <div class="scroll-down-container">
+                    <span class="small text-white-50 mb-2 d-block">Scroll Down</span>
+                    <i class="bi bi-chevron-down text-white fs-4"></i>
+                </div>
+            
+            </div>
+        </section>
+
+        <section class="recruit-gap bg-white">
+            <div class="container py-4">
+                <div class="row align-items-center">
+
+
+                    
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <span class="badge bg-primary-subtle text-primary rounded-pill mb-4 px-3 py-2">Who We Are</span>
+                        <h2 class="fw-bold mb-4" style="line-height: 1.4;">
+                            학생회비의 가치를 지키는<br>
+                            <span class="text-primary">최고 감사 기구</span>입니다.
+                        </h2>
+                        <p class="text-muted lead keep-all mb-5">
+                            중앙감사위원회는 총학생회칙에 의거하여 설립된 특별기구입니다.<br>
+                            학생회비가 보다 투명하고 공정하게 쓰일 수 있도록,<br>
+                            학생자치기구의 예산 집행을 철저히 감시하고 검증합니다.
+                        </p>
+                        <p class="text-secondary small keep-all mb-5">
+                            우리는 누구의 간섭도 받지 않으며, 오직 <strong>명확한 데이터와 사실</strong>을 기준으로 
+                            객관적인 감사를 수행합니다.<br>
+                            신뢰받는 학생사회를 설계하는 과정에 여러분의 열정을 더해주세요.
+                        </p>
+                    </div>
+
+                    <div class="col-lg-5 offset-lg-1">
+                        <div class="row g-4">
+                            
+                            <div class="col-12">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                            <i class="bi bi-shield-check text-primary fs-4"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1">철저한 독립성</h5>
+                                        <p class="text-muted small mb-0">외부의 간섭 없는 독자적인 감사를 수행합니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                            <i class="bi bi-search text-primary fs-4"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1">투명한 공개</h5>
+                                        <p class="text-muted small mb-0">감사의 모든 과정과 결과는 온라인으로 공개됩니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                            <i class="bi bi-journal-text text-primary fs-4"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1">원칙 중심의 명확성</h5>
+                                        <p class="text-muted small mb-0">모호한 관행에 기대지 않고, 오직 규정과 데이터에 입각하여 판단합니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="recruit-gap bg-light overflow-hidden" style="min-height: 600px;">
             <div class="container text-center">
                 <h3 class="fw-bold mb-5">주요 활동 분야</h3>
 
@@ -111,21 +210,93 @@
     <script src="/assets/js/main.js"></script>
 
     <script src="/assets/js/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
 
-<script>
+            const textElement = document.getElementById("typing-text");
+            // 바꾸고 싶은 단어들을 여기에 적으세요
+            const words = ["공정", "신뢰", "투명성", "원칙"]; 
+            
+            let wordIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            let typeSpeed = 150; // 글자 써지는 속도
+
+            function type() {
+                // 현재 순서의 단어 가져오기
+                const currentWord = words[wordIndex];
+
+                if (isDeleting) {
+                    // 지우는 중일 때
+                    textElement.textContent = currentWord.substring(0, charIndex - 1);
+                    charIndex--;
+                    typeSpeed = 100; // 지우는 속도는 좀 더 빠르게
+                } else {
+                    // 쓰는 중일 때
+                    textElement.textContent = currentWord.substring(0, charIndex + 1);
+                    charIndex++;
+                    typeSpeed = 150; // 쓰는 속도
+                }
+
+                // 단어가 완성되었을 때
+                if (!isDeleting && charIndex === currentWord.length) {
+                    isDeleting = true;
+                    typeSpeed = 2000; // 다 쓰고 나서 2초 동안 멈춤 (사람들이 읽을 시간)
+                } 
+                // 단어가 다 지워졌을 때
+                else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    wordIndex = (wordIndex + 1) % words.length; // 다음 단어로 넘어감
+                    typeSpeed = 500; // 다음 단어 시작 전 잠깐 대기
+                }
+
+                setTimeout(type, typeSpeed);
+            }
+
+            // 타이핑 시작
+            if (textElement) type();
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // ==========================================
+            // 👀 스크롤 감지 애니메이션 (Intersection Observer)
+            // ==========================================
+            const observerOptions = {
+                root: null, 
+                rootMargin: '0px',
+                threshold: 0.5 // 화면에 50% 이상 보일 때 작동
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    // 화면에 들어왔고(isIntersecting), 아직 애니메이션이 실행 안 됐다면?
+                    if (entry.isIntersecting && !entry.target.classList.contains('start-anim')) {
+                        entry.target.classList.add('start-anim'); // 클래스 추가 -> CSS 애니메이션 시작!
+                        observer.unobserve(entry.target); // 한 번 실행했으니 감시 종료 (성능 최적화)
+                    }
+                });
+            }, observerOptions);
+
+            // 감시할 대상 등록 (펼쳐짐 컨테이너)
+            const target = document.querySelector('.spread-container');
+            if (target) {
+                observer.observe(target);
+            }
+        });
         // 설명 데이터
         const activityData = {
             1: {
                 title: "회계 감사 (Accounting Audit)",
-                text: "단과대 및 자치기구의 예산 사용 내역을 꼼꼼히 검토합니다. 영수증 증빙이 적절한지, 회칙에 맞게 집행되었는지를 확인하여 학우들의 소중한 회비가 투명하게 쓰이도록 감시합니다."
+                text: "자금의 인출부터 최종 사용까지, 모든 과정의 데이터를 추적합니다. 회칙에 의거한 정량적 기준을 통해 예산의 효율적 사용 여부를 판단하고, 실수를 예방할 수 있는 체계적인 가이드라인을 제시합니다."
             },
             2: {
                 title: "소명 (Vindication)",
-                text: "단순히 잘못을 지적하는 것이 아니라, 피감기구에게 '왜 이렇게 집행했는지' 설명할 기회를 충분히 보장합니다. 상호 존중을 바탕으로 오해를 풀고 합리적인 감사 결과를 도출하는 과정입니다."
+                text: "'왜 이렇게 집행했는지'에 대한 피감기구의 입장을 충분히 듣습니다. 충분한 질의응답을 통해 사실관계를 명확히 하고, 오해 없는 투명한 감사 결과를 도출하기 위해 노력합니다."
             },
             3: {
                 title: "결과 보고서 (Audit Report)",
-                text: "확정된 감사 결과를 바탕으로 공신력 있는 보고서를 작성합니다. 이 보고서는 전체 학생들에게 가감 없이 공개되며, 학생 사회의 신뢰를 높이는 중요한 기록물이 됩니다."
+                text: "확정된 감사 결과를 바탕으로 공신력 있는 보고서를 작성합니다. 이 보고서는 전체 학생들에게 가감 없이 공개되며, 자치기구의 신뢰를 높이는 중요한 기록물이 됩니다."
             }
         };
 

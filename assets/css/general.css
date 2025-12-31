@@ -1,0 +1,48 @@
+
+/* =========================================
+    게시판 (Notice) 스타일
+   ========================================= */
+
+/* 테이블 헤더 스타일 */
+.notice-table thead th {
+    border-top: 2px solid var(--primary-color); /* 상단에 진한 선 */
+    background-color: #f8f9fa;
+    padding: 15px 0;
+    font-weight: 700;
+}
+
+/* 테이블 본문 행 스타일 */
+.notice-table tbody td {
+    padding: 15px 10px;
+    vertical-align: middle; /* 세로 중앙 정렬 */
+}
+
+/* 제목 링크 호버 효과 */
+.notice-table a:hover {
+    color: var(--primary-hover) !important;
+    text-decoration: underline !important;
+}
+
+/* 중요 공지(필독) 배경색 은은하게 */
+.table-active {
+    background-color: rgba(var(--primary-rgb), 0.05) !important; 
+}
+
+/* 페이지네이션 버튼 색상 커스텀 (브랜드 컬러 적용) */
+.pagination .page-link {
+    color: var(--text-dark);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+
+/* 모바일 대응: 화면이 좁을 때 제목을 제외한 나머지는 숨김 처리됨 (HTML 클래스 제어) */
+/* 하지만 제목이 너무 길면 ... 으로 줄임 처리 */
+@media (max-width: 768px) {
+    .notice-table td {
+        font-size: 0.95rem;
+    }
+}
