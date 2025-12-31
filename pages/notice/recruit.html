@@ -35,6 +35,70 @@
             data-title="위원 선출 공고" 
             data-subtitle="Notice for Recruitment of Committee Members">
         </div>
+
+        <section class="py-5 bg-light overflow-hidden" style="min-height: 600px;">
+            <div class="container text-center">
+                <h3 class="fw-bold mb-5">주요 활동 분야</h3>
+
+                <div class="spread-container">
+                    
+                    <div class="center-circle shadow">
+                        <div class="center-content">
+                            <span class="fw-bold text-primary">CENTRAL<br>AUDIT</span>
+                        </div>
+                    </div>
+
+                    <div class="spread-item item-1" onclick="toggleDescription(1, this)">
+                        <div class="icon-box shadow-sm">
+                            <i class="bi bi-calculator"></i>
+                        </div>
+                        <div class="icon-label">회계 감사</div>
+                    </div>
+
+                    <div class="spread-item item-2" onclick="toggleDescription(2, this)">
+                        <div class="icon-box shadow-sm">
+                            <i class="bi bi-mic"></i> </div>
+                        <div class="icon-label">소명</div>
+                    </div>
+
+                    <div class="spread-item item-3" onclick="toggleDescription(3, this)">
+                        <div class="icon-box shadow-sm">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="icon-label">보고서</div>
+                    </div>
+
+                </div>
+
+                <div id="desc-container" class="slide-down-box">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="mt-5 p-2">
+                                <h4 id="desc-title" class="fw-bold mb-3 text-primary"></h4>
+                                <p id="desc-text" class="text-muted mb-0 lead keep-all"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="py-5 bg-dark text-white text-center">
+            <div class="container py-4">
+                <h3 class="fw-bold mb-4">지금 바로 지원하세요</h3>
+                <p class="mb-5 text-white-50">
+                    한양대학교 ERICA의 투명한 내일을 함께 만들어갈 여러분을 기다립니다.<br>
+                </p>
+
+                <a href="https://forms.gle/1wHxovmSFuv38shC7" target="_blank" 
+                   class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold">
+                    지원서 작성하기 <i class="bi bi-box-arrow-up-right ms-2"></i>
+                </a>
+                
+                <p class="mt-3 small text-white-50">* 구글 로그인 후 작성 가능합니다.</p>
+            </div>
+        </section>
     </main>
 
 
@@ -45,5 +109,54 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/main.js"></script>
+
+    <script src="/assets/js/main.js"></script>
+
+<script>
+        // 설명 데이터
+        const activityData = {
+            1: {
+                title: "회계 감사 (Accounting Audit)",
+                text: "단과대 및 자치기구의 예산 사용 내역을 꼼꼼히 검토합니다. 영수증 증빙이 적절한지, 회칙에 맞게 집행되었는지를 확인하여 학우들의 소중한 회비가 투명하게 쓰이도록 감시합니다."
+            },
+            2: {
+                title: "소명 (Vindication)",
+                text: "단순히 잘못을 지적하는 것이 아니라, 피감기구에게 '왜 이렇게 집행했는지' 설명할 기회를 충분히 보장합니다. 상호 존중을 바탕으로 오해를 풀고 합리적인 감사 결과를 도출하는 과정입니다."
+            },
+            3: {
+                title: "결과 보고서 (Audit Report)",
+                text: "확정된 감사 결과를 바탕으로 공신력 있는 보고서를 작성합니다. 이 보고서는 전체 학생들에게 가감 없이 공개되며, 학생 사회의 신뢰를 높이는 중요한 기록물이 됩니다."
+            }
+        };
+
+        function toggleDescription(id, element) {
+            const container = document.getElementById('desc-container');
+            const title = document.getElementById('desc-title');
+            const text = document.getElementById('desc-text');
+
+            if (element.classList.contains('active')) {
+                element.classList.remove('active'); // 강조 끄기
+                container.classList.remove('show'); // 설명창 닫기 (스르륵 올라감)
+                return; // 여기서 함수 종료
+            }
+
+            // 1. 모든 아이콘의 active 끄기
+            document.querySelectorAll('.spread-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // 2. 현재 클릭한 아이콘 켜기
+            element.classList.add('active');
+
+            // 3. 내용 교체
+            title.textContent = activityData[id].title;
+            text.textContent = activityData[id].text;
+
+            // 4. 설명창 열기 (스르륵 내려옴)
+            container.classList.add('show');
+        }
+    </script>
+</body>
+</html>
 </body>
 </html>
