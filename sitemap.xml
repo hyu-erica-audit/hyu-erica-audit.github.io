@@ -1,32 +1,41 @@
 ---
 layout: null
 ---
-
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
         xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    {% for post in site.posts %}
+
+  {% for page in site.pages %}
+    {% comment %} 
+      제외할 파일들 필터링:
+      - .xml, .txt, .json 파일 제외 (sitemap 자신이나 설정 파일 등)
+      - assets 폴더(이미지, css 등) 제외
+      - 404 에러 페이지 제외
+    {% endcomment %}
+    {% if page.url contains '.xml' or page.url contains '.txt' or page.url contains '.json' or page.url contains 'assets' or page.name == '404.html' %}
+      {% continue %}
+    {% endif %}
+
     <url>
-        <loc>{{ site.url }}{{ post.url }}</loc>
-        {% if post.lastmod == null %}
-        <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+      <loc>{{ site.url }}{{ page.url }}</loc>
+      
+      {% comment %} 페이지에 날짜가 없으면 사이트 빌드 시간을 대신 넣음 {% endcomment %}
+      <lastmod>
+        {% if page.lastmod %}
+          {{ page.lastmod | date_to_xmlschema }}
+        {% elsif page.date %}
+          {{ page.date | date_to_xmlschema }}
         {% else %}
-        <lastmod>{{ post.lastmod | date_to_xmlschema }}</lastmod>
+          {{ site.time | date_to_xmlschema }}
         {% endif %}
+      </lastmod>
 
-        {% if post.sitemap.changefreq == null %}
-        <changefreq>weekly</changefreq>
-        {% else %}
-        <changefreq>{{ post.sitemap.changefreq }}</changefreq>
-        {% endif %}
-
-        {% if post.sitemap.priority == null %}
-        <priority>0.5</priority>
-        {% else %}
-        <priority>{{ post.sitemap.priority }}</priority>
-        {% endif %}
-
+      <changefreq>monthly</changefreq>
+      <priority>
+        {% if page.url == '/' %}1.0{% else %}0.8{% endif %}
+      </priority>
     </url>
-    {% endfor %}
+  {% endfor %}
+
 </urlset>
