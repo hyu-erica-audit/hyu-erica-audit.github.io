@@ -15,7 +15,7 @@ const noticeList = [
     {
         id: 2,
         type: "일반",
-        title: "[모집중] 2026학년도 제7대 중앙감사위원회 신입 위원 모집 안내",
+        title: "[모집종료] 2026학년도 제7대 중앙감사위원회 신입 위원 모집 안내",
         author: "중감위",
         date: "2026.01.13.",
         link: "/pages/notice/view.html?id=2",
