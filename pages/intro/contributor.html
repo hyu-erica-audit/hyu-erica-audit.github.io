@@ -19,6 +19,47 @@
 
     <!-- 스타일 불러오기 -->
     <link href="/assets/css/style.css" rel="stylesheet"> 
+
+    <style>
+        .contributor-wrapper {
+            padding: 100px 0;
+        }
+
+        .contributor-item {
+            border-top: 1px solid #e9ecef;
+            padding: 2rem 1rem; 
+            height: 100%;
+            transition: all 0.3s ease;
+            background-color: transparent;
+        }
+
+        .contributor-item:hover {
+            border-top: 1px solid var(--primary-point);
+            background-color: var(--bg-light);
+        }
+
+        .role-text {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--primary-point);
+            letter-spacing: 0.05rem;
+            text-transform: uppercase;
+        }
+
+        .name-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin: 0.4rem 0;
+        }
+
+        .dept-text {
+            font-size: 0.85rem;
+            color: var(--text-subtle);
+            font-weight: 600;
+            word-break: keep-all;
+        }
+    </style>
 </head>
 
 <body>
@@ -35,6 +76,10 @@
             data-title="중앙감사위원회 기여자" 
             data-subtitle="Contributors to the Central Audit Committee">
         </div>
+    <section class="contributor-wrapper">
+        <div class="container" id="sections-wrapper">
+            </div>
+    </section>
     </main>
 
 
@@ -45,5 +90,77 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/main.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const allSections = [
+                {
+                    sectionTitle: "제7대 중앙감사위원회",
+                    sectionSubtitle: "2026년 한양대학교 ERICA 중앙감사위원회",
+                    members: [
+                        { role: "Chairperson", name: "여동훈", dept: "ICT융합학부" },
+                        { role: "Vice", name: "강정한", dept: "재료화학공학과" },
+                        { role: "Member", name: "김민선", dept: "경영학부" },
+                        { role: "Member", name: "이정안", dept: "경제학부" },
+                        { role: "Member", name: "이하진", dept: "경영학부" },
+                        { role: "Member", name: "장제형", dept: "경영학부" },
+                        { role: "Member", name: "전서현", dept: "미디어학과" },
+                        { role: "Member", name: "전해정", dept: "보험계리학과" },
+                        { role: "Member", name: "정세빈", dept: "바이오나노공학전공" },
+                        { role: "Member", name: "정은진", dept: "경영학부" }
+                    ]
+                },
+                {
+                    sectionTitle: "학술 자문 및 감수",
+                    sectionSubtitle: "위원회 운영 시스템의 객관성과 전문성 검증을 위한 외부 자문",
+                    members: [
+                        { role: "Professor", name: "홍사선 교수님", dept: "회계세무학과 조교수" },
+                    ]
+                },
+                {
+                    sectionTitle: "기여 단체",
+                    sectionSubtitle: "시스템 구축 및 운영 지원",
+                    members: [
+                        { role: "Committee", name: "제5대 중앙감사위원회 LOGOS", dept: "2024년 중앙감사위원회" },
+                        { role: "Committee", name: "제6대 중앙감사위원회 아람", dept: "2025년 중앙감사위원회" },
+                        { role: "association", name: "제44대 총학생회 ACT", dept: "2026년 총학생회" }
+                    ]
+                }
+            ];
+
+            const wrapper = document.getElementById('sections-wrapper');
+            wrapper.innerHTML = "";
+
+            allSections.forEach((section, sIndex) => {
+                let sectionHtml = `
+                    <div class="section-block ${sIndex > 0 ? 'mt-5 pt-5' : ''}">
+                        <div class="mb-4"> 
+                            <h2 class="fw-bold tracking-tight">${section.sectionTitle}</h2>
+                            <p class="text-secondary keep-all">${section.sectionSubtitle}</p>
+                        </div>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-0">
+                `;
+
+                section.members.forEach(person => {
+                    sectionHtml += `
+                        <div class="col">
+                            <div class="contributor-item">
+                                <span class="role-text">${person.role}</span>
+                                <div class="name-text">${person.name}</div>
+                                <div class="dept-text">${person.dept}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                sectionHtml += `
+                        </div>
+                    </div>
+                `;
+                wrapper.innerHTML += sectionHtml;
+            });
+        });
+    </script>
+
 </body>
 </html>
