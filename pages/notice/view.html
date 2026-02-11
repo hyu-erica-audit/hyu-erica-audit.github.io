@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MMGHX3TF');</script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공지사항 상세</title>
@@ -12,6 +20,11 @@
     <link href="/assets/css/style.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MMGHX3TF"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
 
     <div id="navbar-placeholder"></div>
 
@@ -84,7 +97,7 @@
                 document.getElementById('view-content').innerHTML = notice.content;
             
             } else {
-                // 4. 글이 없으면 (예: id=999) 에러 메시지를 띄웁니다.
+                // 글이 없으면 (예: id=999) 에러 메시지를 띄웁니다.
                 alert("존재하지 않거나 삭제된 게시글입니다.");
                 location.href = '/pages/notice/general.html'; // 목록으로 튕겨냄
             }
