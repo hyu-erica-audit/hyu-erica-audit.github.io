@@ -98,7 +98,12 @@
             function createCard(item, isReady) {
                 const buttonHtml = isReady 
                     ? `<button class="btn btn-secondary w-100 rounded-pill fw-bold" disabled>준비 중입니다</button>`
-                    : `<a href="${BASE_PATH}${item.file}" class="btn btn-outline-dark w-100 rounded-pill fw-bold" download><i class="bi bi-download me-2"></i> 다운로드</a>`;
+                    : `<a href="${BASE_PATH}${item.file}" 
+                        class="btn btn-outline-dark w-100 rounded-pill fw-bold btn-form-download" 
+                        download 
+                        data-filename="${item.file}">
+                        <i class="bi bi-download me-2"></i> 다운로드
+                    </a>`;
                 
                 const opacityStyle = isReady ? `style="opacity: 0.7;"` : "";
                 
@@ -128,6 +133,21 @@
             reports.forEach(report => {
                 reportContainer.innerHTML += createCard(report, false);
             });
+
+            const handleDownloadClick = (e) => {
+            const downloadBtn = e.target.closest('.btn-form-download');
+                if (downloadBtn) {
+                    const fileName = downloadBtn.getAttribute('data-filename');
+                    
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        'event': 'form_download',
+                        'file_name': fileName
+                    });
+                }
+            };
+        document.getElementById('admin-container')?.addEventListener('click', handleDownloadClick);
+        document.getElementById('report-container')?.addEventListener('click', handleDownloadClick);
         });
     </script>
 </body>
