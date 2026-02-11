@@ -142,13 +142,18 @@
         /* 배경 색 스타일 */
 
         .event-audit-regular { 
-            background-color: #4A90E2 !important; 
+            background-color: #50b9b9 !important; 
             border-left: 2px solid rgba(0,0,0,0.1) !important;
         }
         .event-meeting-regular { 
-            background-color: #50C878 !important; 
+            background-color: #63be82 !important; 
             border-left: 2px solid rgba(0,0,0,0.1) !important;
         }
+        .event-school-activity { 
+            background-color: #2070b1 !important; 
+            border-left: 2px solid rgba(0,0,0,0.1) !important;
+        }  
+
     </style>
 
     <!-- 메인 -->
@@ -239,11 +244,38 @@
                 },
                 events: [
                     {
+                        title: '임기 시작',
+                        start: '2026-02-01',
+                        end: '2026-02-01',
+                        className: 'event-audit-regular',
+                        description: `제7대 중앙감사위원회의 공식적인 임기 시작일입니다.`
+                    },
+                    {
+                        title: '임기 종료',
+                        start: '2027-01-31',
+                        end: '2027-01-31',
+                        className: 'event-audit-regular',
+                        description: `제7대 중앙감사위원회의 공식적인 임기 종료일입니다.`
+                    },
+                    {
+                        title: '제1차 확대운영위원회',
+                        start: '2026-02-02',
+                        end: '2026-02-02',
+                        className: 'event-school-activity',
+                        description: `2026년 제1차 확대운영위원회에 참여하여,
+                        2025년 2학기 중앙감사결과를 보고하였고,
+                        2026년 상반기 세칙 개정안을 의결하였습니다.
+                        
+                        통과된 개정안이 적용된 세칙 및 신설된 별칙은 자료실에서 다운로드 받으실 수 있습니다.`
+                    },
+                    {
                         title: '2월 정기회의',
                         start: '2026-02-09',
                         end: '2026-02-09',
                         className: 'event-meeting-regular',
-                        description: '2월 정기회의 및 OT를 진행하였습니다.'
+                        description: `2월 정기회의 및 OT를 진행하였습니다.
+
+                        세부 내용은 회의록을 참고바랍니다.`
                     }
                 ],
                 eventClick: function(info) {
