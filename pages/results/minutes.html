@@ -104,6 +104,23 @@
                 `;
                 container.innerHTML += cardHtml;
             });
+
+            // 이벤트 위임: 컨테이너에 클릭 이벤트를 걸어 나중에 생성된 버튼의 클릭도 감지합니다.
+            container.addEventListener('click', function(e) {
+                const downloadBtn = e.target.closest('.btn-minutes-download');
+                if (downloadBtn) {
+                    const fileName = downloadBtn.getAttribute('data-filename');
+                    
+                    // GTM DataLayer로 이벤트 전송
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        'event': 'minutes_download',
+                        'file_name': fileName
+                    });
+                    
+                    console.log('추적 데이터 전송:', fileName); 
+                }
+            });
         }
     });
     </script>
@@ -123,8 +140,6 @@
     }
     </style>
 
-    <!-- 하단 푸터 불러오기 -->
-    <!-- assets/js/main.js가 assets/components/footer.html을 불러옴 -->
     <div id="footer-placeholder"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
