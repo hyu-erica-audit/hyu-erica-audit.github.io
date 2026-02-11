@@ -133,9 +133,28 @@
             const linkBylaws = document.getElementById('link-bylaws');
             const linkConstitution = document.getElementById('link-constitution');
 
-            if (linkBylaws) linkBylaws.href = BASE_PATH + FILE_BYLAWS;
-            if (linkConstitution) linkConstitution.href = BASE_PATH + FILE_CONSTITUTION;
-        });
-    </script>
+        if (linkBylaws) {
+            linkBylaws.href = BASE_PATH + FILE_BYLAWS;
+            linkBylaws.setAttribute('data-filename', FILE_BYLAWS);
+        }
+        if (linkConstitution) {
+            linkConstitution.href = BASE_PATH + FILE_CONSTITUTION;
+            linkConstitution.setAttribute('data-filename', FILE_CONSTITUTION);
+        }
+
+        const trackDownload = (e) => {
+            const fileName = e.currentTarget.getAttribute('data-filename');
+            
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'rule_download',
+                'file_name': fileName
+            });
+        };
+
+        if (linkBylaws) linkBylaws.addEventListener('click', trackDownload);
+        if (linkConstitution) linkConstitution.addEventListener('click', trackDownload);
+    });
+</script>
 </body>
 </html>

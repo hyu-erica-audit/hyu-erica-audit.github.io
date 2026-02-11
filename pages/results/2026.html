@@ -91,10 +91,13 @@
                                         <h5 class="fw-bold mb-0 ms-md-3">${item.title}</h5>
                                     </div>
                                     <div class="col-md-3 text-md-end">
-                                        <a href="${fullPath}" class="btn btn-primary rounded-pill px-4 fw-bold w-100 w-md-auto" download>
+                                        <a href="${fullPath}" 
+                                        class="btn btn-primary rounded-pill px-4 fw-bold w-100 w-md-auto btn-audit-download" 
+                                        download 
+                                        data-filename="${item.fileName}">
                                             <i class="bi bi-file-earmark-pdf me-1"></i> 다운로드
                                         </a>
-                                    </div>
+                                    </div>  
                                 </div>
                             </div>
                         </div>
@@ -102,7 +105,20 @@
                 `;
                 container.innerHTML += cardHtml;
             });
-        }
+            
+            container.addEventListener('click', function(e) {
+            const downloadBtn = e.target.closest('.btn-audit-download');
+                if (downloadBtn) {
+                    const fileName = downloadBtn.getAttribute('data-filename');
+                    
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        'event': 'audit_report_download',
+                        'file_name': fileName
+                    });
+                }
+            });
+        }       
     });
     </script>
 
