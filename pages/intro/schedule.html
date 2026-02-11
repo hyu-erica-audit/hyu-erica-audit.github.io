@@ -27,6 +27,129 @@
     <div id="navbar-placeholder"></div>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <style>
+
+        .fc .fc-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .fc-toolbar-title { 
+            font-weight: 800 !important; 
+            font-size: 1.6rem !important; 
+            color: var(--primary-color);
+            
+
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0 !important;
+            white-space: nowrap;
+        }
+
+        .fc-toolbar-chunk {
+            display: flex;
+            align-items: center;
+            z-index: 10; 
+        }
+
+        .calendar-window {
+            position: relative;
+            max-width: 1140px; 
+            margin: 0 auto;
+            overflow: visible; 
+        }
+        .schedule-rail {
+            display: flex;
+            width: 100%;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+        }
+        .schedule-rail.active { transform: translateX(-400px); }
+
+        .fc .fc-button-primary {
+            background-color: transparent !important;
+            border: none !important;
+            color: var(--primary-color) !important;
+            padding: 8px !important;
+            border-radius: 50% !important;
+            transition: all 0.3s ease !important;
+        }
+        .fc .fc-button-primary:hover {
+            background-color: var(--bg-light) !important;
+            color: var(--primary-point) !important;
+            transform: scale(1.1);
+        }
+        .fc .fc-button-primary:focus { box-shadow: none !important; }
+
+        #calendar { background: #fff; border-radius: 12px; min-height: 650px; }
+        
+        .fc-day-today .fc-daygrid-day-number {
+            font-weight: 900 !important;
+            color: var(--primary-color) !important;
+            border-radius: 50% !important;
+            
+
+            width: 32px !important;
+            height: 32px !important;
+            
+
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+     
+            margin: 5px 5px 0 auto !important; 
+            padding: 0 !important;
+            line-height: 1 !important;
+            white-space: nowrap !important;
+        }
+
+        .fc-daygrid-day-number {
+            color: #2c2c2c;
+            text-decoration: none !important;
+            padding: 10px 15px !important;
+        }
+
+        .fc-day-today {
+            background-color: rgba(0, 0, 0, 0.055) !important; 
+        }
+
+        .fc-col-header-cell .fc-col-header-cell-cushion { color: #2c2c2c; text-decoration: none !important; }
+        .fc-col-header-cell.fc-day-sun .fc-col-header-cell-cushion { color: #dc3545 !important; }
+        .fc-col-header-cell.fc-day-sat .fc-col-header-cell-cushion { color: #4A90E2 !important; }
+
+        .fc-daygrid-day-number { color: #2c2c2c; text-decoration: none !important; padding: 8px !important; }
+        .fc-day-sat .fc-daygrid-day-number { color: #4A90E2 !important; }
+        .fc-day-sun .fc-daygrid-day-number, 
+        .fc-day-holiday .fc-daygrid-day-number { color: #dc3545 !important; }
+        #calendar-col { flex: 0 0 100%; padding: 0 15px; }
+        #detail-col { flex: 0 0 400px; padding: 0 15px; opacity: 0; transition: opacity 0.4s ease; }
+        .schedule-rail.active #detail-col { opacity: 1; }
+        section { overflow-x: hidden; }
+
+        .fc-event {
+            border: none !important;      /* 테두리 제거 */
+            box-shadow: none !important;   /* 혹시 모를 그림자 제거 */
+            padding: 2px 6px !important;
+            font-size: 0.85rem !important;
+            font-weight: 600 !important;
+            color: #ffffff !important;     /* 글자색 흰색 유지 */
+        }
+
+        /* 배경 색 스타일 */
+
+        .event-audit-regular { 
+            background-color: #4A90E2 !important; 
+            border-left: 2px solid rgba(0,0,0,0.1) !important;
+        }
+        .event-meeting-regular { 
+            background-color: #50C878 !important; 
+            border-left: 2px solid rgba(0,0,0,0.1) !important;
+        }
+    </style>
 
     <!-- 메인 -->
     <main>
@@ -35,40 +158,128 @@
             data-title="중앙감사위원회 일정표" 
             data-subtitle="Schedule of the Central Audit Committee">
         </div>
-
-        <section class="py-5 bg-white">
-            <div class="container">
-                <div class="row justify-content-center gx-1">
+        <section class="py-5 bg-light" style="overflow-x: hidden;"> 
+            <div class="calendar-window">
+                <div id="schedule-rail" class="schedule-rail">
                     
-                    <div class="col-lg-5 text-center">
-                        
-                        <img src="/assets/images/intro/schedule_1.png" 
-                             alt="스케쥴 1" 
-                             class="img-fluid border rounded shadow-sm mb-4">
-
-                        <img src="/assets/images/intro/schedule_3.png" 
-                             alt="스케쥴 3" 
-                             class="img-fluid border rounded shadow-sm">
-
+                    <div id="calendar-col">
+                        <div class="card border-0 shadow-sm p-3 p-md-4">
+                            <div id="calendar"></div>
+                        </div>
                     </div>
 
-                    <div class="col-lg-5 text-center">
-                        
-                        <img src="/assets/images/intro/schedule_2.png" 
-                             alt="스케쥴 2" 
-                             class="img-fluid border rounded shadow-sm mb-4">
-
-                        <img src="/assets/images/intro/schedule_4.png" 
-                             alt="스케쥴 4" 
-                             class="img-fluid border rounded shadow-sm">
-
+                    <div id="detail-col">
+                        <div class="card border-0 shadow-lg h-100">
+                            <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                                <h5 class="fw-bold mb-0" id="sideTitle">일정 상세</h5>
+                                <button type="button" class="btn-close" onclick="closeDetail()"></button>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="mb-4">
+                                    <small class="text-primary fw-bold text-uppercase">Period</small>
+                                    <div id="sideDate" class="fs-6 fw-bold mt-1"></div>
+                                </div>
+                                <hr>
+                                <div class="mt-4">
+                                    <small class="text-primary fw-bold text-uppercase mb-2 d-block">Description</small>
+                                    <p id="sideDescription" class="text-body small keep-all" style="line-height: 1.8;"></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
+
                 </div>
             </div>
         </section>
     </main>
+    
+    <script>
+        let calendar;
+        const holidays = [
+                            '2026-01-01', 
+                            '2026-02-16', '2026-02-17', '2026-02-18', 
+                            '2026-03-02',
+                            '2026-05-05', '2026-05-25',
+                            '2026-06-03', '2026-06-06',
+                            '2026-07-17',
+                            '2026-08-15', '2026-08-17',
+                            '2026-09-24', '2026-09-25', '2026-09-26',
+                            '2026-10-03', '2026-10-05', '2026-10-09',
+                            '2026-12-25',
+                            '2027-01-01',
+                        ];
 
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('calendar');
+            
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'ko',
+                initialView: 'dayGridMonth',
+                dayCellContent: function(arg) {
+                    return arg.date.getDate(); 
+                },
+                dayMaxEvents: true,
+                headerToolbar: {
+                    left: 'prev,next', 
+                    center: 'title',
+                    right: '' 
+                    
+                },
+                dayCellClassNames: function(arg) {
+                    const year = arg.date.getFullYear();
+                    const month = String(arg.date.getMonth() + 1).padStart(2, '0');
+                    const day = String(arg.date.getDate()).padStart(2, '0');
+                    
+                    const dateStr = `${year}-${month}-${day}`;
+
+                    if (holidays.includes(dateStr)) {
+                        return ['fc-day-holiday'];
+                    }
+                    return [];
+                },
+                events: [
+                    {
+                        title: '2월 정기회의',
+                        start: '2026-02-09',
+                        end: '2026-02-09',
+                        className: 'event-meeting-regular',
+                        description: '2월 정기회의 및 OT를 진행하였습니다..'
+                    }
+                ],
+                eventClick: function(info) {
+                    showDetail(info.event);
+                }
+            });
+            calendar.render();
+        });
+
+        function showDetail(event) {
+            const rail = document.getElementById('schedule-rail');
+            
+            document.getElementById('sideTitle').innerText = event.title;
+            
+            const year = event.start.getFullYear();
+            const month = event.start.getMonth() + 1;
+            const date = event.start.getDate();
+            
+            let dateStr = `${year}년 ${month}월 ${date}일`;
+
+            if (event.end && (event.end.getTime() - event.start.getTime() > 86400000)) {
+                const endDate = new Date(event.end.getTime() - 86400000);
+                dateStr += ` ~ ${endDate.getFullYear()}년 ${endDate.getMonth() + 1}월 ${endDate.getDate()}일`;
+            }
+            
+            document.getElementById('sideDate').innerText = dateStr;
+            document.getElementById('sideDescription').innerText = event.extendedProps.description;
+
+            rail.classList.add('active');
+        }
+
+        function closeDetail() {
+            const rail = document.getElementById('schedule-rail');
+            rail.classList.remove('active');
+        }
+    </script>
 
 
     <!-- 하단 푸터 불러오기 -->
