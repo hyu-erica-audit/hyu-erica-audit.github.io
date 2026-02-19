@@ -50,21 +50,11 @@
         </div>
         <section class="py-5 bg-light">
             <div class="container">
-                
-                <div class="mb-5">
-                    <h3 class="fw-bold mb-4"><i class="bi bi-file-earmark-text me-2"></i>중앙감사 보고서</h3>
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="admin-container">
-                        </div>
-                </div>
-
-                <hr class="my-5 opacity-10">
-
                 <div>
                     <h3 class="fw-bold mb-4"><i class="bi bi-folder2-open me-2"></i>증빙 양식</h3>
                     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="report-container">
                         </div>
                 </div>
-
             </div>
         </section>
     </main>
@@ -78,14 +68,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             const BASE_PATH = "/assets/docs/";
 
-            // 1. 상단 섹션 데이터 (status: 'ready'는 준비중, 'active'는 다운로드 가능)
-            const adminForms = [
-                { id: "a1", title: "준비 중", file: "", icon: "bi-hourglass-split", color: "text-secondary", status: "ready" },
-                // 나중에 파일이 준비되면 아래처럼 status를 active로 바꾸고 file명을 넣으세요.
-                // { id: "a2", title: "감사 결과 공고문", file: "notice.docx", icon: "bi-megaphone", color: "text-primary", status: "active" }
-            ];
-
-            // 2. 하단 섹션 데이터 (기존 데이터 유지)
+            // 1. 증빙 양식 데이터
             const reports = [
                 { id: "r1", title: "대중교통 실비 지급 보고서", file: "2026 중감위 대중교통 실비 지급 보고서.docx", icon: "bi-bus-front", color: "text-primary" },
                 { id: "r2", title: "렌터카 이용 보고서", file: "2026 중감위 렌터가 이용 보고서.docx", icon: "bi-car-front", color: "text-secondary" },
@@ -117,13 +100,7 @@
                 `;
             }
 
-            // 상단 렌더링
-            const adminContainer = document.getElementById('admin-container');
-            adminForms.forEach(form => {
-                adminContainer.innerHTML += createCard(form, form.status === "ready");
-            });
-
-            // 하단 렌더링
+            // 하단 렌더링 (증빙 양식)
             const reportContainer = document.getElementById('report-container');
             reports.forEach(report => {
                 reportContainer.innerHTML += createCard(report, false);
