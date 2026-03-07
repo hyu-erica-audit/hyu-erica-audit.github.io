@@ -162,6 +162,10 @@
             background-color: #63be82 !important; 
             border-left: 2px solid rgba(0,0,0,0.1) !important;
         }
+        .event-audit-exceptional { 
+            background-color: #ff7c7c !important; 
+            border-left: 2px solid rgba(0,0,0,0.1) !important;
+        }
         .event-school-activity { 
             background-color: #2070b1 !important; 
             border-left: 2px solid rgba(0,0,0,0.1) !important;
@@ -289,6 +293,20 @@
                         description: `2월 정기회의 및 OT를 진행하였습니다.
 
                         세부 내용은 회의록을 참고바랍니다.`
+                    },
+                    {
+                        title: '특정감사',
+                        start: '2026-03-08',
+                        end: '2026-03-13',
+                        className: 'event-audit-exceptional',
+                        description: `바이오신약융합학부 특정감사 진행`
+                    },
+                    {
+                        title: '3월 정기회의',
+                        start: '2026-03-23',
+                        end: '2026-03-23',
+                        className: 'event-meeting-regular',
+                        description: `3월 정기회의 진행 예정일`
                     }
                 ],
                 eventClick: function(info) {
