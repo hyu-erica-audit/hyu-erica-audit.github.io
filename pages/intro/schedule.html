@@ -158,6 +158,10 @@
             background-color: #50b9b9 !important; 
             border-left: 2px solid rgba(0,0,0,0.1) !important;
         }
+        .event-audit-examine { 
+            background-color: #808fe5 !important; 
+            border-left: 2px solid rgba(0,0,0,0.1) !important;
+        }
         .event-meeting-regular { 
             background-color: #63be82 !important; 
             border-left: 2px solid rgba(0,0,0,0.1) !important;
@@ -296,8 +300,8 @@
                     },
                     {
                         title: '특정감사',
-                        start: '2026-03-08',
-                        end: '2026-03-15',
+                        start: '2026-03-11',
+                        end: '2026-03-22',
                         className: 'event-audit-exceptional',
                         description: `바이오신약융합학부 특정감사 진행`
                     },
@@ -307,6 +311,41 @@
                         end: '2026-03-23',
                         className: 'event-meeting-regular',
                         description: `3월 정기회의 진행 예정일`
+                    },
+                    {
+                        title: '비대위 감사 자료 제출',
+                        start: '2026-03-25',
+                        end: '2026-03-31',
+                        className: 'event-audit-regular',
+                        description: `비상대책위원회 감사를 위한 자료 제출 기한`
+                    },
+                    {
+                        title: '1차 검토',
+                        start: '2026-03-31',
+                        end: '2026-04-06',
+                        className: 'event-audit-examine',
+                        description: `제출된 자료를 검토하고 추가 자료 요청 공문을 발송합니다.`
+                    },
+                    {
+                        title: '추가자료 제출',
+                        start: '2026-04-06',
+                        end: '2026-04-08',
+                        className: 'event-audit-regular',
+                        description: `비상대책위원회 감사를 위한 추가 자료 제출 기한.`
+                    },
+                    {
+                        title: '2차 검토 및 의결',
+                        start: '2026-04-08',
+                        end: '2026-04-11',
+                        className: 'event-audit-examine',
+                        description: `제출된 자료를 검토하고 추가 자료 요청 공문을 발송합니다.`
+                    },
+                    {
+                        title: '결과 전달',
+                        start: '2026-04-11',
+                        end: '2026-04-12',
+                        className: 'event-audit-regular',
+                        description: `자료를 토대로 의결된 결과를 각 학생회에 전달합니다.`
                     }
                 ],
                 eventClick: function(info) {
