@@ -17,7 +17,7 @@ const noticeList = [
         type: "일반",
         title: "공금의 정의 및 행사 예산 집행 가이드라인 안내",
         author: "중감위",
-        date: "2026.04.01.",
+        date: "2026.04.02.",
         link: "/pages/notice/view.html?id=7",
         content: `
 <p>안녕하십니까. <strong>한양대학교 ERICA 중앙감사위원회</strong>입니다.</p>
