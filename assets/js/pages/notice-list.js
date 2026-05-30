@@ -1,4 +1,4 @@
-import { fetchPublishedNotices } from "../notice-service.js?v=20260530-display-number";
+import { fetchPublishedNotices } from "../notice-service.js?v=20260530-notice-sequence";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -31,6 +31,7 @@ function renderNoticeList(notices, tableBody, totalCountElement, paginationWrapp
     const safeCurrentPage = Math.min(currentPage, totalPages);
     const startIndex = (safeCurrentPage - 1) * ITEMS_PER_PAGE;
     const currentData = notices.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    const fallbackNumberMap = getFallbackNoticeNumbers(notices);
 
     if (totalCountElement) {
         totalCountElement.textContent = totalItems;
@@ -41,7 +42,7 @@ function renderNoticeList(notices, tableBody, totalCountElement, paginationWrapp
     } else {
         tableBody.innerHTML = currentData.map((notice, index) => {
             const badgeClass = notice.type === "필독" ? "bg-danger" : "bg-secondary";
-            const displayNo = totalItems - (startIndex + index);
+            const displayNo = Number(notice.legacyId) || fallbackNumberMap.get(notice.id) || totalItems - (startIndex + index);
 
             return `
                 <tr>
@@ -60,6 +61,28 @@ function renderNoticeList(notices, tableBody, totalCountElement, paginationWrapp
     }
 
     renderPagination(totalPages, safeCurrentPage, paginationWrapper);
+}
+
+function getFallbackNoticeNumbers(notices) {
+    return new Map([...notices]
+        .sort(compareNoticesForNumbering)
+        .map((notice, index) => [notice.id, index + 1]));
+}
+
+function compareNoticesForNumbering(a, b) {
+    const dateCompare = getNoticeDateSortTime(a) - getNoticeDateSortTime(b);
+
+    if (dateCompare !== 0) return dateCompare;
+
+    return String(a.id).localeCompare(String(b.id));
+}
+
+function getNoticeDateSortTime(notice) {
+    const dateParts = String(notice.date || "").match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);
+
+    if (!dateParts) return 0;
+
+    return new Date(Number(dateParts[1]), Number(dateParts[2]) - 1, Number(dateParts[3])).getTime();
 }
 
 function renderPagination(totalPages, currentPage, paginationWrapper) {

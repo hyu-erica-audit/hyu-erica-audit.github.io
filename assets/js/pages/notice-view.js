@@ -1,4 +1,4 @@
-import { fetchNotice } from "../notice-service.js?v=20260530-public-limit";
+import { fetchNotice } from "../notice-service.js?v=20260530-notice-sequence";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);

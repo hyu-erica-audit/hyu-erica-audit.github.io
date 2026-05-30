@@ -10,7 +10,8 @@ import {
     query,
     serverTimestamp,
     updateDoc,
-    where
+    where,
+    writeBatch
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-lite.js";
 
 const noticesRef = collection(db, "notices");
@@ -78,6 +79,7 @@ export async function fetchNotice(id) {
 export async function createNotice(data) {
     const payload = buildNoticePayload(data, true);
     const created = await withFirestoreTimeout(addDoc(noticesRef, payload));
+    await resequencePublishedNoticeNumbers();
 
     return created.id;
 }
@@ -86,10 +88,12 @@ export async function updateNotice(id, data) {
     const payload = buildNoticePayload(data, false);
 
     await withFirestoreTimeout(updateDoc(doc(db, "notices", String(id)), payload));
+    await resequencePublishedNoticeNumbers();
 }
 
 export async function removeNotice(id) {
     await withFirestoreTimeout(deleteDoc(doc(db, "notices", String(id))));
+    await resequencePublishedNoticeNumbers();
 }
 
 export function formatDate(date = new Date()) {
@@ -132,6 +136,51 @@ function getNoticeDateSortTime(notice) {
     const timestampDate = notice.publishedAt?.toDate?.() || notice.createdAt?.toDate?.();
 
     return timestampDate ? timestampDate.getTime() : 0;
+}
+
+async function resequencePublishedNoticeNumbers() {
+    const snapshot = await withFirestoreTimeout(getDocs(query(noticesRef, where("status", "==", "published"))));
+    const publishedNotices = snapshot.docs
+        .map(item => normalizeNotice(item.id, item.data()))
+        .sort(compareNoticesForNumbering);
+    const updates = [];
+
+    publishedNotices.forEach((notice, index) => {
+        const nextLegacyId = index + 1;
+
+        if (Number(notice.legacyId) !== nextLegacyId) {
+            updates.push({ id: notice.id, legacyId: nextLegacyId });
+        }
+    });
+
+    for (let index = 0; index < updates.length; index += 450) {
+        const batch = writeBatch(db);
+        const chunk = updates.slice(index, index + 450);
+
+        chunk.forEach(update => {
+            batch.update(doc(db, "notices", update.id), {
+                legacyId: update.legacyId
+            });
+        });
+
+        await withFirestoreTimeout(batch.commit());
+    }
+}
+
+function compareNoticesForNumbering(a, b) {
+    const dateCompare = getNoticeDateSortTime(a) - getNoticeDateSortTime(b);
+
+    if (dateCompare !== 0) return dateCompare;
+
+    const createdCompare = getTimestampSortTime(a.createdAt) - getTimestampSortTime(b.createdAt);
+
+    if (createdCompare !== 0) return createdCompare;
+
+    return String(a.id).localeCompare(String(b.id));
+}
+
+function getTimestampSortTime(timestamp) {
+    return timestamp?.toDate?.()?.getTime?.() || 0;
 }
 
 function parseNoticeDate(value) {

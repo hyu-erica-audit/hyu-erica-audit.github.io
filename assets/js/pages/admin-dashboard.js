@@ -7,7 +7,7 @@ import {
     getFirebaseErrorMessage,
     removeNotice,
     updateNotice
-} from "../notice-service.js?v=20260529-remove-import";
+} from "../notice-service.js?v=20260530-notice-sequence";
 import {
     createFaq,
     fetchAllFaqs,
