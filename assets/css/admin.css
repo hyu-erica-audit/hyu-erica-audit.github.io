@@ -263,6 +263,19 @@
     text-transform: uppercase;
 }
 
+.admin-table .btn {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    min-width: 48px;
+    white-space: nowrap;
+}
+
+.admin-table td:last-child,
+.admin-table th:last-child {
+    white-space: nowrap;
+}
+
 .admin-table-group-row td {
     background: #f1f3f5;
     color: #212529;
