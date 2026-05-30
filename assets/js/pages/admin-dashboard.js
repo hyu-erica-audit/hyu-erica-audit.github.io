@@ -1,5 +1,6 @@
 import { auth } from "../firebase.js";
 import { requireAdmin, logoutAdmin } from "../admin-auth.js";
+import { escapeHtml } from "../html-utils.js";
 import {
     createNotice,
     fetchAllNotices,
@@ -7,13 +8,13 @@ import {
     getFirebaseErrorMessage,
     removeNotice,
     updateNotice
-} from "../notice-service.js?v=20260530-notice-sequence";
+} from "../notice-service.js?v=20260530-refactor";
 import {
     createFaq,
     fetchAllFaqs,
     removeFaq,
     updateFaq
-} from "../faq-service.js?v=20260529-remove-faq-import";
+} from "../faq-service.js?v=20260530-refactor";
 import {
     createSchedule,
     fetchAllSchedules,
@@ -23,7 +24,7 @@ import {
     removeSchedule,
     sortSchedules,
     updateSchedule
-} from "../schedule-service.js?v=20260529-schedule-color";
+} from "../schedule-service.js?v=20260530-refactor";
 import {
     createDocument,
     fetchAllDocuments,
@@ -31,7 +32,7 @@ import {
     removeDocument,
     sortDocuments,
     updateDocument
-} from "../document-service.js?v=20260530-regular-audit";
+} from "../document-service.js?v=20260530-refactor";
 import {
     createOrganizationMember,
     fetchAllOrganizationMembers,
@@ -39,7 +40,7 @@ import {
     removeOrganizationMember,
     sortOrganizationMembers,
     updateOrganizationMember
-} from "../organization-service.js?v=20260530-org-redesign";
+} from "../organization-service.js?v=20260530-refactor";
 import {
     createContributor,
     createContributorSection,
@@ -52,12 +53,12 @@ import {
     sortContributorSections,
     updateContributor,
     updateContributorSection
-} from "../contributor-service.js?v=20260530-contributors";
+} from "../contributor-service.js?v=20260530-refactor";
 import {
     fetchGreetingForAdmin,
     getFirebaseGreetingErrorMessage,
     saveGreeting
-} from "../greeting-service.js?v=20260530-greeting";
+} from "../greeting-service.js?v=20260530-refactor";
 
 const loading = document.getElementById("admin-loading");
 const app = document.getElementById("admin-app");
@@ -2259,15 +2260,6 @@ function setGreetingSummary(nextGreeting, fallbackStatus = "-") {
             .filter(Boolean)
             .join(" ") || "-";
     }
-}
-
-function escapeHtml(value) {
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
 }
 
 function runEditorCommand(button) {

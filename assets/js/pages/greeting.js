@@ -1,7 +1,8 @@
 import {
     fetchPublishedGreeting,
     getFirebaseGreetingErrorMessage
-} from "../greeting-service.js?v=20260530-greeting";
+} from "../greeting-service.js?v=20260530-refactor";
+import { escapeHtml } from "../html-utils.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const titleElement = document.getElementById("greeting-title");
@@ -28,12 +29,3 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
     }
 });
-
-function escapeHtml(value) {
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}

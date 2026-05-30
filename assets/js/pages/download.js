@@ -2,7 +2,8 @@ import {
     fetchPublishedDocuments,
     getFirebaseDocumentErrorMessage,
     resolveDocumentDownloadUrl
-} from "../document-service.js?v=20260530-public-limit";
+} from "../document-service.js?v=20260530-refactor";
+import { escapeHtml } from "../html-utils.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("report-container");
@@ -79,13 +80,4 @@ function getFileIconClass(item) {
     if (fileName.endsWith(".doc") || fileName.endsWith(".docx") || contentType.includes("word")) return "bi-file-earmark-word";
 
     return "bi-file-earmark-arrow-down";
-}
-
-function escapeHtml(value) {
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
 }

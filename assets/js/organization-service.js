@@ -1,5 +1,10 @@
 import { db } from "./firebase.js?v=20260530-no-local-data";
 import {
+    getFirebaseErrorMessage as getCommonFirebaseErrorMessage,
+    PUBLIC_QUERY_LIMIT,
+    withFirestoreTimeout
+} from "./firestore-utils.js";
+import {
     addDoc,
     collection,
     deleteDoc,
@@ -13,9 +18,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-lite.js";
 
 const organizationRef = collection(db, "organizationMembers");
-const FIRESTORE_TIMEOUT_MS = 20000;
-const PUBLIC_QUERY_LIMIT = 300;
-
 export function normalizeOrganizationMember(id, data = {}) {
     return {
         id,
@@ -126,28 +128,6 @@ function normalizeText(value) {
     return String(value || "").replace(/\s+/g, "");
 }
 
-function withFirestoreTimeout(promise) {
-    return Promise.race([
-        promise,
-        new Promise((_, reject) => {
-            window.setTimeout(() => {
-                reject(new Error("Firestore request timed out. Check network, Firebase project settings, and Firestore rules."));
-            }, FIRESTORE_TIMEOUT_MS);
-        })
-    ]);
-}
-
 export function getFirebaseOrganizationErrorMessage(error) {
-    const code = error?.code ? `[${error.code}] ` : "";
-    const message = error?.message || String(error);
-
-    if (message.includes("timed out")) {
-        return `${code}Firestore 응답 시간이 초과되었습니다. 네트워크 또는 Firestore 설정을 확인해주세요.`;
-    }
-
-    if (error?.code === "permission-denied") {
-        return `${code}권한이 거부되었습니다. Firestore Rules가 게시되었는지, 로그인 상태가 유지되는지 확인해주세요.`;
-    }
-
-    return `${code}${message}`;
+    return getCommonFirebaseErrorMessage(error);
 }

@@ -1,4 +1,5 @@
-import { fetchPublishedNotices } from "../notice-service.js?v=20260530-notice-sequence";
+import { fetchPublishedNotices } from "../notice-service.js?v=20260530-refactor";
+import { escapeHtml } from "../html-utils.js";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -115,14 +116,6 @@ function renderPagination(totalPages, currentPage, paginationWrapper) {
     paginationWrapper.innerHTML = html;
 }
 
-function escapeHtml(value) {
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
 
 function withTimeout(promise, timeoutMs) {
     return Promise.race([

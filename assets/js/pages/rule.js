@@ -2,7 +2,8 @@ import {
     fetchPublishedDocuments,
     getFirebaseDocumentErrorMessage,
     resolveDocumentDownloadUrl
-} from "../document-service.js?v=20260530-public-limit";
+} from "../document-service.js?v=20260530-refactor";
+import { escapeHtml } from "../html-utils.js";
 
 const RULE_SLOTS = ["중앙감사 세칙", "감사 시행 별칙"];
 
@@ -90,13 +91,4 @@ function formatDisplayDate(value) {
     if (!parts) return value || "";
 
     return `${parts[1]}. ${String(parts[2]).padStart(2, "0")}. ${String(parts[3]).padStart(2, "0")}.`;
-}
-
-function escapeHtml(value) {
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
 }

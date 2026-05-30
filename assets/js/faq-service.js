@@ -1,4 +1,5 @@
 import { db } from "./firebase.js?v=20260529-faq-editor";
+import { PUBLIC_QUERY_LIMIT, withFirestoreTimeout } from "./firestore-utils.js";
 import {
     addDoc,
     collection,
@@ -14,9 +15,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-lite.js";
 
 const faqsRef = collection(db, "faqs");
-const FIRESTORE_TIMEOUT_MS = 20000;
-const PUBLIC_QUERY_LIMIT = 300;
-
 export function normalizeFaq(id, data = {}) {
     return {
         id,
@@ -94,15 +92,4 @@ function buildFaqPayload(data, isCreate) {
     }
 
     return payload;
-}
-
-function withFirestoreTimeout(promise) {
-    return Promise.race([
-        promise,
-        new Promise((_, reject) => {
-            window.setTimeout(() => {
-                reject(new Error("Firestore request timed out. Check network, Firebase project settings, and Firestore rules."));
-            }, FIRESTORE_TIMEOUT_MS);
-        })
-    ]);
 }

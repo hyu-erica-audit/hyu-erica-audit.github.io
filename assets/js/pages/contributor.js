@@ -3,7 +3,8 @@ import {
     fetchPublishedContributorSections,
     getFirebaseContributorErrorMessage,
     sortContributors
-} from "../contributor-service.js?v=20260530-public-limit";
+} from "../contributor-service.js?v=20260530-refactor";
+import { escapeHtml } from "../html-utils.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const wrapper = document.getElementById("sections-wrapper");
@@ -62,13 +63,4 @@ function renderContributorSections(wrapper, sections, contributors) {
             </div>
         </div>
     `).join("");
-}
-
-function escapeHtml(value) {
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
 }

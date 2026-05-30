@@ -1,5 +1,10 @@
 import { db, storage } from "./firebase.js?v=20260530-documents";
 import {
+    getFirebaseErrorMessage as getCommonFirebaseErrorMessage,
+    PUBLIC_QUERY_LIMIT,
+    withFirestoreTimeout
+} from "./firestore-utils.js";
+import {
     collection,
     deleteDoc,
     doc,
@@ -20,8 +25,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-storage.js";
 
 const documentsRef = collection(db, "documents");
-const FIRESTORE_TIMEOUT_MS = 20000;
-const PUBLIC_QUERY_LIMIT = 300;
 const ALLOWED_FILE_TYPES = new Set([
     "application/pdf",
     "application/msword",
@@ -143,22 +146,9 @@ export async function resolveDocumentDownloadUrl(documentItem) {
 }
 
 export function getFirebaseDocumentErrorMessage(error) {
-    const code = error?.code ? `[${error.code}] ` : "";
-    const message = error?.message || String(error);
-
-    if (message.includes("timed out")) {
-        return `${code}Firestore 응답 시간이 초과되었습니다. 네트워크 또는 규칙 설정을 확인해주세요.`;
-    }
-
-    if (error?.code === "storage/unauthorized" || error?.code === "permission-denied") {
-        return `${code}권한이 거부되었습니다. Firestore Rules와 Storage Rules가 게시되었는지 확인해주세요.`;
-    }
-
-    if (error?.code === "storage/quota-exceeded") {
-        return `${code}Storage 사용량 또는 다운로드 한도를 초과했습니다. Firebase 사용량을 확인해주세요.`;
-    }
-
-    return `${code}${message}`;
+    return getCommonFirebaseErrorMessage(error, {
+        rulesName: "Firestore Rules와 Storage Rules"
+    });
 }
 
 function buildDocumentPayload(data, fileLike, isCreate) {
@@ -283,15 +273,4 @@ function formatDateForInput(date) {
     const day = String(date.getDate()).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
-}
-
-function withFirestoreTimeout(promise) {
-    return Promise.race([
-        promise,
-        new Promise((_, reject) => {
-            window.setTimeout(() => {
-                reject(new Error("Firestore request timed out. Check network, Firebase project settings, and Firestore rules."));
-            }, FIRESTORE_TIMEOUT_MS);
-        })
-    ]);
 }

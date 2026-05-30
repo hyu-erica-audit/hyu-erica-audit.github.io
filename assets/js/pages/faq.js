@@ -1,5 +1,5 @@
 
-import { fetchPublishedFaqs } from "../faq-service.js?v=20260530-public-limit";
+import { fetchPublishedFaqs } from "../faq-service.js?v=20260530-refactor";
 
 document.addEventListener("DOMContentLoaded", async function() {
             let faqData = [];

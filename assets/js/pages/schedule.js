@@ -2,7 +2,7 @@ import {
     fetchPublishedSchedules,
     formatSchedulePeriod,
     toCalendarEvent
-} from "../schedule-service.js?v=20260530-public-limit";
+} from "../schedule-service.js?v=20260530-refactor";
 
 let calendar;
 

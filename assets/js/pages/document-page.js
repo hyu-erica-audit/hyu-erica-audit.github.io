@@ -2,7 +2,8 @@ import {
     fetchPublishedDocuments,
     getFirebaseDocumentErrorMessage,
     resolveDocumentDownloadUrl
-} from "../document-service.js?v=20260530-public-limit";
+} from "../document-service.js?v=20260530-refactor";
+import { escapeHtml } from "../html-utils.js";
 
 export async function renderDocumentPage({ type, year, containerId = "document-container", emptyId = "document-empty" }) {
     const container = document.getElementById(containerId);
@@ -93,13 +94,4 @@ function formatDisplayDate(value) {
     if (!parts) return value || "";
 
     return `${parts[1]}. ${String(parts[2]).padStart(2, "0")}. ${String(parts[3]).padStart(2, "0")}.`;
-}
-
-function escapeHtml(value) {
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
 }

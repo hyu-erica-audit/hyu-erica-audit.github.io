@@ -4,7 +4,8 @@ import {
     isChairMember,
     isViceChairMember,
     sortOrganizationMembers
-} from "../organization-service.js?v=20260530-public-limit";
+} from "../organization-service.js?v=20260530-refactor";
+import { escapeHtml } from "../html-utils.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("organization-container");
@@ -145,13 +146,4 @@ function getVisibleRole(member, team) {
 
 function normalizeText(value) {
     return String(value || "").replace(/\s+/g, "");
-}
-
-function escapeHtml(value) {
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
 }

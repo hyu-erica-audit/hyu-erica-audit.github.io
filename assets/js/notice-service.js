@@ -1,5 +1,10 @@
 import { db } from "./firebase.js?v=20260530-no-local-data";
 import {
+    getFirebaseErrorMessage as getCommonFirebaseErrorMessage,
+    PUBLIC_QUERY_LIMIT,
+    withFirestoreTimeout
+} from "./firestore-utils.js";
+import {
     addDoc,
     collection,
     deleteDoc,
@@ -15,8 +20,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-lite.js";
 
 const noticesRef = collection(db, "notices");
-const FIRESTORE_TIMEOUT_MS = 20000;
-const PUBLIC_QUERY_LIMIT = 300;
 
 export function normalizeNotice(id, data = {}) {
     const publishedAt = data.publishedAt?.toDate?.() || data.createdAt?.toDate?.() || null;
@@ -191,40 +194,6 @@ function parseNoticeDate(value) {
     return new Date(Number(dateParts[1]), Number(dateParts[2]) - 1, Number(dateParts[3]));
 }
 
-function withFirestoreTimeout(promise) {
-    return Promise.race([
-        promise,
-        new Promise((_, reject) => {
-            window.setTimeout(() => {
-                reject(new Error("Firestore request timed out. Check network, Firebase project settings, and Firestore rules."));
-            }, FIRESTORE_TIMEOUT_MS);
-        })
-    ]);
-}
-
 export function getFirebaseErrorMessage(error) {
-    const code = error?.code ? `[${error.code}] ` : "";
-    const message = error?.message || String(error);
-
-    if (message.includes("timed out")) {
-        return `${code}Firestore 응답 시간이 초과되었습니다. 네트워크 또는 Firestore 설정을 확인해주세요.`;
-    }
-
-    if (error?.code === "permission-denied") {
-        return `${code}권한이 거부되었습니다. Firestore Rules가 게시되었는지, 로그인 상태가 유지되는지 확인해주세요.`;
-    }
-
-    if (error?.code === "unauthenticated") {
-        return `${code}로그인 인증이 Firestore에 전달되지 않았습니다. 로그아웃 후 다시 로그인해주세요.`;
-    }
-
-    if (error?.code === "failed-precondition") {
-        return `${code}Firestore 설정 또는 인덱스 조건이 맞지 않습니다.`;
-    }
-
-    if (error?.code === "unavailable") {
-        return `${code}Firestore 서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.`;
-    }
-
-    return `${code}${message}`;
+    return getCommonFirebaseErrorMessage(error);
 }

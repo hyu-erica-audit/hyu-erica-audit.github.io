@@ -1,4 +1,5 @@
 import { db } from "./firebase.js?v=20260529-schedule-color";
+import { PUBLIC_QUERY_LIMIT, withFirestoreTimeout } from "./firestore-utils.js";
 import {
     addDoc,
     collection,
@@ -14,9 +15,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-lite.js";
 
 const schedulesRef = collection(db, "schedules");
-const FIRESTORE_TIMEOUT_MS = 20000;
-const PUBLIC_QUERY_LIMIT = 300;
-
 export const scheduleCategories = [
     { value: "event-audit-regular", label: "정기감사", color: "#50b9b9" },
     { value: "event-audit-examine", label: "검토", color: "#808fe5" },
@@ -205,15 +203,4 @@ function normalizeColor(value) {
     if (/^#[0-9a-f]{6}$/i.test(color)) return color;
 
     return "";
-}
-
-function withFirestoreTimeout(promise) {
-    return Promise.race([
-        promise,
-        new Promise((_, reject) => {
-            window.setTimeout(() => {
-                reject(new Error("Firestore request timed out. Check network, Firebase project settings, and Firestore rules."));
-            }, FIRESTORE_TIMEOUT_MS);
-        })
-    ]);
 }
