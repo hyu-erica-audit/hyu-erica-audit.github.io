@@ -45,8 +45,8 @@ export function sortNotices(notices) {
 
         if (aDate !== bDate) return bDate - aDate;
 
-        const aNo = Number(a.legacyId || a.id) || 0;
-        const bNo = Number(b.legacyId || b.id) || 0;
+        const aNo = Number(a.legacyId) || 0;
+        const bNo = Number(b.legacyId) || 0;
 
         return bNo - aNo;
     });

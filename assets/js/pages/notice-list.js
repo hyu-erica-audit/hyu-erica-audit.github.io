@@ -1,4 +1,4 @@
-import { fetchPublishedNotices } from "../notice-service.js?v=20260530-public-limit";
+import { fetchPublishedNotices } from "../notice-service.js?v=20260530-display-number";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -39,9 +39,9 @@ function renderNoticeList(notices, tableBody, totalCountElement, paginationWrapp
     if (currentData.length === 0) {
         tableBody.innerHTML = `<tr><td colspan="4" class="text-center py-5 text-muted">게시된 공지사항이 없습니다.</td></tr>`;
     } else {
-        tableBody.innerHTML = currentData.map(notice => {
+        tableBody.innerHTML = currentData.map((notice, index) => {
             const badgeClass = notice.type === "필독" ? "bg-danger" : "bg-secondary";
-            const displayNo = notice.legacyId || notice.id;
+            const displayNo = totalItems - (startIndex + index);
 
             return `
                 <tr>
