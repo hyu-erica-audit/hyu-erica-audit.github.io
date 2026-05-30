@@ -21,7 +21,7 @@ const appCheckKey = "__hyuAuditFirebaseAppCheck";
 
 if (!globalThis[appCheckKey]) {
   globalThis[appCheckKey] = initializeAppCheck(app, {
-    provider: new ReCaptchaEnterpriseProvider("6Lcb4AMtAAAAANljWwSy8jLQB9Gvp8WAeZjAIQCr"),
+    provider: new ReCaptchaEnterpriseProvider("6LcP9QMtAAAAAKPWND5Sfoxe7LN4_BYPsn1x8egj"),
     isTokenAutoRefreshEnabled: true
   });
 }
