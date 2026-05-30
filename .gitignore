@@ -1,5 +1,14 @@
+.env
+.env.*
+!.env.example
 .secrets/
-*.firebase-adminsdk*.json
-*service-account*.json
+firebase-service-account*.json
+*.service-account.json
 *serviceAccount*.json
-*.env
+*service-account*.json
+*firebase-adminsdk*.json
+*.pem
+*.key
+*.p12
+*.pfx
+*-private-key.json
