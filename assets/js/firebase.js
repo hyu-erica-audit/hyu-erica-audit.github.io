@@ -1,4 +1,8 @@
 import { getApp, getApps, initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import {
+  initializeAppCheck,
+  ReCaptchaEnterpriseProvider
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app-check.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-lite.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-storage.js";
@@ -13,7 +17,16 @@ const firebaseConfig = {
 };
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+const appCheckKey = "__hyuAuditFirebaseAppCheck";
 
+if (!globalThis[appCheckKey]) {
+  globalThis[appCheckKey] = initializeAppCheck(app, {
+    provider: new ReCaptchaEnterpriseProvider("6Lcb4AMtAAAAANljWwSy8jLQB9Gvp8WAeZjAIQCr"),
+    isTokenAutoRefreshEnabled: true
+  });
+}
+
+export const appCheck = globalThis[appCheckKey];
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
