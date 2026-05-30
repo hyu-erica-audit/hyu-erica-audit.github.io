@@ -9,33 +9,51 @@ service cloud.firestore {
         ];
     }
 
+    function hasPublicListLimit() {
+      return request.query.limit <= 300;
+    }
+
+    function canReadPublished() {
+      return resource.data.status == "published";
+    }
+
+    function canListPublished() {
+      return canReadPublished() && hasPublicListLimit();
+    }
+
     match /notices/{noticeId} {
-      allow read: if resource.data.status == "published" || isAdmin();
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
     match /faqs/{faqId} {
-      allow read: if resource.data.status == "published" || isAdmin();
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
     match /schedules/{scheduleId} {
-      allow read: if resource.data.status == "published" || isAdmin();
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
     match /organizationMembers/{memberId} {
-      allow read: if resource.data.status == "published" || isAdmin();
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
     match /contributorSections/{sectionId} {
-      allow read: if resource.data.status == "published" || isAdmin();
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
     match /contributors/{contributorId} {
-      allow read: if resource.data.status == "published" || isAdmin();
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
@@ -46,7 +64,8 @@ service cloud.firestore {
     }
 
     match /documents/{documentId} {
-      allow read: if resource.data.status == "published" || isAdmin();
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
       allow create, update, delete: if isAdmin();
     }
 

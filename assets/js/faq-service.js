@@ -6,6 +6,7 @@ import {
     doc,
     getDoc,
     getDocs,
+    limit,
     query,
     serverTimestamp,
     updateDoc,
@@ -14,6 +15,7 @@ import {
 
 const faqsRef = collection(db, "faqs");
 const FIRESTORE_TIMEOUT_MS = 20000;
+const PUBLIC_QUERY_LIMIT = 300;
 
 export function normalizeFaq(id, data = {}) {
     return {
@@ -39,7 +41,7 @@ export function sortFaqs(faqs) {
 }
 
 export async function fetchPublishedFaqs() {
-    const publishedQuery = query(faqsRef, where("status", "==", "published"));
+    const publishedQuery = query(faqsRef, where("status", "==", "published"), limit(PUBLIC_QUERY_LIMIT));
     const snapshot = await withFirestoreTimeout(getDocs(publishedQuery));
     const faqs = snapshot.docs.map(item => normalizeFaq(item.id, item.data()));
 

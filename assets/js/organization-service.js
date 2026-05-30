@@ -5,6 +5,7 @@ import {
     deleteDoc,
     doc,
     getDocs,
+    limit,
     query,
     serverTimestamp,
     updateDoc,
@@ -13,6 +14,7 @@ import {
 
 const organizationRef = collection(db, "organizationMembers");
 const FIRESTORE_TIMEOUT_MS = 20000;
+const PUBLIC_QUERY_LIMIT = 300;
 
 export function normalizeOrganizationMember(id, data = {}) {
     return {
@@ -61,7 +63,7 @@ export function isViceChairMember(member) {
 }
 
 export async function fetchPublishedOrganizationMembers() {
-    const snapshot = await withFirestoreTimeout(getDocs(query(organizationRef, where("status", "==", "published"))));
+    const snapshot = await withFirestoreTimeout(getDocs(query(organizationRef, where("status", "==", "published"), limit(PUBLIC_QUERY_LIMIT))));
     const members = snapshot.docs.map(item => normalizeOrganizationMember(item.id, item.data()));
 
     return sortOrganizationMembers(members);

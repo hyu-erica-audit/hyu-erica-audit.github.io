@@ -1,4 +1,4 @@
-import { fetchPublishedNotices } from "../notice-service.js?v=20260530-no-local-data";
+import { fetchPublishedNotices } from "../notice-service.js?v=20260530-public-limit";
 
 const ITEMS_PER_PAGE = 10;
 

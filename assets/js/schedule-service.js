@@ -6,6 +6,7 @@ import {
     doc,
     getDoc,
     getDocs,
+    limit,
     query,
     serverTimestamp,
     updateDoc,
@@ -14,6 +15,7 @@ import {
 
 const schedulesRef = collection(db, "schedules");
 const FIRESTORE_TIMEOUT_MS = 20000;
+const PUBLIC_QUERY_LIMIT = 300;
 
 export const scheduleCategories = [
     { value: "event-audit-regular", label: "정기감사", color: "#50b9b9" },
@@ -55,7 +57,7 @@ export function sortSchedules(schedules) {
 }
 
 export async function fetchPublishedSchedules() {
-    const publishedQuery = query(schedulesRef, where("status", "==", "published"));
+    const publishedQuery = query(schedulesRef, where("status", "==", "published"), limit(PUBLIC_QUERY_LIMIT));
     const snapshot = await withFirestoreTimeout(getDocs(publishedQuery));
     const schedules = snapshot.docs.map(item => normalizeSchedule(item.id, item.data()));
 

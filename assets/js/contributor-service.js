@@ -5,6 +5,7 @@ import {
     deleteDoc,
     doc,
     getDocs,
+    limit,
     query,
     serverTimestamp,
     updateDoc,
@@ -14,6 +15,7 @@ import {
 const sectionsRef = collection(db, "contributorSections");
 const contributorsRef = collection(db, "contributors");
 const FIRESTORE_TIMEOUT_MS = 20000;
+const PUBLIC_QUERY_LIMIT = 300;
 
 export function normalizeContributorSection(id, data = {}) {
     return {
@@ -62,7 +64,7 @@ export function sortContributors(contributors) {
 }
 
 export async function fetchPublishedContributorSections() {
-    const snapshot = await withFirestoreTimeout(getDocs(query(sectionsRef, where("status", "==", "published"))));
+    const snapshot = await withFirestoreTimeout(getDocs(query(sectionsRef, where("status", "==", "published"), limit(PUBLIC_QUERY_LIMIT))));
     const sections = snapshot.docs.map(item => normalizeContributorSection(item.id, item.data()));
 
     return sortContributorSections(sections);
@@ -76,7 +78,7 @@ export async function fetchAllContributorSections() {
 }
 
 export async function fetchPublishedContributors() {
-    const snapshot = await withFirestoreTimeout(getDocs(query(contributorsRef, where("status", "==", "published"))));
+    const snapshot = await withFirestoreTimeout(getDocs(query(contributorsRef, where("status", "==", "published"), limit(PUBLIC_QUERY_LIMIT))));
     const contributors = snapshot.docs.map(item => normalizeContributor(item.id, item.data()));
 
     return sortContributors(contributors);

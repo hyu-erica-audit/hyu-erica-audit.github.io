@@ -4,7 +4,7 @@ import {
     isChairMember,
     isViceChairMember,
     sortOrganizationMembers
-} from "../organization-service.js?v=20260530-org-redesign";
+} from "../organization-service.js?v=20260530-public-limit";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("organization-container");

@@ -2,7 +2,7 @@ import {
     fetchPublishedDocuments,
     getFirebaseDocumentErrorMessage,
     resolveDocumentDownloadUrl
-} from "../document-service.js?v=20260530-rule-description";
+} from "../document-service.js?v=20260530-public-limit";
 
 const RULE_SLOTS = ["중앙감사 세칙", "감사 시행 별칙"];
 

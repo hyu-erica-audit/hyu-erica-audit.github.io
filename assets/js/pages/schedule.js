@@ -2,7 +2,7 @@ import {
     fetchPublishedSchedules,
     formatSchedulePeriod,
     toCalendarEvent
-} from "../schedule-service.js?v=20260529-schedule-color";
+} from "../schedule-service.js?v=20260530-public-limit";
 
 let calendar;
 

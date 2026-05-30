@@ -3,7 +3,7 @@ import {
     fetchPublishedContributorSections,
     getFirebaseContributorErrorMessage,
     sortContributors
-} from "../contributor-service.js?v=20260530-contributors";
+} from "../contributor-service.js?v=20260530-public-limit";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const wrapper = document.getElementById("sections-wrapper");

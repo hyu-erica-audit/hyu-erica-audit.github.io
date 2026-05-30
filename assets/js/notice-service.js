@@ -6,6 +6,7 @@ import {
     doc,
     getDoc,
     getDocs,
+    limit,
     query,
     serverTimestamp,
     updateDoc,
@@ -14,6 +15,7 @@ import {
 
 const noticesRef = collection(db, "notices");
 const FIRESTORE_TIMEOUT_MS = 20000;
+const PUBLIC_QUERY_LIMIT = 300;
 
 export function normalizeNotice(id, data = {}) {
     const publishedAt = data.publishedAt?.toDate?.() || data.createdAt?.toDate?.() || null;
@@ -51,7 +53,7 @@ export function sortNotices(notices) {
 }
 
 export async function fetchPublishedNotices() {
-    const publishedQuery = query(noticesRef, where("status", "==", "published"));
+    const publishedQuery = query(noticesRef, where("status", "==", "published"), limit(PUBLIC_QUERY_LIMIT));
     const snapshot = await withFirestoreTimeout(getDocs(publishedQuery));
     const notices = snapshot.docs.map(item => normalizeNotice(item.id, item.data()));
 

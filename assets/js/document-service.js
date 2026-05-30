@@ -5,6 +5,7 @@ import {
     doc,
     getDoc,
     getDocs,
+    limit,
     query,
     serverTimestamp,
     setDoc,
@@ -20,6 +21,7 @@ import {
 
 const documentsRef = collection(db, "documents");
 const FIRESTORE_TIMEOUT_MS = 20000;
+const PUBLIC_QUERY_LIMIT = 300;
 const ALLOWED_FILE_TYPES = new Set([
     "application/pdf",
     "application/msword",
@@ -60,7 +62,7 @@ export function sortDocuments(documents) {
 }
 
 export async function fetchPublishedDocuments({ type, year } = {}) {
-    const snapshot = await withFirestoreTimeout(getDocs(query(documentsRef, where("status", "==", "published"))));
+    const snapshot = await withFirestoreTimeout(getDocs(query(documentsRef, where("status", "==", "published"), limit(PUBLIC_QUERY_LIMIT))));
     const documents = snapshot.docs
         .map(item => normalizeDocument(item.id, item.data()))
         .filter(item => !type || item.type === type)

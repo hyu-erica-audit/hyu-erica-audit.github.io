@@ -2,7 +2,7 @@ import {
     fetchPublishedDocuments,
     getFirebaseDocumentErrorMessage,
     resolveDocumentDownloadUrl
-} from "../document-service.js?v=20260530-documents";
+} from "../document-service.js?v=20260530-public-limit";
 
 export async function renderDocumentPage({ type, year, containerId = "document-container", emptyId = "document-empty" }) {
     const container = document.getElementById(containerId);

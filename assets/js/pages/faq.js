@@ -1,5 +1,5 @@
 
-import { fetchPublishedFaqs } from "../faq-service.js?v=20260529-remove-faq-import";
+import { fetchPublishedFaqs } from "../faq-service.js?v=20260530-public-limit";
 
 document.addEventListener("DOMContentLoaded", async function() {
             let faqData = [];

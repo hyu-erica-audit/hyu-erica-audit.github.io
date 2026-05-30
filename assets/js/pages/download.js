@@ -2,7 +2,7 @@ import {
     fetchPublishedDocuments,
     getFirebaseDocumentErrorMessage,
     resolveDocumentDownloadUrl
-} from "../document-service.js?v=20260530-form-icon";
+} from "../document-service.js?v=20260530-public-limit";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("report-container");
