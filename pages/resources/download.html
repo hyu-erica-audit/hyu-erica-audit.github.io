@@ -2,50 +2,50 @@
 <html lang="ko">
 
 <head>
-    <!-- Google Tag Manager -->
+
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-MMGHX3TF');</script>
-    <!-- End Google Tag Manager -->
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 페이지 제목 설정 (최상단) -->
+
     <title>서식 다운로드</title>
 
-    <!-- 페이지 로고 설정 (최상단) -->
+
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/common/logo.png?v=1">
     <link rel="apple-touch-icon" href="/assets/images/common/logo.png">
 
-    <!-- 건들지 마세요 -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
 
-    <!-- 스타일 불러오기 -->
-    <link href="/assets/css/style.css" rel="stylesheet"> 
+
+    <link href="/assets/css/style.css" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
+
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MMGHX3TF"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
-    <!-- 상단 네비게이션 바 불러오기 -->
-    <!-- assets/js/main.js가 assets/components/navbar.html을 불러옴 -->
+
+
+
     <div id="navbar-placeholder"></div>
 
 
 
-    <!-- 메인 -->
+
     <main>
-        <!-- 페이지 헤더 불러오기 -->
-        <div id="page-header-placeholder" 
-            data-title="서식 다운로드" 
+
+        <div id="page-header-placeholder"
+            data-title="서식 다운로드"
             data-subtitle="Download Forms">
         </div>
         <section class="py-5 bg-light">
@@ -64,48 +64,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/main.js"></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const BASE_PATH = "/assets/docs/";
-
-            // 1. 증빙 양식 데이터
-            const reports = [
-                { id: "r1", title: "대중교통 실비 지급 보고서", file: "2026 중감위 대중교통 실비 지급 보고서.docx", icon: "bi-bus-front", color: "text-primary" },
-                { id: "r2", title: "렌터카 이용 보고서", file: "2026 중감위 렌터가 이용 보고서.docx", icon: "bi-car-front", color: "text-secondary" },
-                { id: "r3", title: "택시 이용 보고서", file: "2026 중감위 택시 이용 보고서.docx", icon: "bi-taxi-front", color: "text-body" },
-                { id: "r4", title: "주유비 실비 지급 보고서", file: "2026 중감위 주유비 실비 지급 보고서.docx", icon: "bi-fuel-pump", color: "text-success" },
-                { id: "r5", title: "식대 집행 보고서", file: "2026 중감위 식대 집행 보고서.docx", icon: "bi-cart", color: "text-dark" }
-            ];
-
-            // 카드 생성 함수
-            function createCard(item, isReady) {
-                const buttonHtml = isReady 
-                    ? `<button class="btn btn-secondary w-100 rounded-pill fw-bold" disabled>준비 중입니다</button>`
-                    : `<a href="${BASE_PATH}${item.file}" class="btn btn-outline-dark w-100 rounded-pill fw-bold" download><i class="bi bi-download me-2"></i> 다운로드</a>`;
-                
-                const opacityStyle = isReady ? `style="opacity: 0.7;"` : "";
-                
-                return `
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm transition-card" ${opacityStyle}>
-                            <div class="card-body p-5 text-center">
-                                <div class="mb-3">
-                                    <i class="bi ${item.icon} ${item.color}" style="font-size: 3rem;"></i>
-                                </div>
-                                <h5 class="fw-bold mb-3 ${isReady ? 'text-muted' : ''}">${item.title}</h5>
-                                ${buttonHtml}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // 하단 렌더링 (증빙 양식)
-            const reportContainer = document.getElementById('report-container');
-            reports.forEach(report => {
-                reportContainer.innerHTML += createCard(report, false);
-            });
-        });
-    </script>
+    <script type="module" src="/assets/js/pages/download.js?v=20260530-form-icon"></script>
 </body>
 </html>

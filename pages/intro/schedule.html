@@ -2,41 +2,41 @@
 <html lang="ko">
 
 <head>
-    <!-- Google Tag Manager -->
+
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-MMGHX3TF');</script>
-    <!-- End Google Tag Manager -->
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 페이지 제목 설정 (최상단) -->
+
     <title>중감위 일정표</title>
 
-    <!-- 페이지 로고 설정 (최상단) -->
+
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/common/logo.png?v=1">
     <link rel="apple-touch-icon" href="/assets/images/common/logo.png">
 
-    <!-- 건들지 마세요 -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
 
-    <!-- 스타일 불러오기 -->
-    <link href="/assets/css/style.css" rel="stylesheet"> 
+
+    <link href="/assets/css/style.css" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
+
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MMGHX3TF"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
-    <!-- 상단 네비게이션 바 불러오기 -->
-    <!-- assets/js/main.js가 assets/components/navbar.html을 불러옴 -->
+
+
+
     <div id="navbar-placeholder"></div>
 
 
@@ -50,11 +50,11 @@
         }
 
 
-        .fc-toolbar-title { 
-            font-weight: 800 !important; 
-            font-size: 1.6rem !important; 
+        .fc-toolbar-title {
+            font-weight: 800 !important;
+            font-size: 1.6rem !important;
             color: var(--primary-color);
-            
+
 
             position: absolute;
             left: 50%;
@@ -66,14 +66,14 @@
         .fc-toolbar-chunk {
             display: flex;
             align-items: center;
-            z-index: 10; 
+            z-index: 10;
         }
 
         .calendar-window {
             position: relative;
-            max-width: 1140px; 
+            max-width: 1140px;
             margin: 0 auto;
-            overflow: visible; 
+            overflow: visible;
         }
         .schedule-rail {
             display: flex;
@@ -99,22 +99,22 @@
         .fc .fc-button-primary:focus { box-shadow: none !important; }
 
         #calendar { background: #fff; border-radius: 12px; min-height: 650px; }
-        
+
         .fc-day-today .fc-daygrid-day-number {
             font-weight: 900 !important;
             color: var(--primary-color) !important;
             border-radius: 50% !important;
-            
+
 
             width: 32px !important;
             height: 32px !important;
-            
+
 
             display: flex !important;
             align-items: center;
             justify-content: center;
-     
-            margin: 5px 5px 0 auto !important; 
+
+            margin: 5px 5px 0 auto !important;
             padding: 0 !important;
             line-height: 1 !important;
             white-space: nowrap !important;
@@ -127,7 +127,7 @@
         }
 
         .fc-day-today {
-            background-color: rgba(0, 0, 0, 0.055) !important; 
+            background-color: rgba(0, 0, 0, 0.055) !important;
         }
 
         .fc-col-header-cell .fc-col-header-cell-cushion { color: #2c2c2c; text-decoration: none !important; }
@@ -136,7 +136,7 @@
 
         .fc-daygrid-day-number { color: #2c2c2c; text-decoration: none !important; padding: 8px !important; }
         .fc-day-sat .fc-daygrid-day-number { color: #4A90E2 !important; }
-        .fc-day-sun .fc-daygrid-day-number, 
+        .fc-day-sun .fc-daygrid-day-number,
         .fc-day-holiday .fc-daygrid-day-number { color: #dc3545 !important; }
         #calendar-col { flex: 0 0 100%; padding: 0 15px; }
         #detail-col { flex: 0 0 400px; padding: 0 15px; opacity: 0; transition: opacity 0.4s ease; }
@@ -144,50 +144,50 @@
         section { overflow-x: hidden; }
 
         .fc-event {
-            border: none !important;      /* 테두리 제거 */
-            box-shadow: none !important;   /* 혹시 모를 그림자 제거 */
+            border: none !important;
+            box-shadow: none !important;
             padding: 2px 6px !important;
             font-size: 0.85rem !important;
             font-weight: 600 !important;
-            color: #ffffff !important;     /* 글자색 흰색 유지 */
+            color: #ffffff !important;
         }
 
-        /* 배경 색 스타일 */
 
-        .event-audit-regular { 
-            background-color: #50b9b9 !important; 
+
+        .event-audit-regular {
+            background-color: #50b9b9 !important;
             border-left: 2px solid rgba(0,0,0,0.1) !important;
         }
-        .event-audit-examine { 
-            background-color: #808fe5 !important; 
+        .event-audit-examine {
+            background-color: #808fe5 !important;
             border-left: 2px solid rgba(0,0,0,0.1) !important;
         }
-        .event-meeting-regular { 
-            background-color: #63be82 !important; 
+        .event-meeting-regular {
+            background-color: #63be82 !important;
             border-left: 2px solid rgba(0,0,0,0.1) !important;
         }
-        .event-audit-exceptional { 
-            background-color: #ff7c7c !important; 
+        .event-audit-exceptional {
+            background-color: #ff7c7c !important;
             border-left: 2px solid rgba(0,0,0,0.1) !important;
         }
-        .event-school-activity { 
-            background-color: #2070b1 !important; 
+        .event-school-activity {
+            background-color: #2070b1 !important;
             border-left: 2px solid rgba(0,0,0,0.1) !important;
-        }  
+        }
 
     </style>
 
-    <!-- 메인 -->
+
     <main>
-        <!-- 페이지 헤더 불러오기 -->
-        <div id="page-header-placeholder" 
-            data-title="중앙감사위원회 일정표" 
+
+        <div id="page-header-placeholder"
+            data-title="중앙감사위원회 일정표"
             data-subtitle="Schedule of the Central Audit Committee">
         </div>
-        <section class="py-5 bg-light" style="overflow-x: hidden;"> 
+        <section class="py-5 bg-light" style="overflow-x: hidden;">
             <div class="calendar-window">
                 <div id="schedule-rail" class="schedule-rail">
-                    
+
                     <div id="calendar-col">
                         <div class="card border-0 shadow-sm p-3 p-md-4">
                             <div id="calendar"></div>
@@ -218,174 +218,12 @@
             </div>
         </section>
     </main>
-    
-    <script>
-        let calendar;
-        const holidays = [
-                            '2026-01-01', 
-                            '2026-02-16', '2026-02-17', '2026-02-18', 
-                            '2026-03-02',
-                            '2026-05-05', '2026-05-25',
-                            '2026-06-03', '2026-06-06',
-                            '2026-07-17',
-                            '2026-08-15', '2026-08-17',
-                            '2026-09-24', '2026-09-25', '2026-09-26',
-                            '2026-10-03', '2026-10-05', '2026-10-09',
-                            '2026-12-25',
-                            '2027-01-01',
-                        ];
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const calendarEl = document.getElementById('calendar');
-            
-            calendar = new FullCalendar.Calendar(calendarEl, {
-                locale: 'ko',
-                initialView: 'dayGridMonth',
-                dayCellContent: function(arg) {
-                    return arg.date.getDate(); 
-                },
-                dayMaxEvents: true,
-                headerToolbar: {
-                    left: 'prev,next', 
-                    center: 'title',
-                    right: '' 
-                    
-                },
-                dayCellClassNames: function(arg) {
-                    const year = arg.date.getFullYear();
-                    const month = String(arg.date.getMonth() + 1).padStart(2, '0');
-                    const day = String(arg.date.getDate()).padStart(2, '0');
-                    
-                    const dateStr = `${year}-${month}-${day}`;
-
-                    if (holidays.includes(dateStr)) {
-                        return ['fc-day-holiday'];
-                    }
-                    return [];
-                },
-                events: [
-                    {
-                        title: '임기 시작',
-                        start: '2026-02-01',
-                        end: '2026-02-01',
-                        className: 'event-audit-regular',
-                        description: `제7대 중앙감사위원회의 공식적인 임기 시작일입니다.`
-                    },
-                    {
-                        title: '임기 종료',
-                        start: '2027-01-31',
-                        end: '2027-01-31',
-                        className: 'event-audit-regular',
-                        description: `제7대 중앙감사위원회의 공식적인 임기 종료일입니다.`
-                    },
-                    {
-                        title: '제1차 확대운영위원회',
-                        start: '2026-02-02',
-                        end: '2026-02-02',
-                        className: 'event-school-activity',
-                        description: `2026년 제1차 확대운영위원회에 참여하여,
-                        2025년 2학기 중앙감사결과를 보고하였고,
-                        2026년 상반기 세칙 개정안을 의결하였습니다.
-                        
-                        통과된 개정안이 적용된 세칙 및 신설된 별칙은 자료실에서 다운로드 받으실 수 있습니다.`
-                    },
-                    {
-                        title: '2월 정기회의',
-                        start: '2026-02-09',
-                        end: '2026-02-09',
-                        className: 'event-meeting-regular',
-                        description: `2월 정기회의 및 OT를 진행하였습니다.
-
-                        세부 내용은 회의록을 참고바랍니다.`
-                    },
-                    {
-                        title: '특정감사',
-                        start: '2026-03-11',
-                        end: '2026-03-22',
-                        className: 'event-audit-exceptional',
-                        description: `바이오신약융합학부 특정감사 진행`
-                    },
-                    {
-                        title: '3월 정기회의',
-                        start: '2026-03-23',
-                        end: '2026-03-23',
-                        className: 'event-meeting-regular',
-                        description: `3월 정기회의 진행 예정일`
-                    },
-                    {
-                        title: '비대위 감사 자료 제출',
-                        start: '2026-03-27',
-                        end: '2026-04-03',
-                        className: 'event-audit-regular',
-                        description: `비상대책위원회 감사를 위한 자료 제출 기한`
-                    },
-                    {
-                        title: '1차 검토',
-                        start: '2026-04-03',
-                        end: '2026-04-10',
-                        className: 'event-audit-examine',
-                        description: `제출된 자료를 검토하고 추가 자료 요청 공문을 발송합니다.`
-                    },
-                    {
-                        title: '추가자료 제출',
-                        start: '2026-04-10',
-                        end: '2026-04-12',
-                        className: 'event-audit-regular',
-                        description: `비상대책위원회 감사를 위한 추가 자료 제출 기한.`
-                    },
-                    {
-                        title: '2차 검토 및 의결',
-                        start: '2026-04-12',
-                        end: '2026-04-15',
-                        className: 'event-audit-examine',
-                        description: `제출된 자료를 검토하고 추가 자료 요청 공문을 발송합니다.`
-                    },
-                    {
-                        title: '결과 전달',
-                        start: '2026-04-15',
-                        end: '2026-04-16',
-                        className: 'event-audit-regular',
-                        description: `자료를 토대로 의결된 결과를 각 학생회에 전달합니다.`
-                    }
-                ],
-                eventClick: function(info) {
-                    showDetail(info.event);
-                }
-            });
-            calendar.render();
-        });
-
-        function showDetail(event) {
-            const rail = document.getElementById('schedule-rail');
-            
-            document.getElementById('sideTitle').innerText = event.title;
-            
-            const year = event.start.getFullYear();
-            const month = event.start.getMonth() + 1;
-            const date = event.start.getDate();
-            
-            let dateStr = `${year}년 ${month}월 ${date}일`;
-
-            if (event.end && (event.end.getTime() - event.start.getTime() > 86400000)) {
-                const endDate = new Date(event.end.getTime() - 86400000);
-                dateStr += ` ~ ${endDate.getFullYear()}년 ${endDate.getMonth() + 1}월 ${endDate.getDate()}일`;
-            }
-            
-            document.getElementById('sideDate').innerText = dateStr;
-            document.getElementById('sideDescription').innerText = event.extendedProps.description;
-
-            rail.classList.add('active');
-        }
-
-        function closeDetail() {
-            const rail = document.getElementById('schedule-rail');
-            rail.classList.remove('active');
-        }
-    </script>
+    <script type="module" src="/assets/js/pages/schedule.js?v=20260529-schedule-color"></script>
 
 
-    <!-- 하단 푸터 불러오기 -->
-    <!-- assets/js/main.js가 assets/components/footer.html을 불러옴 -->
+
+
     <div id="footer-placeholder"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

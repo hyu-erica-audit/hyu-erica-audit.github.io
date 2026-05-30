@@ -2,119 +2,69 @@
 <html lang="ko">
 
 <head>
-    <!-- Google Tag Manager -->
+
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-MMGHX3TF');</script>
-    <!-- End Google Tag Manager -->
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 페이지 제목 설정 (최상단) -->
+
     <title>위원장 인사말</title>
 
-    <!-- 페이지 로고 설정 (최상단) -->
+
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/common/logo.png?v=1">
     <link rel="apple-touch-icon" href="/assets/images/common/logo.png">
 
-    <!-- 건들지 마세요 -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
 
-    <!-- 스타일 불러오기 -->
-    <link href="/assets/css/style.css" rel="stylesheet"> 
+
+    <link href="/assets/css/style.css" rel="stylesheet">
     <link href="/assets/css/greeting.css" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
+
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MMGHX3TF"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
-    <!-- 상단 네비게이션 바 불러오기 -->
-    <!-- assets/js/main.js가 assets/components/navbar.html을 불러옴 -->
+
+
+
     <div id="navbar-placeholder"></div>
 
 
 
-    <!-- 메인 -->
+
     <main>
-        <!-- 페이지 헤더 불러오기 -->
-        <div id="page-header-placeholder" 
-            data-title="위원장 인사말" 
+
+        <div id="page-header-placeholder"
+            data-title="위원장 인사말"
             data-subtitle="Greetings from the Chairperson">
         </div>
 
         <section class="greetings-section py-5">
             <div class="container py-4">
                 <div class="row justify-content-center gy-5">
-                    
+
 
                     <div class="col-lg-8 col-xl-8 offset-xl-1">
                         <div class="greeting-text">
-                            <h3 class="greeting-title fw-bold mb-4">
-                                “모두의 열정이 의심받지 않도록, 가장 투명한 증명을.”
-                            </h3>
+                            <h3 id="greeting-title" class="greeting-title fw-bold mb-4"></h3>
 
-                            <div class="greeting-body keep-all text-body">
-                                <p>
-                                안녕하십니까. 한양대학교 ERICA 제7대 중앙감사위원장 여동훈입니다.
-                                <br>
-                                지난 2025년 감사위원 활동에 이어, 2026년 제7대 위원장이라는 막중한 책임을 맡게 됐습니다.
-                                </p>
-
-                                <p>
-                                저는 학생회비를 이렇게 정의하고 싶습니다.
-                                <br>
-                                학생이 학생회에 보내는 <strong>‘신뢰’</strong>이자, 더 나은 학교를 위한 <strong>‘투자’</strong>라고.
-                                </p>
-
-                                <p>
-                                그렇기에 이 소중한 예산은 조금의 금액도 헛되이 쓰이지 않아야합니다.
-                                <br>
-                                중앙감사위원회가 그 <strong>투명성</strong>을 <strong>증명</strong>해 주는 곳이라 믿습니다. 
-                                </p>
-
-                                <p> 
-                                하지만 여러분, 중앙감사위원회는 단순히 <strong>잘못을 지적하고 적발하는 곳</strong>에 그치지 않습니다.
-                                <br>
-                                불철주야 애쓰시는 학생회의 노고를 깊이 이해하기에,
-                                <br>
-                                시행착오 없이 올바른 방향으로 나아갈 수 있도록 돕는 <strong>든든한 조력자</strong>가 되고자 합니다.
-                                </p>
-
-                                <p>
-                                예산의 편성부터 집행, 그리고 자산의 인계까지.
-                                <br>
-                                명확한 가이드라인을 제시하여, 학생회가 <strong>안전하고 당당하게</strong> 일할 수 있는 환경을 만들겠습니다.
-                                </p>
-                                
-                                <p>
-                                학우 여러분의 관심이 저희에게는 가장 큰 힘이 됩니다.
-                                <br>
-                                따뜻한 응원과 많은 관심 부탁드리겠습니다.
-                                </p>
-
-                                <p>
-                                가장 공정한 눈으로, 여러분의 노력을 증명하는
-                                <br>    
-                                <strong>진짜 감사(audit)</strong>를 보여드리겠습니다.
-                                </p>
-
-                                <p>
-                                감사합니다.
-                                </p>
-                            </div>
+                            <div id="greeting-body" class="greeting-body keep-all text-body"></div>
 
                             <div class="greeting-signature text-end mt-5">
                                 <h5 class="fw-bold">
-                                    한양대학교 ERICA 제7대 중앙감사위원장
-                                    <span class="ms-2 fs-4">여 동 훈</span>
+                                    <span id="greeting-signature-title"></span>
+                                    <span id="greeting-signature-name" class="ms-2 fs-4"></span>
                                 </h5>
                             </div>
 
@@ -126,11 +76,12 @@
 
 
 
-    <!-- 하단 푸터 불러오기 -->
-    <!-- assets/js/main.js가 assets/components/footer.html을 불러옴 -->
+
+
     <div id="footer-placeholder"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/main.js"></script>
+    <script type="module" src="/assets/js/pages/greeting.js?v=20260530-greeting-clean"></script>
 </body>
 </html>

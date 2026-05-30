@@ -2,31 +2,31 @@
 <html lang="ko">
 
 <head>
-    <!-- Google Tag Manager -->
+
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-MMGHX3TF');</script>
-    <!-- End Google Tag Manager -->
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 페이지 제목 설정 (최상단) -->
+
     <title>기여자</title>
 
-    <!-- 페이지 로고 설정 (최상단) -->
+
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/common/logo.png?v=1">
     <link rel="apple-touch-icon" href="/assets/images/common/logo.png">
 
-    <!-- 건들지 마세요 -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
 
-    <!-- 스타일 불러오기 -->
-    <link href="/assets/css/style.css" rel="stylesheet"> 
+
+    <link href="/assets/css/style.css" rel="stylesheet">
 
     <style>
         .contributor-wrapper {
@@ -35,7 +35,7 @@
 
         .contributor-item {
             border-top: 1px solid #e9ecef;
-            padding: 2rem 1rem; 
+            padding: 2rem 1rem;
             height: 100%;
             transition: all 0.3s ease;
             background-color: transparent;
@@ -71,22 +71,22 @@
 </head>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
+
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MMGHX3TF"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
-    <!-- 상단 네비게이션 바 불러오기 -->
-    <!-- assets/js/main.js가 assets/components/navbar.html을 불러옴 -->
+
+
+
     <div id="navbar-placeholder"></div>
 
 
 
-    <!-- 메인 -->
+
     <main>
-        <!-- 페이지 헤더 불러오기 -->
-        <div id="page-header-placeholder" 
-            data-title="중앙감사위원회 기여자" 
+
+        <div id="page-header-placeholder"
+            data-title="중앙감사위원회 기여자"
             data-subtitle="Contributors to the Central Audit Committee">
         </div>
     <section class="contributor-wrapper">
@@ -97,82 +97,14 @@
 
 
 
-    <!-- 하단 푸터 불러오기 -->
-    <!-- assets/js/main.js가 assets/components/footer.html을 불러옴 -->
+
+
     <div id="footer-placeholder"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/main.js"></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const allSections = [
-                {
-                    sectionTitle: "제7대 중앙감사위원회",
-                    sectionSubtitle: "2026년 한양대학교 ERICA 중앙감사위원회",
-                    members: [
-                        { role: "Chairperson", name: "여동훈", dept: "ICT융합학부" },
-                        { role: "Vice", name: "강정한", dept: "재료화학공학과" },
-                        { role: "Member", name: "김민선", dept: "경영학부" },
-                        { role: "Member", name: "이정안", dept: "경제학부" },
-                        { role: "Member", name: "이하진", dept: "경영학부" },
-                        { role: "Member", name: "장제형", dept: "경영학부" },
-                        { role: "Member", name: "전서현", dept: "미디어학과" },
-                        { role: "Member", name: "전해정", dept: "보험계리학과" },
-                        { role: "Member", name: "정세빈", dept: "바이오나노공학전공" },
-                        { role: "Member", name: "정은진", dept: "경영학부" }
-                    ]
-                },
-                {
-                    sectionTitle: "학술 자문 및 감수",
-                    sectionSubtitle: "위원회 운영 시스템의 객관성과 전문성 검증을 위한 외부 자문",
-                    members: [
-                        { role: "Professor", name: "홍사선 교수님", dept: "회계세무학과 조교수" },
-                    ]
-                },
-                {
-                    sectionTitle: "기여 단체",
-                    sectionSubtitle: "시스템 구축 및 운영 지원",
-                    members: [
-                        { role: "Committee", name: "제5대 중앙감사위원회 LOGOS", dept: "2024년 중앙감사위원회" },
-                        { role: "Committee", name: "제6대 중앙감사위원회 아람", dept: "2025년 중앙감사위원회" },
-                    ]
-                }
-            ];
-
-            const wrapper = document.getElementById('sections-wrapper');
-            wrapper.innerHTML = "";
-
-            allSections.forEach((section, sIndex) => {
-                let sectionHtml = `
-                    <div class="section-block ${sIndex > 0 ? 'mt-5 pt-5' : ''}">
-                        <div class="mb-4"> 
-                            <h2 class="fw-bold tracking-tight">${section.sectionTitle}</h2>
-                            <p class="text-secondary keep-all">${section.sectionSubtitle}</p>
-                        </div>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-0">
-                `;
-
-                section.members.forEach(person => {
-                    sectionHtml += `
-                        <div class="col">
-                            <div class="contributor-item">
-                                <span class="role-text">${person.role}</span>
-                                <div class="name-text">${person.name}</div>
-                                <div class="dept-text">${person.dept}</div>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                sectionHtml += `
-                        </div>
-                    </div>
-                `;
-                wrapper.innerHTML += sectionHtml;
-            });
-        });
-    </script>
+    <script type="module" src="/assets/js/pages/contributor.js?v=20260530-contributors"></script>
 
 </body>
 </html>

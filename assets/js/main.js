@@ -1,88 +1,90 @@
+function loadComponent(selector, url, onLoad) {
+    const placeholder = document.querySelector(selector);
 
-document.addEventListener("DOMContentLoaded", function() {
-    // 푸터 불러오기
-    fetch("/assets/components/footer.html")
+    if (!placeholder) return;
+
+    fetch(url)
         .then(response => {
-            if (!response.ok) throw new Error("푸터 로드 실패");
+            if (!response.ok) {
+                throw new Error(`${url} load failed`);
+            }
+
             return response.text();
         })
-        .then(data => {
-            document.getElementById("footer-placeholder").innerHTML = data;
+        .then(html => {
+            placeholder.innerHTML = html;
+
+            if (typeof onLoad === "function") {
+                onLoad(placeholder);
+            }
         })
-        .catch(error => console.error("Error loading footer:", error));
+        .catch(error => console.error(`Error loading ${url}:`, error));
+}
 
-    // 헤더(Navbar) 불러오기
-    fetch("/assets/components/navbar.html")
-        .then(response => {
-            if (!response.ok) throw new Error("헤더 로드 실패");
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById("navbar-placeholder").innerHTML = data;
-            const currentPath = window.location.pathname;
-            const navLinks = document.querySelectorAll('.navbar-nav .nav-link, .navbar-nav .dropdown-item');
+function activateCurrentNavLink() {
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll(".navbar-nav .nav-link, .navbar-nav .dropdown-item");
 
-            navLinks.forEach(link => {
-                const href = link.getAttribute('href');
-                if (href && currentPath.endsWith(href)) {
-                    
-                    link.classList.add('active');
-                    
-                    const parentDropdown = link.closest('.dropdown');
-                    if (parentDropdown) {
-                        parentDropdown.querySelector('.dropdown-toggle').classList.add('active');
-                    }
-                }
-            });
-        });
-});
+    navLinks.forEach(link => {
+        const href = link.getAttribute("href");
 
-/* =========================================
-   모바일: 메뉴 외부 클릭 시 자동으로 닫기
-   ========================================= */
-document.addEventListener('click', function(event) {
+        if (!href || !currentPath.endsWith(href)) return;
 
-    /* 영역 검색 */
-    const navbarCollapse = document.querySelector('.navbar-collapse');
-    const navbarToggler = document.querySelector('.navbar-toggler');
+        link.classList.add("active");
 
-    /* 메뉴 존재 확인 */
-    if (!navbarCollapse || !navbarToggler) return;
+        const parentDropdown = link.closest(".dropdown");
+        const dropdownToggle = parentDropdown?.querySelector(".dropdown-toggle");
 
-    /* 메뉴 열림 상태 확인 */
-    const isOpened = navbarCollapse.classList.contains('show');
+        if (dropdownToggle) {
+            dropdownToggle.classList.add("active");
+        }
+    });
+}
 
-    /* 외부 클릭 시 메뉴 닫기 */
-    if (isOpened && !navbarCollapse.contains(event.target) && !navbarToggler.contains(event.target)) {
+function createPageHeader() {
+    const headerPlaceholder = document.getElementById("page-header-placeholder");
 
-        const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse) || new bootstrap.Collapse(navbarCollapse, { toggle: false });
-        
-        bsCollapse.hide();
-    }
-});
+    if (!headerPlaceholder) return;
 
+    const title = headerPlaceholder.getAttribute("data-title");
+    const subtitle = headerPlaceholder.getAttribute("data-subtitle");
 
-/* =========================================
-   서프페이지 헤더 생성. 사용방법 해당 페이지 참조
-   ========================================= */
-document.addEventListener("DOMContentLoaded", function() {
-    const headerPlaceholder = document.getElementById('page-header-placeholder');
-
-    if (headerPlaceholder) {
-        const title = headerPlaceholder.getAttribute('data-title');
-        const subtitle = headerPlaceholder.getAttribute('data-subtitle');
-        const headerHTML = `
-            <section class="page-header text-white py-5" style="background-color: var(--bg-darkgray);">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12 text-center">
-                            <h2 class="fw-bold mb-2">${title}</h2>
-                            <p class="text-white-50 mb-0">${subtitle}</p>
-                        </div>
+    headerPlaceholder.innerHTML = `
+        <section class="page-header text-white py-5" style="background-color: var(--bg-darkgray);">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2 class="fw-bold mb-2">${title}</h2>
+                        <p class="text-white-50 mb-0">${subtitle}</p>
                     </div>
                 </div>
-            </section>
-        `;
-        headerPlaceholder.innerHTML = headerHTML;
-    }
+            </div>
+        </section>
+    `;
+}
+
+function closeMobileNavbarOnOutsideClick(event) {
+    const navbarCollapse = document.querySelector(".navbar-collapse");
+    const navbarToggler = document.querySelector(".navbar-toggler");
+
+    if (!navbarCollapse || !navbarToggler) return;
+
+    const isOpened = navbarCollapse.classList.contains("show");
+    const clickedOutsideNavbar = !navbarCollapse.contains(event.target) && !navbarToggler.contains(event.target);
+
+    if (!isOpened || !clickedOutsideNavbar) return;
+
+    const bsCollapse =
+        bootstrap.Collapse.getInstance(navbarCollapse) ||
+        new bootstrap.Collapse(navbarCollapse, { toggle: false });
+
+    bsCollapse.hide();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadComponent("#footer-placeholder", "/assets/components/footer.html");
+    loadComponent("#navbar-placeholder", "/assets/components/navbar.html", activateCurrentNavLink);
+    createPageHeader();
 });
+
+document.addEventListener("click", closeMobileNavbarOnOutsideClick);

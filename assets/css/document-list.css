@@ -1,0 +1,14 @@
+@media (min-width: 768px) {
+    .border-end-md {
+        border-right: 1px solid #dee2e6 !important;
+    }
+}
+
+.transition-card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.transition-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+}

@@ -1,0 +1,34 @@
+.accordion-item {
+    border-bottom: 1px solid #eee;
+}
+
+.accordion-button {
+    padding: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    background-color: #fff !important;
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--primary-point);
+    box-shadow: none;
+}
+
+.accordion-button::after {
+    background-size: 1rem;
+}
+
+.accordion-body {
+    padding: 1.5rem;
+    line-height: 1.8;
+    color: var(--text-body);
+    background-color: #fcfcfc;
+    word-break: keep-all;
+}
+
+.q-prefix {
+    color: var(--primary-point);
+    margin-right: 10px;
+    font-style: normal;
+    font-weight: 800;
+}

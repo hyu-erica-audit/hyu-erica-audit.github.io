@@ -1,0 +1,295 @@
+import { db, storage } from "./firebase.js?v=20260530-documents";
+import {
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+    query,
+    serverTimestamp,
+    setDoc,
+    updateDoc,
+    where
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-lite.js";
+import {
+    deleteObject,
+    getDownloadURL,
+    ref,
+    uploadBytesResumable
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-storage.js";
+
+const documentsRef = collection(db, "documents");
+const FIRESTORE_TIMEOUT_MS = 20000;
+const ALLOWED_FILE_TYPES = new Set([
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+]);
+
+export function normalizeDocument(id, data = {}) {
+    return {
+        id,
+        type: data.type || "report",
+        title: data.title || "",
+        subtitle: data.subtitle || "",
+        description: data.description || "",
+        icon: data.icon || "",
+        date: data.date || "",
+        year: Number(data.year || getYearFromDate(data.date) || new Date().getFullYear()),
+        category: data.category || "",
+        status: data.status || "draft",
+        isImportant: Boolean(data.isImportant),
+        fileName: data.fileName || "",
+        filePath: data.filePath || "",
+        fileSize: Number(data.fileSize || 0),
+        contentType: data.contentType || "",
+        downloadUrl: data.downloadUrl || "",
+        createdAt: data.createdAt || null,
+        updatedAt: data.updatedAt || null
+    };
+}
+
+export function sortDocuments(documents) {
+    return [...documents].sort((a, b) => {
+        const dateCompare = parseDocumentDate(b.date) - parseDocumentDate(a.date);
+
+        if (dateCompare !== 0) return dateCompare;
+
+        return String(a.title || "").localeCompare(String(b.title || ""), "ko");
+    });
+}
+
+export async function fetchPublishedDocuments({ type, year } = {}) {
+    const snapshot = await withFirestoreTimeout(getDocs(query(documentsRef, where("status", "==", "published"))));
+    const documents = snapshot.docs
+        .map(item => normalizeDocument(item.id, item.data()))
+        .filter(item => !type || item.type === type)
+        .filter(item => !year || item.year === Number(year));
+
+    return sortDocuments(documents);
+}
+
+export async function fetchAllDocuments() {
+    const snapshot = await withFirestoreTimeout(getDocs(documentsRef));
+    const documents = snapshot.docs.map(item => normalizeDocument(item.id, item.data()));
+
+    return sortDocuments(documents);
+}
+
+export async function fetchDocument(id) {
+    const snapshot = await withFirestoreTimeout(getDoc(doc(db, "documents", String(id))));
+
+    if (!snapshot.exists()) return null;
+
+    return normalizeDocument(snapshot.id, snapshot.data());
+}
+
+export async function createDocument(data, file, onProgress) {
+    if (!file) {
+        throw new Error("업로드할 파일을 선택해주세요.");
+    }
+
+    validateFile(file);
+
+    const documentRef = doc(documentsRef);
+    const payload = buildDocumentPayload(data, file, true);
+    const storagePath = getStoragePath(documentRef.id, payload.type, file.name);
+
+    await uploadFile(storagePath, file, onProgress);
+
+    await withFirestoreTimeout(setDoc(documentRef, {
+        ...payload,
+        filePath: storagePath,
+        createdAt: serverTimestamp()
+    }));
+
+    return documentRef.id;
+}
+
+export async function updateDocument(id, data, file, previousDocument, onProgress) {
+    const payload = buildDocumentPayload(data, file || previousDocument, false);
+
+    if (file) {
+        validateFile(file);
+
+        const storagePath = getStoragePath(id, payload.type, file.name);
+
+        await uploadFile(storagePath, file, onProgress);
+        payload.filePath = storagePath;
+
+        if (previousDocument?.filePath && previousDocument.filePath !== storagePath) {
+            await deleteStorageFile(previousDocument.filePath);
+        }
+    }
+
+    await withFirestoreTimeout(updateDoc(doc(db, "documents", String(id)), payload));
+}
+
+export async function removeDocument(documentItem) {
+    if (documentItem?.filePath) {
+        await deleteStorageFile(documentItem.filePath);
+    }
+
+    await withFirestoreTimeout(deleteDoc(doc(db, "documents", String(documentItem.id))));
+}
+
+export async function resolveDocumentDownloadUrl(documentItem) {
+    if (documentItem.downloadUrl) return documentItem.downloadUrl;
+    if (!documentItem.filePath) return "";
+
+    return getDownloadURL(ref(storage, documentItem.filePath));
+}
+
+export function getFirebaseDocumentErrorMessage(error) {
+    const code = error?.code ? `[${error.code}] ` : "";
+    const message = error?.message || String(error);
+
+    if (message.includes("timed out")) {
+        return `${code}Firestore 응답 시간이 초과되었습니다. 네트워크 또는 규칙 설정을 확인해주세요.`;
+    }
+
+    if (error?.code === "storage/unauthorized" || error?.code === "permission-denied") {
+        return `${code}권한이 거부되었습니다. Firestore Rules와 Storage Rules가 게시되었는지 확인해주세요.`;
+    }
+
+    if (error?.code === "storage/quota-exceeded") {
+        return `${code}Storage 사용량 또는 다운로드 한도를 초과했습니다. Firebase 사용량을 확인해주세요.`;
+    }
+
+    return `${code}${message}`;
+}
+
+function buildDocumentPayload(data, fileLike, isCreate) {
+    const date = data.date || formatDateForInput(new Date());
+    const fileName = fileLike?.name || fileLike?.fileName || "";
+    const contentType = fileLike?.type || fileLike?.contentType || "";
+    const fileSize = fileLike?.size || fileLike?.fileSize || 0;
+
+    return {
+        type: data.type || "report",
+        title: data.title || "",
+        subtitle: data.subtitle || "",
+        description: data.description || "",
+        icon: data.icon || "",
+        date,
+        year: Number(data.year || getYearFromDate(date) || new Date().getFullYear()),
+        category: data.category || "",
+        status: data.status || "draft",
+        isImportant: Boolean(data.isImportant),
+        fileName,
+        fileSize,
+        contentType,
+        updatedAt: serverTimestamp(),
+        ...(isCreate ? {} : {})
+    };
+}
+
+function uploadFile(storagePath, file, onProgress) {
+    return new Promise((resolve, reject) => {
+        const task = uploadBytesResumable(ref(storage, storagePath), file, {
+            contentType: file.type || guessContentType(file.name),
+            contentDisposition: `attachment; filename*=UTF-8''${encodeRFC5987ValueChars(file.name)}`,
+            customMetadata: {
+                originalName: file.name
+            }
+        });
+
+        task.on(
+            "state_changed",
+            snapshot => {
+                const progress = snapshot.totalBytes > 0
+                    ? Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+                    : 0;
+
+                if (typeof onProgress === "function") {
+                    onProgress(progress);
+                }
+            },
+            reject,
+            () => resolve(task.snapshot)
+        );
+    });
+}
+
+function validateFile(file) {
+    const contentType = file.type || guessContentType(file.name);
+
+    if (!ALLOWED_FILE_TYPES.has(contentType)) {
+        throw new Error("PDF, DOC, DOCX 파일만 업로드할 수 있습니다.");
+    }
+}
+
+async function deleteStorageFile(filePath) {
+    try {
+        await deleteObject(ref(storage, filePath));
+    } catch (error) {
+        if (error?.code !== "storage/object-not-found") {
+            throw error;
+        }
+    }
+}
+
+function getStoragePath(id, type, fileName) {
+    const typeMap = {
+        minutes: "minutes",
+        report: "reports",
+        regularAudit: "regular-audit",
+        rule: "rules",
+        form: "forms"
+    };
+    const safeType = typeMap[type] || "documents";
+    const extension = fileName.includes(".") ? fileName.split(".").pop().toLowerCase() : "file";
+
+    return `public/${safeType}/${id}/document.${extension}`;
+}
+
+function guessContentType(fileName) {
+    const extension = String(fileName || "").split(".").pop().toLowerCase();
+
+    if (extension === "pdf") return "application/pdf";
+    if (extension === "doc") return "application/msword";
+    if (extension === "docx") return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+    return "";
+}
+
+function encodeRFC5987ValueChars(value) {
+    return encodeURIComponent(value)
+        .replaceAll("'", "%27")
+        .replaceAll("(", "%28")
+        .replaceAll(")", "%29")
+        .replaceAll("*", "%2A");
+}
+
+function parseDocumentDate(value) {
+    const parts = String(value || "").match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);
+
+    if (!parts) return 0;
+
+    return new Date(Number(parts[1]), Number(parts[2]) - 1, Number(parts[3])).getTime();
+}
+
+function getYearFromDate(value) {
+    const year = String(value || "").match(/\d{4}/)?.[0];
+
+    return year ? Number(year) : null;
+}
+
+function formatDateForInput(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+}
+
+function withFirestoreTimeout(promise) {
+    return Promise.race([
+        promise,
+        new Promise((_, reject) => {
+            window.setTimeout(() => {
+                reject(new Error("Firestore request timed out. Check network, Firebase project settings, and Firestore rules."));
+            }, FIRESTORE_TIMEOUT_MS);
+        })
+    ]);
+}

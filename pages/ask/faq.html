@@ -2,78 +2,57 @@
 <html lang="ko">
 
 <head>
-    <!-- Google Tag Manager -->
+
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-MMGHX3TF');</script>
-    <!-- End Google Tag Manager -->
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 페이지 제목 설정 (최상단) -->
+
     <title>자주 묻는 질문</title>
 
-    <!-- 페이지 로고 설정 (최상단) -->
+
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/common/logo.png?v=1">
     <link rel="apple-touch-icon" href="/assets/images/common/logo.png">
 
-    <!-- 건들지 마세요 -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
 
-    <!-- 스타일 불러오기 -->
-    <link href="/assets/css/style.css" rel="stylesheet"> 
+
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+    <link href="/assets/css/faq.css" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
+
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MMGHX3TF"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
-    <!-- 상단 네비게이션 바 불러오기 -->
-    <!-- assets/js/main.js가 assets/components/navbar.html을 불러옴 -->
+
+
+
     <div id="navbar-placeholder"></div>
 
-    <style>
-    .accordion-item { border-bottom: 1px solid #eee; }
-    .accordion-button { 
-        padding: 1.5rem; 
-        font-weight: 700; 
-        color: var(--primary-color); 
-        background-color: #fff !important;
-    }
-    .accordion-button:not(.collapsed) {
-        color: var(--primary-point);
-        box-shadow: none;
-    }
-    .accordion-button::after { background-size: 1rem; }
-    .accordion-body { 
-        padding: 1.5rem; 
-        line-height: 1.8; 
-        color: var(--text-body); 
-        background-color: #fcfcfc;
-        word-break: keep-all;
-    }
-    .q-prefix { color: var(--primary-point); margin-right: 10px; font-style: normal; font-weight: 800; }
-    </style>
 
-    <!-- 메인 -->
     <main>
-        <!-- 페이지 헤더 불러오기 -->
-        <div id="page-header-placeholder" 
-            data-title="자주 묻는 질문" 
+
+        <div id="page-header-placeholder"
+            data-title="자주 묻는 질문"
             data-subtitle="Frequently Asked Questions">
         </div>
         <section class="py-5 bg-light">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-9">
-                        
+
                         <div class="mb-5">
                             <div class="input-group input-group-lg shadow-sm">
                                 <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
@@ -95,88 +74,12 @@
         </section>
     </main>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const faqData = [
-                {
-                    question: "학생회비 환불은 어떻게 처리하나요?",
-                    answer: `
-                    감사 시 지출의 정당성과 대상의 정확성을 명확히 하기 위해 아래와 같이 구체적인 증빙 자료를 요구드립니다<br><br>
-                     1. 환불 근거 <br>
-                    - 학생 회칙(세칙) 내용: 학과 회칙 중 환불 규정이 명시된 부분을 캡쳐하여 제출해 주십시오<br>
-                    - 중앙감사 세칙에는 환불에 대한 구체적 액수가 규정되어 있지 않으므로, 지출의 근거는 각 학과의 회칙에 따릅니다<br><br>
-                     2. 환불 사유 증빙 (대상자 확인)<br>
-                     - 공식 사유: 자퇴 등 학적 변동 시 학적 변동 사항 캡쳐본 등 환불 사유를 증명할 수 있는 자료를 제출해 주십시오<br>
-                     - 단순 변심: 해당 학생의 성명, 학번, 사유등을 포함한 환불 요청서 혹은 이에 준하는 대화 내역 등을 제출해 주십시오<br><br>
-                     3. 지급 내역 증빙<br>
-                     - 이체확인증: 반드시 환불 대상자 본인 명의의 계좌로 송금한 내역이여야 합니다.`
-                },
-                {
-                    question: "행사 운영진 지원금은 어떻게 처리하나요?",
-                    answer: `
-                    실무진 참가 비용 지원에 대한 건은 [사전 의결]을 통해 절차적 정당성을 확보하고, [집행 목적]이 명확하다면 지원이 가능합니다.<br><br>
-                     1. 사전 의결<br>
-                    - 지출 전, 학생회 회의 또는 임원 회의를 통해 지원 건을 정식 안건으로 상정하여 의결하여야 합니다.<br>
-                    - 회의록 필수 기재 사항: 지원의 목적(실무진 참여 필요성), 지원 대상 인원, 1인당 지원 금액, 총 집행 예정 금액, 집행 방식(개인 지급 또는 주최 측 대납 등)<br><br>
-                     2. 집행 방식<br>
-                     - 의결된 방식에 따라 집행하되, 자금의 흐름이 투명하게 기록되어야 합니다.<br>
-                     - 개인 계좌로 지원금을 이체하는 경우, 해당 인원이 실제로 행사 참가비를 납부했는지 확인하는 절차가 반드시 선행되거나 병행되어야 합니다<br><br>
-                     3. 필수 구비 서류<br>
-                     - 회의록: 사전 의결 내용(지원 대상, 금액, 방식)이 상세히 기재된 회의록<br>
-                     - 이체 확인증: 학생회비 계좌에서 지출된 내역 (받는 분 실명 표기)<br>
-                     - 근거 자료 일체: 참여한 임원 명단, 참가비 납부 증빙, 개인별 지원 내역 등을 정리한 서류`
-                },
-            ];
-
-            const accordionContainer = document.getElementById('faqAccordion');
-            const searchInput = document.getElementById('faqSearch');
-            const noResults = document.getElementById('noResults');
-
-            function renderFaqs(data) {
-                accordionContainer.innerHTML = "";
-                if (data.length === 0) {
-                    noResults.classList.remove('d-none');
-                    return;
-                }
-                noResults.classList.add('d-none');
-
-                data.forEach((item, index) => {
-                    const html = `
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-${index}">
-                                    <span class="q-prefix">Q.</span> ${item.question}
-                                </button>
-                            </h2>
-                            <div id="faq-${index}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    ${item.answer}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    accordionContainer.innerHTML += html;
-                });
-            }
-
-
-            renderFaqs(faqData);
-
-            searchInput.addEventListener('input', function(e) {
-                const keyword = e.target.value.toLowerCase();
-                const filteredData = faqData.filter(item => 
-                    item.question.toLowerCase().includes(keyword) || 
-                    item.answer.toLowerCase().includes(keyword)
-                );
-                renderFaqs(filteredData);
-            });
-        });
-    </script>
+    <script type="module" src="/assets/js/pages/faq.js?v=20260529-remove-faq-import"></script>
 
 
 
-    <!-- 하단 푸터 불러오기 -->
-    <!-- assets/js/main.js가 assets/components/footer.html을 불러옴 -->
+
+
     <div id="footer-placeholder"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

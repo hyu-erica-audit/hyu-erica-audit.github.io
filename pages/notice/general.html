@@ -2,57 +2,57 @@
 <html lang="ko">
 
 <head>
-    <!-- Google Tag Manager -->
+
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-MMGHX3TF');</script>
-    <!-- End Google Tag Manager -->
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 페이지 제목 설정 (최상단) -->
+
     <title>공지사항</title>
 
-    <!-- 페이지 로고 설정 (최상단) -->
+
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/common/logo.png?v=1">
     <link rel="apple-touch-icon" href="/assets/images/common/logo.png">
 
-    <!-- 건들지 마세요 -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
 
-    <!-- 스타일 불러오기 -->
-    <link href="/assets/css/style.css" rel="stylesheet"> 
+
+    <link href="/assets/css/style.css" rel="stylesheet">
     <link href="/assets/css/general.css" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
+
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MMGHX3TF"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
-    <!-- 상단 네비게이션 바 불러오기 -->
-    <!-- assets/js/main.js가 assets/components/navbar.html을 불러옴 -->
+
+
+
     <div id="navbar-placeholder"></div>
 
 
 
-    <!-- 메인 -->
+
     <main>
-        <!-- 페이지 헤더 불러오기 -->
-        <div id="page-header-placeholder" 
-            data-title="공지사항" 
+
+        <div id="page-header-placeholder"
+            data-title="공지사항"
             data-subtitle="General Notice">
         </div>
 
         <section class="notice-section py-5 bg-white">
             <div class="container">
-                
+
                 <div class="row mb-4 justify-content-between align-items-center">
                     <div class="col-md-4 mb-3 mb-md-0">
                         <span class="text-muted small">Total <strong id="total-count">0</strong> 건</span>
@@ -71,7 +71,7 @@
                         </thead>
                         <tbody id="notice-list-body">
 
-                            
+
                             </tbody>
                     </table>
                 </div>
@@ -87,124 +87,12 @@
 
 
 
-    <!-- 하단 푸터 불러오기 -->
-    <!-- assets/js/main.js가 assets/components/footer.html을 불러옴 -->
+
+
     <div id="footer-placeholder"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/main.js"></script>
-    <script src="/assets/js/notice_data.js"></script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // ==========================================
-            // 1. 설정 및 변수 준비
-            // ==========================================
-            const tableBody = document.getElementById('notice-list-body');
-            const totalCountElement = document.getElementById('total-count');
-            const paginationWrapper = document.getElementById('pagination-wrapper');
-            
-            // 데이터가 없으면 종료
-            if (!tableBody || typeof noticeList === 'undefined') return;
-
-            // 한 페이지에 보여줄 개수 설정 (10개 추천)
-            const ITEMS_PER_PAGE = 10; 
-
-            // 현재 페이지 번호 가져오기 (주소창 ?page=2 에서 가져옴. 없으면 1)
-            const urlParams = new URLSearchParams(window.location.search);
-            let currentPage = parseInt(urlParams.get('page')) || 1;
-
-            // 전체 글 개수 및 전체 페이지 수 계산
-            const totalItems = noticeList.length;
-            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-
-            // ==========================================
-            // 2. 화면 표시 로직
-            // ==========================================
-
-            // (1) 총 게시물 수 표시
-            if (totalCountElement) totalCountElement.textContent = totalItems;
-
-            // (2) 현재 페이지에 해당하는 데이터만 자르기 (Slice)
-            // 예: 1페이지면 0~9번 인덱스, 2페이지면 10~19번 인덱스
-            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-            const endIndex = startIndex + ITEMS_PER_PAGE;
-            const currentData = noticeList.slice(startIndex, endIndex);
-
-            // (3) 테이블 그리기
-            let html = '';
-            
-            if (currentData.length === 0) {
-                // 게시글이 없을 때
-                html = '<tr><td colspan="4" class="text-center py-5">게시글이 없습니다.</td></tr>';
-            } else {
-                // 잘라낸 데이터(currentData)만 반복
-                currentData.forEach(notice => {
-                    let badgeClass = notice.type === '필독' ? 'bg-danger' : 'bg-secondary';
-                    
-                    html += `
-                        <tr>
-                            <td class="text-center text-muted d-none d-md-table-cell">${notice.id}</td>
-                            <td>
-                                <a href="${notice.link}" class="text-decoration-none text-dark fw-bold">
-                                    <span class="badge ${badgeClass} me-2">${notice.type}</span>
-                                    ${notice.title}
-                                </a>
-                            </td>
-                            <td class="text-center text-muted d-none d-md-table-cell">${notice.author}</td>
-                            <td class="text-center text-muted d-none d-md-table-cell">${notice.date}</td>
-                        </tr>
-                    `;
-                });
-            }
-            tableBody.innerHTML = html;
-
-            // ==========================================
-            // 3. 페이지네이션 버튼 그리기
-            // ==========================================
-            renderPagination(totalPages, currentPage);
-
-            function renderPagination(totalPages, currentPage) {
-                let paginationHtml = '';
-
-                // [이전] 버튼
-                // 1페이지면 비활성화(disabled), 아니면 이전 페이지로 링크
-                const prevDisabled = currentPage === 1 ? 'disabled' : '';
-                const prevPage = currentPage - 1;
-                paginationHtml += `
-                    <li class="page-item ${prevDisabled}">
-                        <a class="page-link" href="?page=${prevPage}" aria-label="Previous">
-                            <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
-                        </a>
-                    </li>
-                `;
-
-                // [숫자] 버튼 (1, 2, 3...)
-                for (let i = 1; i <= totalPages; i++) {
-                    // 현재 보고 있는 페이지면 색칠(active)
-                    const activeClass = i === currentPage ? 'active' : '';
-                    paginationHtml += `
-                        <li class="page-item ${activeClass}">
-                            <a class="page-link" href="?page=${i}">${i}</a>
-                        </li>
-                    `;
-                }
-
-                // [다음] 버튼
-                // 마지막 페이지면 비활성화
-                const nextDisabled = currentPage === totalPages ? 'disabled' : '';
-                const nextPage = currentPage + 1;
-                paginationHtml += `
-                    <li class="page-item ${nextDisabled}">
-                        <a class="page-link" href="?page=${nextPage}" aria-label="Next">
-                            <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
-                        </a>
-                    </li>
-                `;
-
-                paginationWrapper.innerHTML = paginationHtml;
-            }
-        });
-    </script>
+    <script type="module" src="/assets/js/pages/notice-list.js?v=20260530-no-local-data"></script>
 </body>
 </html>

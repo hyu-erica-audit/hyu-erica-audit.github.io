@@ -1,47 +1,45 @@
-/* =========================================
-   전체적인 스타일 및 변수 설정
-   ========================================= */
+
 
 html {
-    overflow-y: scroll; 
+    overflow-y: scroll;
 }
 
 :root {
-    /* --- 브랜드 컬러 --- */
-    --primary-color: #2c2c2c;       /* 메인 컬러 */
-    --primary-point: #4A90E2;       /* 마우스 호버 컬러 */
-    
-    /* --- 텍스트 컬러 --- */
-    --text-dark: #212529;           /* 기본 검정 텍스트 */
-    --text-body: #495057;           /* 본문용 진한 회색 */
-    --text-subtle: #555555;         /* 부가 설명용 중간 회색 */
-    --text-light: #adb5bd;          /* 연한 회색 (푸터 등) */
-    --text-white: #ffffff;          /* 완전 흰색 */
 
-    /* --- 배경 컬러 --- */
-    --bg-light: #f8f9fa;          
-    --bg-dark: #212529;           
+    --primary-color: #2c2c2c;
+    --primary-point: #4A90E2;
+
+
+    --text-dark: #212529;
+    --text-body: #495057;
+    --text-subtle: #555555;
+    --text-light: #adb5bd;
+    --text-white: #ffffff;
+
+
+    --bg-light: #f8f9fa;
+    --bg-dark: #212529;
     --bg-darkgray: #343a40;
-    --bg-gray: #c5c5c5;            
-    --bg-whitegray: #f1f1f1;        
+    --bg-gray: #c5c5c5;
+    --bg-whitegray: #f1f1f1;
 
-    
-    /* --- 푸터 전용 --- */
+
+
     --footer-bg: #212529;
     --footer-text: #ffffff;
-    --footer-lore: #adb5bd;         /* 푸터 내 설명 텍스트 */
-    
-    /* --- 네비게이션 전용 (모바일/특수) --- */
-    --nav-mobile-text: rgba(255, 255, 255, 0.9);    /* 모바일 메뉴 글자 */
-    --nav-mobile-subtext: rgba(255, 255, 255, 0.7); /* 모바일 서브메뉴 글자 */
-    --shadow-color: rgba(0, 0, 0, 0.1);             /* 그림자 색상 */
+    --footer-lore: #adb5bd;
 
-    /* --- 공통 수치 --- */
+
+    --nav-mobile-text: rgba(255, 255, 255, 0.9);
+    --nav-mobile-subtext: rgba(255, 255, 255, 0.7);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+
+
     --navbar-height: 80px;
     --border-radius: 0.5rem;
 }
 
-/* 기본 폰트 및 레이아웃 설정 */
+
 body {
     font-family: 'Nanum Gothic', "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
     display: flex;
@@ -50,42 +48,40 @@ body {
     color: var(--text-dark);
 }
 
-main { 
-    flex: 1; 
+main {
+    flex: 1;
 }
 
-/* =========================================
-   상단 바 스타일 설정
-   ========================================= */
+
 .navbar {
     background-color: var(--primary-color) !important;
 }
 
 .navbar-logo {
-    height: 30px;       
-    width: auto;        
+    height: 30px;
+    width: auto;
     object-fit: contain;
 }
 
-.navbar-brand { 
-    font-weight: 800; 
-    letter-spacing: -0.5px; 
+.navbar-brand {
+    font-weight: 800;
+    letter-spacing: -0.5px;
 }
 
-/* 드롭다운 화살표 제거 */
-.dropdown-toggle::after { 
-    display: none !important; 
+
+.dropdown-toggle::after {
+    display: none !important;
 }
 
-/* --- 모바일 화면 설정 (991px 이하) --- */
+
 @media (max-width: 991px) {
     .navbar {
-        padding-top: 15px !important; 
+        padding-top: 15px !important;
         padding-bottom: 15px !important;
     }
 
     .navbar-nav .dropdown-menu {
-        display: block; 
+        display: block;
         border: none;
         background-color: transparent;
         padding-left: 20px;
@@ -93,19 +89,19 @@ main {
         padding-bottom: 10px;
         box-shadow: none;
     }
-    
-    .navbar-nav .nav-link { 
-        color: var(--nav-mobile-text) !important; 
-        font-weight: bold; 
+
+    .navbar-nav .nav-link {
+        color: var(--nav-mobile-text) !important;
+        font-weight: bold;
     }
-    
-    .navbar-nav .dropdown-item { 
-        color: var(--nav-mobile-subtext); 
-        padding: 5px 0; 
+
+    .navbar-nav .dropdown-item {
+        color: var(--nav-mobile-subtext);
+        padding: 5px 0;
     }
-    
-    .navbar-nav .dropdown-item:hover { 
-        background-color: transparent; 
+
+    .navbar-nav .dropdown-item:hover {
+        background-color: transparent;
         color: var(--text-white);
     }
 
@@ -116,9 +112,9 @@ main {
     }
 }
 
-/* --- PC 화면 설정 (992px 이상) --- */
+
 @media (min-width: 992px) {
-    /* 드롭다운 메뉴 위치 */
+
     .dropdown:hover .dropdown-menu {
         display: block;
         margin-top: 0;
@@ -128,22 +124,22 @@ main {
         box-shadow: 0 4px 6px var(--shadow-color);
     }
 
-    /* 메뉴 버튼 크기 & 간격 */
+
     .navbar-nav .nav-link {
-        padding-top: 25px !important; 
-        padding-bottom: 25px !important; 
+        padding-top: 25px !important;
+        padding-bottom: 25px !important;
         padding-left: 40px !important;
         padding-right: 40px !important;
         position: relative;
         display: flex;
-        align-items: center; 
-        height: 100%; 
+        align-items: center;
+        height: 100%;
         font-weight: 500;
     }
-    
+
     .navbar-nav > .nav-item { margin: 0; }
 
-    /* 밑줄 애니메이션 */
+
     .navbar-nav .nav-link::before {
         content: "";
         position: absolute;
@@ -157,17 +153,17 @@ main {
         z-index: 100;
     }
 
-    /* 호버 시 밑줄 길어짐 */
+
     .nav-item:hover .nav-link::before {
         width: 80%;
     }
-    
-    /* 현재 페이지 활성화(Active) 시 밑줄 유지 (JS 연동) */
+
+
     .navbar-nav .nav-link.active::before {
         width: 80%;
     }
 
-    /* 드롭다운 아이템 간격 */
+
     .dropdown-item {
         font-size: 14px;
         padding-top: 12px;
@@ -176,29 +172,27 @@ main {
 
     .navbar-nav .dropdown-item.active {
         background-color: var(--bg-light) !important;
-        color: var(--text-dark) !important; 
+        color: var(--text-dark) !important;
         font-weight: 800;
     }
     .navbar-nav .dropdown-item:hover {
         background-color: var(--bg-whitegray) !important;
-        color: var(--primary-color) !important; 
+        color: var(--primary-color) !important;
     }
 
 }
 
-/* 네비바에서 현재 페이지(Active) 텍스트 강조 */
+
 .navbar-nav .nav-link.active {
     color: var(--text-white) !important;
     font-weight: 800;
     opacity: 1;
 }
 
-/* =========================================
-   인스타그램 아이콘 호버 효과
-   ========================================= */
+
 .insta-hover {
     transition: all 0.3s ease;
-    display: inline-flex; 
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 }
@@ -210,9 +204,7 @@ main {
     }
 }
 
-/* =========================================
-   푸터 (Footer) 스타일
-   ========================================= */
+
 .footer {
     background-color: var(--footer-bg);
     color: var(--footer-lore);
@@ -245,121 +237,115 @@ main {
     transform: scale(1.1);
 }
 
-/* =========================================
-   약관 및 개인정보처리방침 스타일
-   ========================================= */
 
-/* 약관 본문 영역 */
+
+
 .policy-content {
-    line-height: 1.8;          
-    word-break: keep-all;      
-    color: var(--text-body);   /* #495057 -> 변수 교체 */
+    line-height: 1.8;
+    word-break: keep-all;
+    color: var(--text-body);
 }
 
-/* 조항 제목 */
+
 .policy-title {
-    margin-top: 2.5rem;        
-    margin-bottom: 1rem;       
-    font-weight: 700;          
-    color: var(--primary-color); 
-    border-left: 4px solid var(--primary-color); 
-    padding-left: 10px;        
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    border-left: 4px solid var(--primary-color);
+    padding-left: 10px;
 }
 
-/* =========================================
-   리스트 스타일 (중첩 목록)
-   ========================================= */
 
-/* 숫자 목록 */
+
+
 .policy-list > li {
-    font-size: 1.05rem;     
-    margin-bottom: 1.5rem;  
-    font-weight: bold;      
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
 }
 
-/* 제목 텍스트 (strong 태그) */
+
 .policy-list > li > strong {
-    display: block;         
-    margin-bottom: 0.5rem;  
+    display: block;
+    margin-bottom: 0.5rem;
     color: var(--text-dark);
 }
 
-/* 하위 점 목록  */
+
 .policy-sublist {
-    list-style-type: disc;  
-    padding-left: 1.5rem;   
+    list-style-type: disc;
+    padding-left: 1.5rem;
     margin-bottom: 0;
 }
 
 .policy-sublist li {
-    font-size: 0.95rem;     
-    font-weight: normal;    
+    font-size: 0.95rem;
+    font-weight: normal;
     color: var(--text-subtle);
-    margin-bottom: 0.3rem;  
-    line-height: 1.6;       
+    margin-bottom: 0.3rem;
+    line-height: 1.6;
 }
 
-/* =========================================
-   메인 화면 (Hero Section) 스타일
-   ========================================= */
 
-/* Hero 영역 설정 */
+
+
 .hero-section {
     position: relative;
     width: 100%;
-    /* 네비게이션 바 높이(약 80px)를 뺀 나머지 화면을 꽉 채움 */
-    min-height: calc(100vh - 70px); 
-    
+
+    min-height: calc(100vh - 70px);
+
     background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darkgray) 100%);
     color: var(--text-white);
     overflow: hidden;
 }
 
-/* 메인 타이틀 (슬로건) */
+
 .hero-title {
-    font-size: 3.5rem; 
+    font-size: 3.5rem;
     font-weight: 800;
     line-height: 1.3;
     letter-spacing: -1px;
-    
-    /* 등장 애니메이션 적용 */
+
+
     animation: fadeUp 1s ease-out forwards;
     opacity: 0;
     transform: translateY(20px);
 }
 
-/* 강조 텍스트 */
+
 .text-highlight {
     color: var(--primary-point);
 }
 
-/* 서브 타이틀 */
+
 .hero-subtitle {
     font-size: 1.25rem;
     color: var(--text-light);
     font-weight: 300;
-    
-    /* 등장 애니메이션 (0.5초 늦게 등장) */
+
+
     animation: fadeUp 1s ease-out 0.5s forwards;
     opacity: 0;
     transform: translateY(20px);
 }
 
-/* 스크롤 유도 화살표 */
+
 .scroll-indicator {
     position: absolute;
-    bottom: 30px;           /* 바닥에서 30px 위 */
+    bottom: 30px;
     left: 50%;
-    transform: translateX(-50%); /* 정확히 가운데 정렬 */
-    
-    /* 둥둥 떠다니는 애니메이션 */
+    transform: translateX(-50%);
+
+
     animation: bounce 2s infinite;
     cursor: pointer;
 }
 
-/* --- 애니메이션 정의 (Keyframes) --- */
 
-/* 1. 위로 서서히 떠오르는 효과 */
+
+
 @keyframes fadeUp {
     to {
         opacity: 1;
@@ -367,7 +353,7 @@ main {
     }
 }
 
-/* 2. 위아래로 둥둥 떠다니는 효과 */
+
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {
         transform: translateX(-50%) translateY(0);
@@ -380,127 +366,123 @@ main {
     }
 }
 
-/* --- 모바일 반응형 처리 --- */
+
 @media (max-width: 768px) {
     .hero-title {
-        font-size: 2.2rem; /* 모바일에서는 글자 크기 줄임 */
+        font-size: 2.2rem;
     }
     .hero-subtitle {
         font-size: 1rem;
     }
 }
 
-/* =========================================
-   소개 섹션 (Intro Section) 스타일
-   ========================================= */
 
-/* 섹션 패딩 조절 */
+
+
 .intro-section {
-    padding-top: 120px;  
-    padding-bottom: 180px; 
+    padding-top: 120px;
+    padding-bottom: 180px;
 }
 
-/* 소개글 줄 간격 넓히기 */
+
 .intro-desc {
-    line-height: 1.8; 
+    line-height: 1.8;
 }
 
-/* 설명과 카드 섹션 간격 조절 */
+
 .intro-header {
-    margin-bottom: 160px; 
+    margin-bottom: 160px;
 }
 
-/* 모바일에서는 간격을 조금 줄여서 비율을 맞춤 */
+
 @media (max-width: 768px) {
     .intro-header {
-        margin-bottom: 60px; 
+        margin-bottom: 60px;
     }
 }
 
-/* 줄바꿈 제어 (단어 중간 끊김 방지) */
+
 .keep-all {
     word-break: keep-all;
 }
 
-/* 핵심 가치 카드 기본 설정 */
+
 .value-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background-color: var(--text-white);
 }
 
-/* 호버 효과: 카드가 살짝 위로 뜨면서 그림자가 진해짐 */
+
 .value-card:hover {
-    transform: translateY(-10px); /* 위로 10px 이동 */
+    transform: translateY(-10px);
     box-shadow: 0 1rem 3rem rgba(0,0,0,0.15) !important;
 }
 
-/* 4. 아이콘 박스 스타일 */
+
 .icon-box {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 80px;
     height: 80px;
-    border-radius: 50%; /* 원형 */
+    border-radius: 50%;
     background-color: rgba(44, 44, 44, 0.05);
-    color: var(--primary-color); /* 아이콘 색상 (브랜드 컬러) */
+    color: var(--primary-color);
     transition: all 0.3s ease;
 }
 
-/* 카드에 마우스 올리면 아이콘 색상도 바뀜 (포인트) */
+
 .value-card:hover .icon-box {
     background-color: var(--primary-point);
     color: var(--text-white);
 }
 
-/* 5. 'About Us' 작은 텍스트 색상 */
+
 .text-primary {
-    color: var(--primary-point) !important; /* 파란색 포인트 */
+    color: var(--primary-point) !important;
 }
 
-/* =========================================
-   모집 CTA 섹션 (Call To Action) 스타일
-   ========================================= */
+
 
 .cta-section {
     position: relative;
     width: 100%;
     padding: 100px 0;
-    
-    /* linear-gradient: 이미지 위에 검은색 반투명 막을 씌워서 글씨가 잘 보이게 함 */
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+
+
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
                 url('../images/main/recruit_bg.jpg');
-    
-    background-size: cover;      /* 이미지를 꽉 차게 */
-    background-position: center; /* 중앙 정렬 */
+
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
-    
-    /* 패럴랙스 효과 (PC에서만 배경 고정) */
-    background-attachment: fixed; 
+
+
+    background-attachment: fixed;
 }
 
-/* 모집 버튼 꾸미기 */
+
 .recruit-btn {
     transition: all 0.3s ease;
-    border-width: 2px; /* 테두리 조금 두껍게 */
+    border-width: 2px;
 }
 
 .recruit-btn:hover {
     background-color: var(--text-white);
-    color: var(--bg-dark); /* 호버 시 글자색 반전 */
-    transform: translateY(-3px); /* 버튼이 살짝 올라옴 */
-    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3); /* 흰색 빛나는 그림자 */
+    color: var(--bg-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
 }
 
-/* 모바일에서는 패럴랙스 효과 해제 및 패딩 조절 */
+
 @media (max-width: 768px) {
     .cta-section {
         background-attachment: scroll;
         padding: 80px 0;
     }
-    
+
     .cta-section h2 {
-        font-size: 1.8rem; /* 모바일 폰트 조절 */
+        font-size: 1.8rem;
     }
 }
 
