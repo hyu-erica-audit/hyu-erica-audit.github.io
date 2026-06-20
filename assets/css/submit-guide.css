@@ -34,37 +34,11 @@
 }
 
 .guide-toc {
-    background: #f7f9fb;
-    border-radius: 22px;
+    background: transparent;
+    border-radius: 0;
     margin-bottom: 22px;
-    padding: 24px;
+    padding: 0;
     scroll-margin-top: 90px;
-}
-
-.guide-toc-heading {
-    align-items: center;
-    display: flex;
-    gap: 10px;
-    margin-bottom: 16px;
-}
-
-.guide-toc-heading i {
-    align-items: center;
-    background: rgba(74, 144, 226, 0.14);
-    border-radius: 14px;
-    color: var(--primary-point);
-    display: inline-flex;
-    font-size: 1.25rem;
-    height: 44px;
-    justify-content: center;
-    width: 44px;
-}
-
-.guide-toc-heading h2 {
-    color: var(--primary-color);
-    font-size: 1.18rem;
-    font-weight: 800;
-    margin: 0;
 }
 
 .guide-toc-list {
