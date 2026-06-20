@@ -506,23 +506,81 @@
 
 .file-order-example {
     background: #ffffff;
+    border: 1px solid rgba(74, 144, 226, 0.16);
     border-radius: 16px;
-    padding: 12px;
+    box-shadow: 0 14px 26px rgba(33, 37, 41, 0.06);
+    padding: 14px;
+}
+
+.file-folder-row {
+    align-items: center;
+    background: #eef5ff;
+    border: 1px solid rgba(74, 144, 226, 0.18);
+    border-radius: 12px;
+    color: var(--primary-color);
+    display: flex;
+    font-size: 0.96rem;
+    gap: 10px;
+    padding: 11px 12px;
+}
+
+.file-folder-row i {
+    color: var(--primary-point);
+    font-size: 1.25rem;
+}
+
+.file-folder-children {
+    margin-left: 17px;
+    padding: 8px 0 0 24px;
+    position: relative;
+}
+
+.file-folder-children::before {
+    background: rgba(74, 144, 226, 0.24);
+    content: "";
+    height: calc(100% - 23px);
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 2px;
 }
 
 .file-order-row {
     align-items: center;
     color: var(--text-body);
+    background: #ffffff;
+    border: 1px solid rgba(33, 37, 41, 0.08);
+    border-radius: 10px;
     display: flex;
     font-size: 0.9rem;
     font-weight: 700;
     gap: 10px;
+    margin-top: 8px;
     padding: 9px 10px;
+    position: relative;
     word-break: keep-all;
 }
 
-.file-order-row + .file-order-row {
-    border-top: 1px solid rgba(33, 37, 41, 0.08);
+.file-order-row::before {
+    background: rgba(74, 144, 226, 0.24);
+    content: "";
+    height: 2px;
+    left: -24px;
+    position: absolute;
+    top: 50%;
+    width: 18px;
+}
+
+.file-order-row::after {
+    background: #ffffff;
+    border: 2px solid rgba(74, 144, 226, 0.32);
+    border-radius: 50%;
+    content: "";
+    height: 7px;
+    left: -28px;
+    position: absolute;
+    top: calc(50% - 3.5px);
+    width: 7px;
 }
 
 .file-order-row i {
