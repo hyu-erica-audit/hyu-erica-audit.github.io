@@ -355,7 +355,7 @@
 }
 
 .notice-item {
-    align-items: flex-start;
+    align-items: center;
     background: rgba(255, 255, 255, 0.62);
     border-radius: 16px;
     display: grid;

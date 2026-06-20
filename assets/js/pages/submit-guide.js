@@ -28,6 +28,20 @@ function initSubmissionCardDetails() {
     });
 }
 
+function setCopyButtonLabel(button, text) {
+    const label = button.querySelector("span");
+
+    if (label) {
+        label.textContent = text;
+    }
+}
+
+function resetCopyButtonLabel(button, text) {
+    window.setTimeout(() => {
+        setCopyButtonLabel(button, text);
+    }, 1600);
+}
+
 function initInquiryCopyButtons() {
     const copyButtons = document.querySelectorAll(".inquiry-copy-button[data-copy-target]");
 
@@ -42,16 +56,12 @@ function initInquiryCopyButtons() {
 
             try {
                 await navigator.clipboard.writeText(text);
-                const label = button.querySelector("span");
-
-                if (label) {
-                    label.textContent = "복사됨";
-                    window.setTimeout(() => {
-                        label.textContent = defaultText;
-                    }, 1600);
-                }
+                setCopyButtonLabel(button, "복사됨");
+                resetCopyButtonLabel(button, defaultText);
             } catch (error) {
                 console.error("Copy failed:", error);
+                setCopyButtonLabel(button, "실패");
+                resetCopyButtonLabel(button, defaultText);
             }
         });
     });
