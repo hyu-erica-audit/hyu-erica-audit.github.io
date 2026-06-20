@@ -28,6 +28,36 @@ function initSubmissionCardDetails() {
     });
 }
 
+function initInquiryCopyButtons() {
+    const copyButtons = document.querySelectorAll(".inquiry-copy-button[data-copy-target]");
+
+    copyButtons.forEach(button => {
+        const defaultText = button.querySelector("span")?.textContent || "복사";
+
+        button.addEventListener("click", async () => {
+            const target = document.getElementById(button.dataset.copyTarget);
+            const text = target?.textContent;
+
+            if (!text) return;
+
+            try {
+                await navigator.clipboard.writeText(text);
+                const label = button.querySelector("span");
+
+                if (label) {
+                    label.textContent = "복사됨";
+                    window.setTimeout(() => {
+                        label.textContent = defaultText;
+                    }, 1600);
+                }
+            } catch (error) {
+                console.error("Copy failed:", error);
+            }
+        });
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     initSubmissionCardDetails();
+    initInquiryCopyButtons();
 });
