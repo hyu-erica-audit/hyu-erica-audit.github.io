@@ -972,6 +972,187 @@
     color: var(--primary-point);
 }
 
+.proof-folder-rule {
+    background: #f7f9fb;
+    border-radius: 22px;
+    display: grid;
+    gap: 22px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 18px;
+    padding: 24px;
+}
+
+.proof-folder-rule-copy {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    grid-column: 1 / -1;
+}
+
+.proof-folder-rule-icon {
+    align-items: center;
+    background: rgba(74, 144, 226, 0.14);
+    border-radius: 18px;
+    color: var(--primary-point);
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 1.55rem;
+    height: 58px;
+    justify-content: center;
+    width: 58px;
+}
+
+.proof-folder-rule-copy h3 {
+    color: var(--primary-color);
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0 0 10px;
+    word-break: keep-all;
+}
+
+.proof-folder-rule-copy p {
+    color: var(--text-body);
+    font-size: 0.94rem;
+    line-height: 1.8;
+    margin: 0;
+    word-break: keep-all;
+}
+
+.proof-folder-diagram {
+    display: grid;
+    gap: 12px;
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.proof-folder-panel {
+    background: #ffffff;
+    border: 1px solid rgba(74, 144, 226, 0.16);
+    border-radius: 16px;
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+}
+
+.proof-folder-panel-main {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.proof-folder-panel-title {
+    align-items: center;
+    color: var(--primary-color);
+    display: flex;
+    font-size: 0.95rem;
+    gap: 9px;
+}
+
+.proof-folder-panel-title i {
+    color: var(--primary-point);
+    font-size: 1.15rem;
+}
+
+.proof-folder-file-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.proof-folder-file-column {
+    display: grid;
+    gap: 10px;
+}
+
+.proof-folder-pill,
+.proof-folder-stack span {
+    align-items: center;
+    border-radius: 12px;
+    color: var(--text-body);
+    display: flex;
+    font-size: 0.88rem;
+    font-weight: 700;
+    gap: 8px;
+    line-height: 1.45;
+    padding: 9px 10px;
+}
+
+.proof-folder-pill.is-wrong {
+    background: #eef5ff;
+    color: var(--text-body);
+}
+
+.proof-folder-pill.is-correct,
+.proof-folder-stack span {
+    background: #eef5ff;
+}
+
+.proof-folder-pill i,
+.proof-folder-pill.is-correct i,
+.proof-folder-stack span::before {
+    color: var(--primary-point);
+}
+
+.proof-folder-stack {
+    display: grid;
+    gap: 8px;
+}
+
+.proof-folder-stack span::before {
+    content: "→";
+    flex: 0 0 auto;
+    font-weight: 900;
+}
+
+.proof-ledger-folder {
+    background: #eef5ff;
+    border-radius: 12px;
+    display: grid;
+    gap: 8px;
+    padding: 10px;
+}
+
+.proof-ledger-folder-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.proof-ledger-folder-title {
+    align-items: center;
+    color: var(--primary-color);
+    display: flex;
+    font-size: 0.9rem;
+    gap: 8px;
+}
+
+.proof-ledger-folder-title i {
+    color: var(--primary-point);
+    flex: 0 0 auto;
+}
+
+.proof-ledger-files {
+    display: grid;
+    gap: 7px;
+}
+
+.proof-ledger-files span {
+    align-items: center;
+    background: #ffffff;
+    border-radius: 10px;
+    color: var(--text-body);
+    display: flex;
+    font-size: 0.86rem;
+    font-weight: 700;
+    gap: 8px;
+    line-height: 1.45;
+    padding: 8px 10px;
+}
+
+.proof-ledger-files i {
+    color: var(--primary-point);
+    flex: 0 0 auto;
+}
+
 @keyframes detail-enter {
     from {
         opacity: 0;
@@ -1036,6 +1217,17 @@
         grid-column: 1 / -1;
     }
 
+    .proof-folder-rule {
+        grid-template-columns: 1fr;
+    }
+
+    .proof-folder-rule-copy,
+    .proof-folder-diagram,
+    .proof-folder-panel-main {
+        grid-column: auto;
+        grid-row: auto;
+    }
+
     .receipt-special-case > div:not(.receipt-special-image),
     .receipt-special-case-reverse > div:not(.receipt-special-image) {
         padding: 0 26px 28px;
@@ -1079,6 +1271,23 @@
 
     .file-order-copy {
         text-align: center;
+    }
+
+    .proof-folder-rule-copy {
+        display: grid;
+        text-align: center;
+    }
+
+    .proof-folder-rule-icon {
+        margin: 0 auto;
+    }
+
+    .proof-folder-file-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .proof-ledger-folder-grid {
+        grid-template-columns: 1fr;
     }
 
     .additional-proof-filing-icon {
