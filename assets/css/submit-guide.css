@@ -1,7 +1,9 @@
 .guide-hero {
-    background: linear-gradient(135deg, #222831 0%, var(--bg-darkgray) 100%);
+    background:
+        radial-gradient(circle at 82% 18%, rgba(74, 144, 226, 0.18), transparent 34%),
+        linear-gradient(135deg, #222831 0%, var(--bg-darkgray) 100%);
     color: var(--text-white);
-    padding: 92px 0 84px;
+    padding: 96px 0 78px;
     text-align: center;
 }
 
@@ -10,6 +12,7 @@
     font-size: 0.9rem;
     font-weight: 800;
     letter-spacing: 0;
+    margin: 0 0 18px;
     text-transform: uppercase;
 }
 
@@ -351,8 +354,10 @@
 }
 
 .drive-folder-preview {
+    align-self: start;
     background: #f7f9fb;
     border-radius: 22px;
+    margin-top: -42px;
     padding: 22px;
 }
 
@@ -463,6 +468,334 @@
     font-size: 0.9rem;
     line-height: 1.7;
     margin: 0;
+    word-break: keep-all;
+}
+
+.settlement-writing-block {
+    align-items: stretch;
+    display: grid;
+    gap: 18px;
+    grid-template-columns: minmax(220px, 0.35fr) minmax(0, 1fr);
+}
+
+.settlement-writing-block + .settlement-writing-block {
+    margin-top: 24px;
+}
+
+.settlement-writing-copy {
+    margin-bottom: 28px;
+}
+
+.settlement-writing-card {
+    height: 260px;
+    min-height: 0;
+}
+
+.settlement-screenshot-preview {
+    background: #f7f9fb;
+    border-radius: 18px;
+    height: 260px;
+    min-height: 0;
+    overflow: hidden;
+    padding: 12px;
+}
+
+.settlement-screenshot-preview img {
+    border-radius: 12px;
+    display: block;
+    height: 100%;
+    object-fit: contain;
+    width: 100%;
+}
+
+.settlement-screenshot-empty {
+    align-items: center;
+    border: 1px dashed rgba(74, 144, 226, 0.45);
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+    font-weight: 700;
+    gap: 10px;
+    justify-content: center;
+    text-align: center;
+}
+
+.settlement-screenshot-empty i {
+    color: var(--primary-point);
+    font-size: 2rem;
+}
+
+.settlement-caution-copy {
+    margin-bottom: 22px;
+}
+
+.settlement-caution-list {
+    display: grid;
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.settlement-caution-list li {
+    background: #f7f9fb;
+    border-radius: 16px;
+    color: var(--text-body);
+    font-size: 0.98rem;
+    line-height: 1.85;
+    padding: 18px 20px 18px 56px;
+    position: relative;
+    word-break: keep-all;
+}
+
+.settlement-caution-list li::before {
+    align-items: center;
+    background: rgba(74, 144, 226, 0.13);
+    border-radius: 999px;
+    color: var(--primary-point);
+    content: "!";
+    display: inline-flex;
+    font-size: 0.78rem;
+    font-weight: 900;
+    height: 24px;
+    justify-content: center;
+    left: 16px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+}
+
+.settlement-example-link {
+    align-items: center;
+    background: #f6f9ff;
+    border: 1px solid rgba(74, 144, 226, 0.16);
+    border-radius: 20px;
+    color: inherit;
+    display: flex;
+    gap: 18px;
+    padding: 24px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.settlement-example-link:hover,
+.settlement-example-link:focus-visible {
+    background: #eef5ff;
+    box-shadow: 0 16px 34px rgba(44, 44, 44, 0.1);
+    color: inherit;
+    transform: translateY(-3px);
+}
+
+.settlement-example-link:focus-visible {
+    outline: 3px solid rgba(74, 144, 226, 0.35);
+    outline-offset: 3px;
+}
+
+.settlement-example-icon {
+    align-items: center;
+    background: rgba(74, 144, 226, 0.14);
+    border-radius: 18px;
+    color: var(--primary-point);
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 1.7rem;
+    height: 62px;
+    justify-content: center;
+    width: 62px;
+}
+
+.settlement-example-copy {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+}
+
+.settlement-example-copy strong {
+    color: var(--primary-color);
+    font-size: 1.08rem;
+    font-weight: 800;
+    word-break: keep-all;
+}
+
+.settlement-example-copy span {
+    color: var(--text-body);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    word-break: keep-all;
+}
+
+.settlement-example-arrow {
+    color: var(--primary-point);
+    font-size: 1.25rem;
+    margin-left: auto;
+}
+
+.additional-proof-intro {
+    margin-bottom: 26px;
+}
+
+.additional-proof-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.additional-proof-card {
+    background: #f7f9fb;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 22px 30px;
+    position: relative;
+}
+
+.additional-proof-number {
+    align-items: center;
+    background: rgba(74, 144, 226, 0.13);
+    border-radius: 999px;
+    color: var(--primary-point);
+    display: inline-flex;
+    font-size: 0.82rem;
+    font-weight: 900;
+    height: 30px;
+    justify-content: center;
+    margin-bottom: 14px;
+    width: 30px;
+}
+
+.additional-proof-card h3 {
+    color: var(--primary-color);
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0 0 12px;
+    word-break: keep-all;
+}
+
+.additional-proof-card p {
+    color: var(--text-body);
+    font-size: 0.94rem;
+    line-height: 1.75;
+    margin: 0 0 14px;
+    word-break: keep-all;
+}
+
+.additional-proof-card ul {
+    display: grid;
+    gap: 7px;
+    list-style: none;
+    margin: 0 0 24px;
+    padding: 0;
+}
+
+.additional-proof-card li {
+    color: var(--text-body);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    padding-left: 16px;
+    position: relative;
+    word-break: keep-all;
+}
+
+.additional-proof-card li::before {
+    background: var(--primary-point);
+    border-radius: 999px;
+    content: "";
+    height: 5px;
+    left: 0;
+    position: absolute;
+    top: 0.78em;
+    width: 5px;
+}
+
+.additional-proof-card .additional-proof-note {
+    background: #ffffff;
+    border-radius: 12px;
+    color: var(--text-subtle);
+    font-size: 0.88rem;
+    margin: auto 0 0;
+    padding: 12px 14px;
+}
+
+.additional-proof-filing {
+    align-items: center;
+    background: #f6f9ff;
+    border-radius: 20px;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: auto minmax(0, 1fr) minmax(240px, 0.6fr);
+    margin-top: 22px;
+    padding: 24px;
+}
+
+.additional-proof-filing-card {
+    background: #f6f9ff;
+}
+
+.additional-proof-filing-icon {
+    align-items: center;
+    background: rgba(74, 144, 226, 0.14);
+    border-radius: 999px;
+    color: var(--primary-point);
+    display: inline-flex;
+    font-size: 0.95rem;
+    height: 30px;
+    justify-content: center;
+    margin-bottom: 14px;
+    width: 30px;
+}
+
+.additional-proof-filing-copy h3 {
+    color: var(--primary-color);
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0 0 10px;
+}
+
+.additional-proof-filing-copy p {
+    color: var(--text-body);
+    font-size: 0.94rem;
+    line-height: 1.8;
+    margin: 0;
+    word-break: keep-all;
+}
+
+.additional-proof-file-list {
+    background: #ffffff;
+    border: 1px solid rgba(74, 144, 226, 0.16);
+    border-radius: 14px;
+    display: grid;
+    gap: 8px;
+    margin-top: auto;
+    padding: 14px;
+}
+
+.additional-proof-file-list span {
+    align-items: center;
+    color: var(--primary-color);
+    display: flex;
+    font-size: 0.88rem;
+    font-weight: 700;
+    gap: 9px;
+    line-height: 1.45;
+}
+
+.additional-proof-file-list i {
+    color: var(--primary-point);
+    flex: 0 0 auto;
+    font-size: 1rem;
+}
+
+.additional-proof-summary {
+    background: rgba(74, 144, 226, 0.1);
+    border-radius: 16px;
+    color: var(--primary-color);
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.8;
+    margin-top: 16px;
+    padding: 18px 20px;
     word-break: keep-all;
 }
 
@@ -630,8 +963,25 @@
         grid-template-columns: 1fr;
     }
 
+    .drive-folder-preview {
+        margin-top: 0;
+    }
+
     .submission-step-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .settlement-writing-block {
+        grid-template-columns: 1fr;
+    }
+
+    .settlement-example-link {
+        align-items: flex-start;
+    }
+
+    .additional-proof-grid,
+    .additional-proof-filing {
+        grid-template-columns: 1fr;
     }
 
     .file-order-note {
@@ -682,5 +1032,23 @@
 
     .file-order-copy {
         text-align: center;
+    }
+
+    .additional-proof-filing-icon {
+        margin: 0 auto;
+    }
+
+    .additional-proof-filing-copy {
+        text-align: center;
+    }
+
+    .settlement-example-link {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .settlement-example-arrow {
+        grid-column: 2;
+        margin-left: 0;
     }
 }

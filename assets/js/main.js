@@ -50,12 +50,12 @@ function createPageHeader() {
     const subtitle = headerPlaceholder.getAttribute("data-subtitle");
 
     headerPlaceholder.innerHTML = `
-        <section class="page-header text-white py-5" style="background-color: var(--bg-darkgray);">
+        <section class="page-header">
             <div class="container">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h2 class="fw-bold mb-2">${title}</h2>
-                        <p class="text-white-50 mb-0">${subtitle}</p>
+                        <p class="page-header-eyebrow">${subtitle}</p>
+                        <h2 class="page-header-title">${title}</h2>
                     </div>
                 </div>
             </div>

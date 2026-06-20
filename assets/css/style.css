@@ -290,6 +290,36 @@ main {
 
 
 
+.page-header {
+    background:
+        radial-gradient(circle at 82% 18%, rgba(74, 144, 226, 0.18), transparent 34%),
+        linear-gradient(135deg, #222831 0%, var(--bg-darkgray) 100%);
+    color: var(--text-white);
+    padding: 96px 0 78px;
+}
+
+.page-header-eyebrow {
+    color: var(--primary-point);
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    margin: 0 0 18px;
+    text-transform: uppercase;
+    word-break: keep-all;
+}
+
+.page-header-title {
+    color: var(--text-white);
+    font-size: clamp(1.9rem, 3vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.25;
+    margin: 0;
+    word-break: keep-all;
+}
+
+
+
 .hero-section {
     position: relative;
     width: 100%;
