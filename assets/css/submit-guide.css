@@ -729,21 +729,16 @@
     padding: 24px;
 }
 
-.additional-proof-filing-card {
-    background: #f6f9ff;
-}
-
 .additional-proof-filing-icon {
     align-items: center;
     background: rgba(74, 144, 226, 0.14);
-    border-radius: 999px;
+    border-radius: 18px;
     color: var(--primary-point);
     display: inline-flex;
-    font-size: 0.95rem;
-    height: 30px;
+    font-size: 1.6rem;
+    height: 58px;
     justify-content: center;
-    margin-bottom: 14px;
-    width: 30px;
+    width: 58px;
 }
 
 .additional-proof-filing-copy h3 {
@@ -767,7 +762,6 @@
     border-radius: 14px;
     display: grid;
     gap: 8px;
-    margin-top: auto;
     padding: 14px;
 }
 
@@ -787,6 +781,14 @@
     font-size: 1rem;
 }
 
+.additional-proof-file-caption {
+    color: var(--text-subtle);
+    font-size: 0.88rem;
+    line-height: 1.65;
+    margin: 12px 0 0;
+    word-break: keep-all;
+}
+
 .additional-proof-summary {
     background: rgba(74, 144, 226, 0.1);
     border-radius: 16px;
@@ -797,6 +799,47 @@
     margin-top: 16px;
     padding: 18px 20px;
     word-break: keep-all;
+}
+
+.final-submit-copy {
+    margin-bottom: 22px;
+}
+
+.final-submit-checklist {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.final-submit-checklist li {
+    align-items: flex-start;
+    background: #f7f9fb;
+    border-radius: 16px;
+    color: var(--text-body);
+    display: flex;
+    font-size: 0.95rem;
+    gap: 12px;
+    line-height: 1.75;
+    padding: 16px 18px;
+    word-break: keep-all;
+}
+
+.final-submit-checklist li::before {
+    align-items: center;
+    background: rgba(74, 144, 226, 0.13);
+    border-radius: 999px;
+    color: var(--primary-point);
+    content: "✓";
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 0.92rem;
+    height: 26px;
+    justify-content: center;
+    margin-top: 2px;
+    width: 26px;
 }
 
 .file-order-note {
@@ -1019,6 +1062,10 @@
     }
 
     .submission-step-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .final-submit-checklist {
         grid-template-columns: 1fr;
     }
 
