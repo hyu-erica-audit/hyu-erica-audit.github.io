@@ -1,0 +1,628 @@
+.guide-hero {
+    background: linear-gradient(135deg, #222831 0%, var(--bg-darkgray) 100%);
+    color: var(--text-white);
+    padding: 92px 0 84px;
+    text-align: center;
+}
+
+.guide-eyebrow {
+    color: var(--primary-point);
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.guide-hero-title {
+    font-size: clamp(1.9rem, 3vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.25;
+    word-break: keep-all;
+}
+
+.guide-content-section {
+    background: #ffffff;
+    padding: 72px 0;
+}
+
+.guide-content-section > .container {
+    max-width: 1180px;
+}
+
+.guide-section {
+    border-radius: 22px;
+    margin-bottom: 22px;
+    padding: clamp(26px, 4vw, 44px);
+}
+
+.guide-section-heading {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.guide-section-note {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    margin: 0 0 0 auto;
+    word-break: keep-all;
+}
+
+.guide-section-heading h2 {
+    color: var(--primary-color);
+    font-size: clamp(1.35rem, 2vw, 1.78rem);
+    font-weight: 800;
+    margin: 0;
+}
+
+.guide-section-badge {
+    align-items: center;
+    background: rgba(74, 144, 226, 0.13);
+    border-radius: 999px;
+    color: var(--primary-point);
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 0.86rem;
+    font-weight: 800;
+    height: 34px;
+    justify-content: center;
+    width: 48px;
+}
+
+.guide-copy {
+    color: var(--text-body);
+    font-size: 1.03rem;
+    line-height: 1.95;
+    word-break: keep-all;
+}
+
+.guide-copy p:last-child {
+    margin-bottom: 0;
+}
+
+.submission-card-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.submission-card {
+    align-items: center;
+    background: #f7f9fb;
+    border: 0;
+    border-radius: 18px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    justify-content: center;
+    min-height: 172px;
+    padding: 18px;
+    text-align: center;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.submission-card:hover,
+.submission-card:focus-visible {
+    background: #eef5ff;
+    box-shadow: 0 16px 34px rgba(44, 44, 44, 0.1);
+    transform: translateY(-4px);
+}
+
+.submission-card:focus-visible {
+    outline: 3px solid rgba(74, 144, 226, 0.35);
+    outline-offset: 3px;
+}
+
+.submission-card.is-active {
+    background: rgba(74, 144, 226, 0.14);
+    box-shadow: 0 16px 34px rgba(74, 144, 226, 0.16);
+}
+
+.submission-card i {
+    align-items: center;
+    background: rgba(74, 144, 226, 0.13);
+    border-radius: 16px;
+    color: var(--primary-point);
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 1.45rem;
+    height: 54px;
+    justify-content: center;
+    width: 54px;
+}
+
+.submission-card span {
+    color: var(--text-body);
+    font-size: 0.96rem;
+    font-weight: 800;
+    line-height: 1.6;
+    word-break: keep-all;
+}
+
+.submission-detail-list {
+    margin-top: 18px;
+}
+
+.submission-detail {
+    border-radius: 18px;
+    padding: 24px 26px;
+}
+
+.submission-detail h3 {
+    color: var(--primary-color);
+    font-size: 1.08rem;
+    font-weight: 800;
+    margin: 0 0 10px;
+}
+
+.submission-detail p {
+    color: var(--text-body);
+    font-size: 0.98rem;
+    line-height: 1.8;
+    margin: 0;
+    word-break: keep-all;
+}
+
+.submission-detail.is-visible {
+    animation: detail-enter 0.28s ease both;
+}
+
+.receipt-example-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.receipt-example {
+    background: #f7f9fb;
+    border-radius: 22px;
+    display: grid;
+    gap: 22px;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+}
+
+.receipt-example-image,
+.receipt-special-image {
+    align-items: center;
+    background: #edf3fb;
+    display: flex;
+    justify-content: center;
+    min-height: 260px;
+    padding: 18px;
+    text-align: center;
+}
+
+.receipt-example-image img,
+.receipt-special-image img {
+    border-radius: 14px;
+    display: block;
+    height: auto;
+    max-height: 440px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.receipt-example-image img {
+    max-height: 300px;
+}
+
+.receipt-example-body {
+    padding: 0 26px 28px;
+    text-align: center;
+}
+
+.receipt-example-label,
+.receipt-special-label {
+    border-radius: 999px;
+    display: inline-flex;
+    font-size: 0.82rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    padding: 6px 12px;
+}
+
+.receipt-example-valid .receipt-example-label {
+    background: rgba(74, 144, 226, 0.13);
+    color: var(--primary-point);
+}
+
+.receipt-example-invalid .receipt-example-label,
+.receipt-special-label {
+    background: rgba(187, 126, 34, 0.13);
+    color: #9b6816;
+}
+
+.receipt-special-case-valid {
+    background: #edf8f3;
+}
+
+.receipt-special-case-valid .receipt-special-image {
+    min-height: 200px;
+}
+
+.receipt-special-case-valid .receipt-special-image img {
+    max-height: 210px;
+}
+
+.receipt-special-case-valid .receipt-special-label {
+    background: rgba(38, 147, 97, 0.14);
+    color: #1c7a50;
+}
+
+.receipt-example h3,
+.receipt-special-case h3 {
+    color: var(--primary-color);
+    font-size: 1.12rem;
+    font-weight: 800;
+    line-height: 1.45;
+    margin: 0 0 14px;
+    word-break: keep-all;
+}
+
+.receipt-example ul {
+    color: var(--text-body);
+    display: grid;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.receipt-example li {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    line-height: 1.65;
+    word-break: keep-all;
+}
+
+.receipt-example li::before {
+    color: var(--primary-point);
+    content: "•";
+    font-weight: 900;
+    line-height: 1.65;
+}
+
+.receipt-special-case {
+    background: #fff8ea;
+    border-radius: 22px;
+    display: grid;
+    gap: 26px;
+    grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
+    margin-top: 18px;
+    overflow: hidden;
+}
+
+.receipt-special-case .receipt-special-image {
+    min-height: 240px;
+}
+
+.receipt-special-case > div:not(.receipt-special-image) {
+    align-self: center;
+    padding: 24px;
+}
+
+.receipt-special-case > div:not(.receipt-special-image) {
+    padding-left: 0;
+}
+
+.receipt-special-case-reverse {
+    grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.8fr);
+}
+
+.receipt-special-case-reverse > div:not(.receipt-special-image) {
+    padding-left: 30px;
+    padding-right: 0;
+}
+
+.receipt-special-case p {
+    color: var(--text-body);
+    font-size: 0.98rem;
+    line-height: 1.85;
+    margin: 0;
+    word-break: keep-all;
+}
+
+.submission-method-layout {
+    display: grid;
+    gap: 28px;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    margin-bottom: 24px;
+}
+
+.submission-method-copy {
+    color: var(--text-body);
+    font-size: 1.03rem;
+    line-height: 1.9;
+    word-break: keep-all;
+}
+
+.submission-method-copy p {
+    margin: 0 0 16px;
+}
+
+.submission-method-copy p:last-child {
+    margin-bottom: 0;
+}
+
+.drive-folder-preview {
+    background: #f7f9fb;
+    border-radius: 22px;
+    padding: 22px;
+}
+
+.drive-folder-header {
+    align-items: center;
+    color: var(--primary-color);
+    display: flex;
+    font-size: 1rem;
+    font-weight: 800;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.drive-folder-header i {
+    color: var(--primary-point);
+    font-size: 1.25rem;
+}
+
+.drive-folder-item {
+    align-items: center;
+    background: #ffffff;
+    border-radius: 16px;
+    display: flex;
+    gap: 14px;
+    padding: 16px;
+}
+
+.drive-folder-item + .drive-folder-item {
+    margin-top: 10px;
+}
+
+.drive-folder-item i {
+    align-items: center;
+    background: rgba(74, 144, 226, 0.12);
+    border-radius: 14px;
+    color: var(--primary-point);
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 1.25rem;
+    height: 46px;
+    justify-content: center;
+    width: 46px;
+}
+
+.drive-folder-item strong,
+.drive-folder-item span {
+    display: block;
+    word-break: keep-all;
+}
+
+.drive-folder-item strong {
+    color: var(--primary-color);
+    font-size: 0.98rem;
+    margin-bottom: 4px;
+}
+
+.drive-folder-item span {
+    color: var(--text-subtle);
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+.submission-step-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.submission-step-card {
+    background: #f7f9fb;
+    border-radius: 18px;
+    min-height: 210px;
+    padding: 22px 18px;
+    position: relative;
+    text-align: center;
+}
+
+.submission-step-number {
+    align-items: center;
+    background: rgba(74, 144, 226, 0.13);
+    border-radius: 999px;
+    color: var(--primary-point);
+    display: inline-flex;
+    font-size: 0.82rem;
+    font-weight: 900;
+    height: 30px;
+    justify-content: center;
+    margin-bottom: 14px;
+    width: 30px;
+}
+
+.submission-step-card i {
+    color: var(--primary-point);
+    display: block;
+    font-size: 1.65rem;
+    margin-bottom: 12px;
+}
+
+.submission-step-card h3 {
+    color: var(--primary-color);
+    font-size: 1rem;
+    font-weight: 800;
+    margin: 0 0 10px;
+}
+
+.submission-step-card p {
+    color: var(--text-body);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin: 0;
+    word-break: keep-all;
+}
+
+.file-order-note {
+    align-items: center;
+    background: #f6f9ff;
+    border-radius: 22px;
+    display: grid;
+    gap: 22px;
+    grid-template-columns: auto minmax(0, 1fr) minmax(260px, 0.8fr);
+    margin-top: 18px;
+    padding: 24px;
+}
+
+.file-order-icon {
+    align-items: center;
+    background: rgba(74, 144, 226, 0.14);
+    border-radius: 18px;
+    color: var(--primary-point);
+    display: inline-flex;
+    font-size: 1.6rem;
+    height: 58px;
+    justify-content: center;
+    width: 58px;
+}
+
+.file-order-copy h3 {
+    color: var(--primary-color);
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0 0 10px;
+}
+
+.file-order-copy p {
+    color: var(--text-body);
+    font-size: 0.94rem;
+    line-height: 1.8;
+    margin: 0;
+    word-break: keep-all;
+}
+
+.file-order-example {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 12px;
+}
+
+.file-order-row {
+    align-items: center;
+    color: var(--text-body);
+    display: flex;
+    font-size: 0.9rem;
+    font-weight: 700;
+    gap: 10px;
+    padding: 9px 10px;
+    word-break: keep-all;
+}
+
+.file-order-row + .file-order-row {
+    border-top: 1px solid rgba(33, 37, 41, 0.08);
+}
+
+.file-order-row i {
+    color: var(--text-light);
+    flex: 0 0 auto;
+}
+
+.file-order-row.is-primary {
+    color: var(--primary-color);
+}
+
+.file-order-row.is-primary i {
+    color: var(--primary-point);
+}
+
+@keyframes detail-enter {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .submission-detail.is-visible {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (max-width: 991px) {
+    .guide-hero {
+        padding: 68px 0;
+    }
+
+    .submission-card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .receipt-example-grid,
+    .receipt-special-case,
+    .submission-method-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .submission-step-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .file-order-note {
+        align-items: flex-start;
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .file-order-example {
+        grid-column: 1 / -1;
+    }
+
+    .receipt-special-case > div:not(.receipt-special-image),
+    .receipt-special-case-reverse > div:not(.receipt-special-image) {
+        padding: 0 26px 28px;
+    }
+
+    .guide-section-heading {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .guide-section-note {
+        flex-basis: 100%;
+        margin-left: 60px;
+    }
+}
+
+@media (max-width: 576px) {
+    .submission-card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .guide-section-note {
+        margin-left: 0;
+    }
+
+    .submission-step-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .file-order-note {
+        grid-template-columns: 1fr;
+    }
+
+    .file-order-icon {
+        margin: 0 auto;
+    }
+
+    .file-order-copy {
+        text-align: center;
+    }
+}

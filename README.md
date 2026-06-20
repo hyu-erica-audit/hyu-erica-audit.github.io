@@ -34,7 +34,7 @@
 │       └── *-utils.js      # 공통 유틸리티
 ├── pages/
 │   ├── ask/                # FAQ, 요청 관련 페이지
-│   ├── audit/              # 정기 감사 자료
+│   ├── audit/              # 감사 안내, 제출 가이드
 │   ├── intro/              # 인사말, 조직도, 일정, 기여자
 │   ├── notice/             # 공지사항 목록/상세
 │   ├── resources/          # 규정, 서식 다운로드
@@ -56,7 +56,8 @@
 - 인사말: `pages/intro/greeting.html`
 - 조직도: `pages/intro/org.html`
 - 일정: `pages/intro/schedule.html`
-- 정기 감사: `pages/audit/regular.html`
+- 감사 안내: `pages/audit/info.html`
+- 제출 가이드: `pages/audit/submit-guide.html`
 - 감사보고서: `pages/results/2025.html`, `pages/results/2026.html`
 - 회의록: `pages/results/minutes.html`
 - 규정: `pages/resources/rule.html`
