@@ -166,8 +166,8 @@
 
 .submission-card-grid {
     display: grid;
-    gap: 14px;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .submission-card {
@@ -178,10 +178,10 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
     justify-content: center;
-    min-height: 172px;
-    padding: 18px;
+    min-height: 138px;
+    padding: 16px 12px;
     text-align: center;
     transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
@@ -210,15 +210,15 @@
     color: var(--primary-point);
     display: inline-flex;
     flex: 0 0 auto;
-    font-size: 1.45rem;
-    height: 54px;
+    font-size: 1.25rem;
+    height: 46px;
     justify-content: center;
-    width: 54px;
+    width: 46px;
 }
 
 .submission-card span {
     color: var(--text-body);
-    font-size: 0.96rem;
+    font-size: 0.9rem;
     font-weight: 800;
     line-height: 1.6;
     word-break: keep-all;

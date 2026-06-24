@@ -108,6 +108,10 @@
                             <i class="bi bi-bank" aria-hidden="true"></i>
                             <span>입출금 거래내역</span>
                         </button>
+                        <button class="submission-card" type="button" aria-expanded="false" aria-controls="submission-detail-bankbook" data-detail-target="submission-detail-bankbook">
+                            <i class="bi bi-journal-text" aria-hidden="true"></i>
+                            <span>통장 사본</span>
+                        </button>
                         <button class="submission-card" type="button" aria-expanded="false" aria-controls="submission-detail-card" data-detail-target="submission-detail-card">
                             <i class="bi bi-credit-card-2-front" aria-hidden="true"></i>
                             <span>체크카드 사진</span>
@@ -130,6 +134,10 @@
                         <div class="submission-detail" id="submission-detail-bank" hidden>
                             <h3>입출금 거래내역</h3>
                             <p>거래를 진행한 모든 계좌에 대해 은행에서 발급한 입출금 거래내역을 PDF와 Excel 파일 모두 준비하여 제출합니다.</p>
+                        </div>
+                        <div class="submission-detail" id="submission-detail-bankbook" hidden>
+                            <h3>통장 사본</h3>
+                            <p>거래를 진행한 모든 계좌에 대해 은행에서 발급한 통장 사본을 준비하여 제출합니다.</p>
                         </div>
                         <div class="submission-detail" id="submission-detail-card" hidden>
                             <h3>체크카드 사진</h3>
@@ -305,8 +313,8 @@
                         <div class="file-order-copy">
                             <h3>기본 확인 자료는 가장 앞에 정렬해주세요</h3>
                             <p>
-                                입출금 거래내역서와 체크카드 스캔본처럼 기본적으로 확인이 필요한 자료는 파일명 앞글자를
-                                0번으로 지정하여 폴더의 가장 앞쪽에 정렬되도록 제출해주시기 바랍니다.
+                                입출금 거래내역서, 통장 사본, 체크카드 스캔본처럼 기본적으로 확인이 필요한 자료는
+                                파일명 앞글자를 0번으로 지정하여 폴더의 가장 앞쪽에 정렬되도록 제출해주시기 바랍니다.
                             </p>
                         </div>
                         <div class="file-order-example" aria-label="증빙자료 폴더 안 파일명 정렬 예시">
@@ -318,6 +326,10 @@
                                 <div class="file-order-row is-primary">
                                     <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
                                     <span>0_입출금거래내역서.pdf</span>
+                                </div>
+                                <div class="file-order-row is-primary">
+                                    <i class="bi bi-journal-text" aria-hidden="true"></i>
+                                    <span>0_통장사본.pdf</span>
                                 </div>
                                 <div class="file-order-row is-primary">
                                     <i class="bi bi-credit-card-2-front" aria-hidden="true"></i>
@@ -673,7 +685,7 @@
                         <li>각 거래에 대응하는 영수증 또는 지출 증빙자료를 업로드했습니다.</li>
                         <li>필요한 경우 실체적 증빙, 명단, 활동 사진, 별도 보고 자료 등을 함께 업로드했습니다.</li>
                         <li>증빙자료 파일명과 결산안의 거래 번호 또는 증빙번호가 서로 대응됩니다.</li>
-                        <li>입출금 거래내역서와 체크카드 식별 자료 등 기본 확인 자료를 폴더 앞쪽에 정렬했습니다.</li>
+                        <li>입출금 거래내역서, 통장 사본, 체크카드 식별 자료 등 기본 확인 자료를 폴더 앞쪽에 정렬했습니다.</li>
                         <li>파일이 정상적으로 열리는지 확인했습니다.</li>
                         <li>개인정보가 포함된 자료는 필요한 범위에서 제출하고, 공개용 자료는 마스킹했습니다.</li>
                     </ul>
