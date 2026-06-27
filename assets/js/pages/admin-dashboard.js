@@ -1723,9 +1723,9 @@ function resetDocumentForm() {
     documentForm?.reset();
 
     documentFields.id.value = "";
-    documentFields.type.value = "regularAudit";
+    documentFields.type.value = "minutes";
     documentFields.date.value = getTodayDateInputValue();
-    documentFields.category.value = "제출 가이드";
+    documentFields.category.value = "정기회의";
     documentFields.status.value = "published";
     documentFields.important.checked = false;
 
@@ -2093,9 +2093,9 @@ function getDocumentTypeLabel(type) {
 function parseDocumentKind(value) {
     if (value === "regularAudit") {
         return {
-            type: "regularAudit",
+            type: "minutes",
             year: null,
-            defaultCategory: "제출 가이드"
+            defaultCategory: "정기회의"
         };
     }
 
@@ -2112,12 +2112,12 @@ function parseDocumentKind(value) {
     return {
         type: "report",
         year,
-        defaultCategory: "정기감사"
+        defaultCategory: "정기회의"
     };
 }
 
 function getDocumentKindValue(documentItem) {
-    if (documentItem.type === "regularAudit") return "regularAudit";
+    if (documentItem.type === "regularAudit") return "minutes";
     if (documentItem.type === "minutes") return "minutes";
 
     return `report-${documentItem.year || getYearFromDate(documentItem.date) || new Date().getFullYear()}`;
