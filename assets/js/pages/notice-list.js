@@ -127,4 +127,26 @@ function renderPagination(totalPages, currentPage, paginationWrapper) {
     let html = `
         <li class="page-item ${prevDisabled}">
             <a class="page-link" href="?page=${currentPage - 1}" aria-label="Previous">
-                <span aria-hidden="true"><i class=
+                <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+            </a>
+        </li>
+    `;
+
+    for (let i = 1; i <= totalPages; i += 1) {
+        html += `
+            <li class="page-item ${i === currentPage ? "active" : ""}">
+                <a class="page-link" href="?page=${i}">${i}</a>
+            </li>
+        `;
+    }
+
+    html += `
+        <li class="page-item ${nextDisabled}">
+            <a class="page-link" href="?page=${currentPage + 1}" aria-label="Next">
+                <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+            </a>
+        </li>
+    `;
+
+    paginationWrapper.innerHTML = html;
+}

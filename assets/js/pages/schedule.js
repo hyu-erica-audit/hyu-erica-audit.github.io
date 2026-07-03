@@ -91,3 +91,25 @@ function showDetail(event) {
         startDate: event.extendedProps.startDate || toDateValue(event.start),
         endDate: event.extendedProps.endDate || event.extendedProps.startDate || toDateValue(event.start)
     });
+    document.getElementById("sideDescription").innerText = event.extendedProps.description || "";
+
+    rail.classList.add("active");
+}
+
+function closeDetail() {
+    const rail = document.getElementById("schedule-rail");
+
+    rail.classList.remove("active");
+}
+
+function toDateValue(date) {
+    if (!(date instanceof Date)) return "";
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+}
+
+window.closeDetail = closeDetail;

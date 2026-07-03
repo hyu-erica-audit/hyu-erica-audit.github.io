@@ -91,4 +91,196 @@ service cloud.firestore {
     }
 
     function hasValidContributorFields(data) {
-      return (!("sectionId" in data) || (data.sectionId is string && data.sectionId.size() < 2000
+      return (!("sectionId" in data) || (data.sectionId is string && data.sectionId.size() < 2000))
+        && (!("role" in data) || (data.role is string && data.role.size() < 2000))
+        && (!("name" in data) || (data.name is string && data.name.size() < 2000))
+        && (!("dept" in data) || (data.dept is string && data.dept.size() < 2000))
+        && (!("description" in data) || (data.description is string && data.description.size() < 2000))
+        && (!("order" in data) || data.order is number)
+        && (!("createdAt" in data) || data.createdAt is timestamp)
+        && (!("updatedAt" in data) || data.updatedAt is timestamp);
+    }
+
+    function hasValidSiteContentFields(data) {
+      return (!("title" in data) || (data.title is string && data.title.size() < 300))
+        && (!("subtitle" in data) || (data.subtitle is string && data.subtitle.size() < 2000))
+        && (!("bodyHtml" in data) || (data.bodyHtml is string && data.bodyHtml.size() < 200000))
+        && (!("signatureTitle" in data) || (data.signatureTitle is string && data.signatureTitle.size() < 2000))
+        && (!("signatureName" in data) || (data.signatureName is string && data.signatureName.size() < 2000))
+        && (!("messageHtml" in data) || (data.messageHtml is string && data.messageHtml.size() < 200000))
+        && (!("imageUrl" in data) || (data.imageUrl is string && data.imageUrl.size() < 2000))
+        && (!("createdAt" in data) || data.createdAt is timestamp)
+        && (!("updatedAt" in data) || data.updatedAt is timestamp);
+    }
+
+    function hasValidDocumentFields(data) {
+      return (!("type" in data) || (data.type is string && data.type.size() < 2000))
+        && (!("title" in data) || (data.title is string && data.title.size() < 300))
+        && (!("subtitle" in data) || (data.subtitle is string && data.subtitle.size() < 2000))
+        && (!("description" in data) || (data.description is string && data.description.size() < 2000))
+        && (!("icon" in data) || (data.icon is string && data.icon.size() < 2000))
+        && (!("date" in data) || (data.date is string && data.date.size() < 2000))
+        && (!("year" in data) || data.year is number)
+        && (!("category" in data) || (data.category is string && data.category.size() < 2000))
+        && (!("isImportant" in data) || data.isImportant is bool)
+        && (!("fileName" in data) || (data.fileName is string && data.fileName.size() < 2000))
+        && (!("filePath" in data) || (data.filePath is string && data.filePath.size() < 2000))
+        && (!("fileSize" in data) || data.fileSize is number)
+        && (!("contentType" in data) || (data.contentType is string && data.contentType.size() < 2000))
+        && (!("downloadUrl" in data) || (data.downloadUrl is string
+          && data.downloadUrl.size() < 2000
+          && (data.downloadUrl == "" || data.downloadUrl.matches('https://firebasestorage\\.googleapis\\.com/.*'))))
+        && (!("createdAt" in data) || data.createdAt is timestamp)
+        && (!("updatedAt" in data) || data.updatedAt is timestamp);
+    }
+
+    match /notices/{noticeId} {
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
+      allow create, update: if isAdminWriteWithFields([
+        "type",
+        "category",
+        "title",
+        "author",
+        "date",
+        "content",
+        "contentHtml",
+        "status",
+        "pinned",
+        "legacyId",
+        "createdAt",
+        "updatedAt",
+        "publishedAt"
+      ]) && hasValidNoticeFields(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /faqs/{faqId} {
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
+      allow create, update: if isAdminWriteWithFields([
+        "question",
+        "answerHtml",
+        "answer",
+        "status",
+        "order",
+        "createdAt",
+        "updatedAt"
+      ]) && hasValidFaqFields(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /schedules/{scheduleId} {
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
+      allow create, update: if isAdminWriteWithFields([
+        "title",
+        "startDate",
+        "endDate",
+        "category",
+        "color",
+        "description",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]) && hasValidScheduleFields(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /organizationMembers/{memberId} {
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
+      allow create, update: if isAdminWriteWithFields([
+        "name",
+        "role",
+        "team",
+        "department",
+        "bio",
+        "order",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]) && hasValidOrganizationMemberFields(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /contributorSections/{sectionId} {
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
+      allow create, update: if isAdminWriteWithFields([
+        "title",
+        "subtitle",
+        "order",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]) && hasValidContributorSectionFields(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /contributors/{contributorId} {
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
+      allow create, update: if isAdminWriteWithFields([
+        "sectionId",
+        "role",
+        "name",
+        "dept",
+        "description",
+        "order",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]) && hasValidContributorFields(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /siteContents/{contentId} {
+      // 공개 조회는 게시(published) 상태의 인사말만 허용한다.
+      allow get: if (contentId == "greeting" && canReadPublished()) || isAdmin();
+      allow list: if false;
+      allow create, update: if isAdminWriteWithFields([
+        "title",
+        "subtitle",
+        "bodyHtml",
+        "signatureTitle",
+        "signatureName",
+        "messageHtml",
+        "imageUrl",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]) && hasValidSiteContentFields(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /documents/{documentId} {
+      allow get: if canReadPublished() || isAdmin();
+      allow list: if canListPublished() || isAdmin();
+      allow create, update: if isAdminWriteWithFields([
+        "type",
+        "title",
+        "subtitle",
+        "description",
+        "icon",
+        "date",
+        "year",
+        "category",
+        "status",
+        "isImportant",
+        "fileName",
+        "filePath",
+        "fileSize",
+        "contentType",
+        "downloadUrl",
+        "createdAt",
+        "updatedAt"
+      ]) && hasValidDocumentFields(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

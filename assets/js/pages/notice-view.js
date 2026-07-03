@@ -50,4 +50,21 @@ function renderNotice(notice) {
 }
 
 function showInlineAlert(message) {
-    const content = document.g
+    const content = document.getElementById("view-content");
+    const title = document.getElementById("view-title");
+    const alertHtml = `
+        <div class="alert alert-warning small">
+            ${message}
+            <a href="/pages/notice/general.html" class="alert-link ms-1">목록으로 돌아가기</a>
+        </div>
+    `;
+
+    if (title) title.textContent = "공지사항";
+
+    if (content) {
+        content.innerHTML = alertHtml;
+        return;
+    }
+
+    document.querySelector("main, body")?.insertAdjacentHTML("afterbegin", alertHtml);
+}

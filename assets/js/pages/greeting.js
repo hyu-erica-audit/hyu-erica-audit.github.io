@@ -28,4 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Greeting load failed:", error);
         bodyElement.insertAdjacentHTML(
             "afterbegin",
-            `<div class="alert alert-warning small">인사말 정�
+            `<div class="alert alert-warning small">인사말 정보를 불러오지 못했습니다. ${escapeHtml(getFirebaseGreetingErrorMessage(error))}</div>`
+        );
+    }
+});

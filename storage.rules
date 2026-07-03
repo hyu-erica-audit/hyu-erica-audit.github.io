@@ -16,4 +16,13 @@ service firebase.storage {
     match /public/{documentType}/{documentId}/{fileName} {
       allow read: if true;
       allow create, update: if isAdmin()
-        && request.
+        && request.resource.size < 25 * 1024 * 1024
+        && request.resource.contentType.matches('application/pdf|application/msword|application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      allow delete: if isAdmin();
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

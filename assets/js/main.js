@@ -41,13 +41,22 @@ function activateCurrentNavLink() {
     });
 }
 
+function escapeHtmlText(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
 function createPageHeader() {
     const headerPlaceholder = document.getElementById("page-header-placeholder");
 
     if (!headerPlaceholder) return;
 
-    const title = headerPlaceholder.getAttribute("data-title");
-    const subtitle = headerPlaceholder.getAttribute("data-subtitle");
+    const title = escapeHtmlText(headerPlaceholder.getAttribute("data-title"));
+    const subtitle = escapeHtmlText(headerPlaceholder.getAttribute("data-subtitle"));
 
     headerPlaceholder.innerHTML = `
         <section class="page-header">
@@ -55,7 +64,7 @@ function createPageHeader() {
                 <div class="row">
                     <div class="col-12 text-center">
                         <p class="page-header-eyebrow">${subtitle}</p>
-                        <h2 class="page-header-title">${title}</h2>
+                        <h1 class="page-header-title">${title}</h1>
                     </div>
                 </div>
             </div>

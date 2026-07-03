@@ -59,4 +59,12 @@ function buildGreetingPayload(data) {
         bodyHtml: data.bodyHtml || "",
         signatureTitle: data.signatureTitle || "",
         signatureName: data.signatureName || "",
-        status: dat
+        status: data.status || "draft",
+        updatedAt: serverTimestamp(),
+        createdAt: data.createdAt || serverTimestamp()
+    };
+}
+
+export function getFirebaseGreetingErrorMessage(error) {
+    return getCommonFirebaseErrorMessage(error);
+}

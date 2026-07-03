@@ -55,8 +55,8 @@ form?.addEventListener("submit", async event => {
     const password = passwordInput.value;
 
     try {
+        // Redirect is handled by the onAuthStateChanged listener above.
         await signInWithEmailAndPassword(auth, email, password);
-        window.location.replace("/admin/index.html");
     } catch (error) {
         showMessage(getLoginErrorMessage(error.code));
     } finally {
