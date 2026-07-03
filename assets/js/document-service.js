@@ -1,4 +1,5 @@
-import { db, storage } from "./firebase.js?v=20260530-documents";
+import { db, storage } from "./firebase.js";
+import { formatDateForInput, getYearFromDate } from "./date-utils.js";
 import {
     getFirebaseErrorMessage as getCommonFirebaseErrorMessage,
     PUBLIC_QUERY_LIMIT,
@@ -8,7 +9,6 @@ import {
     collection,
     deleteDoc,
     doc,
-    getDoc,
     getDocs,
     limit,
     query,
@@ -65,10 +65,18 @@ export function sortDocuments(documents) {
 }
 
 export async function fetchPublishedDocuments({ type, year } = {}) {
-    const snapshot = await withFirestoreTimeout(getDocs(query(documentsRef, where("status", "==", "published"), limit(PUBLIC_QUERY_LIMIT))));
+    // 등호(==) 조건만 사용하므로 복합 인덱스 없이 서버에서 type을 필터링할 수 있다.
+    const constraints = [where("status", "==", "published")];
+
+    if (type) {
+        constraints.push(where("type", "==", type));
+    }
+
+    constraints.push(limit(PUBLIC_QUERY_LIMIT));
+
+    const snapshot = await withFirestoreTimeout(getDocs(query(documentsRef, ...constraints)));
     const documents = snapshot.docs
         .map(item => normalizeDocument(item.id, item.data()))
-        .filter(item => !type || item.type === type)
         .filter(item => !year || item.year === Number(year));
 
     return sortDocuments(documents);
@@ -79,14 +87,6 @@ export async function fetchAllDocuments() {
     const documents = snapshot.docs.map(item => normalizeDocument(item.id, item.data()));
 
     return sortDocuments(documents);
-}
-
-export async function fetchDocument(id) {
-    const snapshot = await withFirestoreTimeout(getDoc(doc(db, "documents", String(id))));
-
-    if (!snapshot.exists()) return null;
-
-    return normalizeDocument(snapshot.id, snapshot.data());
 }
 
 export async function createDocument(data, file, onProgress) {
@@ -102,9 +102,12 @@ export async function createDocument(data, file, onProgress) {
 
     await uploadFile(storagePath, file, onProgress);
 
+    const downloadUrl = await getDownloadURL(ref(storage, storagePath));
+
     await withFirestoreTimeout(setDoc(documentRef, {
         ...payload,
         filePath: storagePath,
+        downloadUrl,
         createdAt: serverTimestamp()
     }));
 
@@ -121,6 +124,7 @@ export async function updateDocument(id, data, file, previousDocument, onProgres
 
         await uploadFile(storagePath, file, onProgress);
         payload.filePath = storagePath;
+        payload.downloadUrl = await getDownloadURL(ref(storage, storagePath));
 
         if (previousDocument?.filePath && previousDocument.filePath !== storagePath) {
             await deleteStorageFile(previousDocument.filePath);
@@ -171,8 +175,7 @@ function buildDocumentPayload(data, fileLike, isCreate) {
         fileName,
         fileSize,
         contentType,
-        updatedAt: serverTimestamp(),
-        ...(isCreate ? {} : {})
+        updatedAt: serverTimestamp()
     };
 }
 
@@ -260,17 +263,4 @@ function parseDocumentDate(value) {
 
     return new Date(Number(parts[1]), Number(parts[2]) - 1, Number(parts[3])).getTime();
 }
-
-function getYearFromDate(value) {
-    const year = String(value || "").match(/\d{4}/)?.[0];
-
-    return year ? Number(year) : null;
-}
-
-function formatDateForInput(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
-}
+                                                                                                                                                                                                                                               

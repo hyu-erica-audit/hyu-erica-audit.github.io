@@ -1,4 +1,4 @@
-import { db } from "./firebase.js?v=20260530-no-local-data";
+import { db } from "./firebase.js";
 import {
     getFirebaseErrorMessage as getCommonFirebaseErrorMessage,
     withFirestoreTimeout
@@ -25,7 +25,16 @@ export function normalizeGreeting(data = {}) {
 }
 
 export async function fetchPublishedGreeting() {
-    const snapshot = await withFirestoreTimeout(getDoc(greetingRef));
+    let snapshot;
+
+    try {
+        snapshot = await withFirestoreTimeout(getDoc(greetingRef));
+    } catch (error) {
+        // Firestore Rules상 게시되지 않은 인사말은 공개 조회가 거부되므로 null로 처리한다.
+        if (error?.code === "permission-denied") return null;
+
+        throw error;
+    }
 
     if (!snapshot.exists()) return null;
 
@@ -50,12 +59,4 @@ function buildGreetingPayload(data) {
         bodyHtml: data.bodyHtml || "",
         signatureTitle: data.signatureTitle || "",
         signatureName: data.signatureName || "",
-        status: data.status || "draft",
-        updatedAt: serverTimestamp(),
-        createdAt: data.createdAt || serverTimestamp()
-    };
-}
-
-export function getFirebaseGreetingErrorMessage(error) {
-    return getCommonFirebaseErrorMessage(error);
-}
+        status: dat

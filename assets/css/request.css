@@ -1,0 +1,56 @@
+/* 감사 요청 페이지 (pages/ask/request.html) */
+
+.request-section {
+    background: #f8f9fa;
+    padding: 80px 0;
+}
+
+.request-panel {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 32px;
+}
+
+.request-panel h3,
+.request-panel h4 {
+    color: var(--primary-color);
+    font-weight: 800;
+}
+
+.request-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    height: 100%;
+    padding: 24px;
+}
+
+.request-card-icon {
+    align-items: center;
+    background: rgba(13, 110, 253, 0.08);
+    border-radius: 50%;
+    color: var(--primary-point);
+    display: inline-flex;
+    font-size: 1.4rem;
+    height: 48px;
+    justify-content: center;
+    margin-bottom: 16px;
+    width: 48px;
+}
+
+.request-step {
+    border-left: 3px solid var(--primary-point);
+    padding-left: 18px;
+}
+
+.request-template {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    color: #495057;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    padding: 20px;
+    white-space: pre-line;
+}

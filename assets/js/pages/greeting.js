@@ -1,8 +1,8 @@
 import {
     fetchPublishedGreeting,
     getFirebaseGreetingErrorMessage
-} from "../greeting-service.js?v=20260530-refactor";
-import { escapeHtml } from "../html-utils.js";
+} from "../greeting-service.js";
+import { escapeHtml, sanitizeHtml } from "../html-utils.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const titleElement = document.getElementById("greeting-title");
@@ -15,17 +15,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const greeting = await fetchPublishedGreeting();
 
-        if (!greeting) return;
+        if (!greeting) {
+            bodyElement.innerHTML = `<p class="text-muted text-center py-5">인사말을 준비 중입니다.</p>`;
+            return;
+        }
 
         titleElement.textContent = greeting.title || "";
-        bodyElement.innerHTML = greeting.bodyHtml || "";
+        bodyElement.innerHTML = sanitizeHtml(greeting.bodyHtml || "");
         signatureTitleElement.textContent = greeting.signatureTitle || "";
         signatureNameElement.textContent = greeting.signatureName || "";
     } catch (error) {
         console.error("Greeting load failed:", error);
         bodyElement.insertAdjacentHTML(
             "afterbegin",
-            `<div class="alert alert-warning small">인사말 정보를 불러오지 못했습니다. ${escapeHtml(getFirebaseGreetingErrorMessage(error))}</div>`
-        );
-    }
-});
+            `<div class="alert alert-warning small">인사말 정�

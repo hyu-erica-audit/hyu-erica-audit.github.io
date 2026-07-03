@@ -1,0 +1,40 @@
+/* 기여자 페이지 (pages/intro/contributor.html) */
+
+.contributor-wrapper {
+    padding: 100px 0;
+}
+
+.contributor-item {
+    border-top: 1px solid #e9ecef;
+    padding: 2rem 1rem;
+    height: 100%;
+    transition: all 0.3s ease;
+    background-color: transparent;
+}
+
+.contributor-item:hover {
+    border-top: 1px solid var(--primary-point);
+    background-color: var(--bg-light);
+}
+
+.role-text {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--primary-point);
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
+}
+
+.name-text {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin: 0.4rem 0;
+}
+
+.dept-text {
+    font-size: 0.85rem;
+    color: var(--text-subtle);
+    font-weight: 600;
+    word-break: keep-all;
+}

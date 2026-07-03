@@ -4,6 +4,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function isAdmin() {
       return request.auth != null
+        && request.auth.token.email_verified == true
         && request.auth.token.email in [
           "admin@audit.kr"
         ];
@@ -33,152 +34,61 @@ service cloud.firestore {
         && request.resource.data.keys().hasOnly(fields);
     }
 
-    match /notices/{noticeId} {
-      allow get: if canReadPublished() || isAdmin();
-      allow list: if canListPublished() || isAdmin();
-      allow create, update: if isAdminWriteWithFields([
-        "type",
-        "category",
-        "title",
-        "author",
-        "date",
-        "content",
-        "contentHtml",
-        "status",
-        "pinned",
-        "legacyId",
-        "createdAt",
-        "updatedAt",
-        "publishedAt"
-      ]);
-      allow delete: if isAdmin();
+    // 필드 타입/크기 검증: 서비스 계층이 실제로 쓰는 값과 동일한 형태만 허용한다.
+    // (title < 300자, 본문 HTML < 200000자, 그 외 문자열 < 2000자)
+    function hasValidNoticeFields(data) {
+      return (!("type" in data) || (data.type is string && data.type.size() < 2000))
+        && (!("category" in data) || (data.category is string && data.category.size() < 2000))
+        && (!("title" in data) || (data.title is string && data.title.size() < 300))
+        && (!("author" in data) || (data.author is string && data.author.size() < 2000))
+        && (!("date" in data) || (data.date is string && data.date.size() < 2000))
+        && (!("content" in data) || (data.content is string && data.content.size() < 200000))
+        && (!("contentHtml" in data) || (data.contentHtml is string && data.contentHtml.size() < 200000))
+        && (!("pinned" in data) || data.pinned is bool)
+        && (!("legacyId" in data) || data.legacyId is number)
+        && (!("createdAt" in data) || data.createdAt is timestamp)
+        && (!("updatedAt" in data) || data.updatedAt is timestamp)
+        && (!("publishedAt" in data) || data.publishedAt is timestamp);
     }
 
-    match /faqs/{faqId} {
-      allow get: if canReadPublished() || isAdmin();
-      allow list: if canListPublished() || isAdmin();
-      allow create, update: if isAdminWriteWithFields([
-        "question",
-        "answerHtml",
-        "answer",
-        "status",
-        "order",
-        "createdAt",
-        "updatedAt"
-      ]);
-      allow delete: if isAdmin();
+    function hasValidFaqFields(data) {
+      return (!("question" in data) || (data.question is string && data.question.size() < 2000))
+        && (!("answerHtml" in data) || (data.answerHtml is string && data.answerHtml.size() < 200000))
+        && (!("answer" in data) || (data.answer is string && data.answer.size() < 200000))
+        && (!("order" in data) || data.order is number)
+        && (!("createdAt" in data) || data.createdAt is timestamp)
+        && (!("updatedAt" in data) || data.updatedAt is timestamp);
     }
 
-    match /schedules/{scheduleId} {
-      allow get: if canReadPublished() || isAdmin();
-      allow list: if canListPublished() || isAdmin();
-      allow create, update: if isAdminWriteWithFields([
-        "title",
-        "startDate",
-        "endDate",
-        "category",
-        "color",
-        "description",
-        "status",
-        "createdAt",
-        "updatedAt"
-      ]);
-      allow delete: if isAdmin();
+    function hasValidScheduleFields(data) {
+      return (!("title" in data) || (data.title is string && data.title.size() < 300))
+        && (!("startDate" in data) || (data.startDate is string && data.startDate.size() < 2000))
+        && (!("endDate" in data) || (data.endDate is string && data.endDate.size() < 2000))
+        && (!("category" in data) || (data.category is string && data.category.size() < 2000))
+        && (!("color" in data) || (data.color is string && data.color.size() < 2000))
+        && (!("description" in data) || (data.description is string && data.description.size() < 2000))
+        && (!("createdAt" in data) || data.createdAt is timestamp)
+        && (!("updatedAt" in data) || data.updatedAt is timestamp);
     }
 
-    match /organizationMembers/{memberId} {
-      allow get: if canReadPublished() || isAdmin();
-      allow list: if canListPublished() || isAdmin();
-      allow create, update: if isAdminWriteWithFields([
-        "name",
-        "role",
-        "team",
-        "department",
-        "bio",
-        "order",
-        "status",
-        "createdAt",
-        "updatedAt"
-      ]);
-      allow delete: if isAdmin();
+    function hasValidOrganizationMemberFields(data) {
+      return (!("name" in data) || (data.name is string && data.name.size() < 2000))
+        && (!("role" in data) || (data.role is string && data.role.size() < 2000))
+        && (!("team" in data) || (data.team is string && data.team.size() < 2000))
+        && (!("department" in data) || (data.department is string && data.department.size() < 2000))
+        && (!("bio" in data) || (data.bio is string && data.bio.size() < 2000))
+        && (!("order" in data) || data.order is number)
+        && (!("createdAt" in data) || data.createdAt is timestamp)
+        && (!("updatedAt" in data) || data.updatedAt is timestamp);
     }
 
-    match /contributorSections/{sectionId} {
-      allow get: if canReadPublished() || isAdmin();
-      allow list: if canListPublished() || isAdmin();
-      allow create, update: if isAdminWriteWithFields([
-        "title",
-        "subtitle",
-        "order",
-        "status",
-        "createdAt",
-        "updatedAt"
-      ]);
-      allow delete: if isAdmin();
+    function hasValidContributorSectionFields(data) {
+      return (!("title" in data) || (data.title is string && data.title.size() < 300))
+        && (!("subtitle" in data) || (data.subtitle is string && data.subtitle.size() < 2000))
+        && (!("order" in data) || data.order is number)
+        && (!("createdAt" in data) || data.createdAt is timestamp)
+        && (!("updatedAt" in data) || data.updatedAt is timestamp);
     }
 
-    match /contributors/{contributorId} {
-      allow get: if canReadPublished() || isAdmin();
-      allow list: if canListPublished() || isAdmin();
-      allow create, update: if isAdminWriteWithFields([
-        "sectionId",
-        "role",
-        "name",
-        "dept",
-        "description",
-        "order",
-        "status",
-        "createdAt",
-        "updatedAt"
-      ]);
-      allow delete: if isAdmin();
-    }
-
-    match /siteContents/{contentId} {
-      allow get: if contentId == "greeting" || isAdmin();
-      allow list: if false;
-      allow create, update: if isAdminWriteWithFields([
-        "title",
-        "subtitle",
-        "bodyHtml",
-        "signatureTitle",
-        "signatureName",
-        "messageHtml",
-        "imageUrl",
-        "status",
-        "createdAt",
-        "updatedAt"
-      ]);
-      allow delete: if isAdmin();
-    }
-
-    match /documents/{documentId} {
-      allow get: if canReadPublished() || isAdmin();
-      allow list: if canListPublished() || isAdmin();
-      allow create, update: if isAdminWriteWithFields([
-        "type",
-        "title",
-        "subtitle",
-        "description",
-        "icon",
-        "date",
-        "year",
-        "category",
-        "status",
-        "isImportant",
-        "fileName",
-        "filePath",
-        "fileSize",
-        "contentType",
-        "downloadUrl",
-        "createdAt",
-        "updatedAt"
-      ]);
-      allow delete: if isAdmin();
-    }
-
-    match /{document=**} {
-      allow read, write: if false;
-    }
-  }
-}
+    function hasValidContributorFields(data) {
+      return (!("sectionId" in data) || (data.sectionId is string && data.sectionId.size() < 2000

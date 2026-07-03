@@ -4,21 +4,16 @@ service firebase.storage {
   match /b/{bucket}/o {
     function isAdmin() {
       return request.auth != null
+        && request.auth.token.email_verified == true
         && request.auth.token.email in [
           "admin@audit.kr"
         ];
     }
 
+    // /public/** 읽기는 의도적으로 전체 공개한다. (게시 문서 다운로드용)
+    // 게시 취소(draft 전환)된 문서의 파일은 여기서 계속 노출되므로,
+    // 비공개로 전환할 때는 해당 파일을 Storage에서 삭제해야 한다.
     match /public/{documentType}/{documentId}/{fileName} {
       allow read: if true;
       allow create, update: if isAdmin()
-        && request.resource.size < 25 * 1024 * 1024
-        && request.resource.contentType.matches('application/pdf|application/msword|application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-      allow delete: if isAdmin();
-    }
-
-    match /{allPaths=**} {
-      allow read, write: if false;
-    }
-  }
-}
+        && request.

@@ -1,0 +1,13 @@
+# Jekyll configuration for GitHub Pages
+url: "https://hyu-audit.kr"
+baseurl: ""
+title: "ERICA 중앙감사위원회"
+description: "한양대학교 ERICA 총학생회칙에 따라 설립된 특별기구, 중앙감사위원회의 공식 홈페이지입니다. 학생회비 감사 결과와 자료를 투명하게 공개합니다."
+lang: ko
+
+exclude:
+  - README.md
+  - SECURITY.md
+  - firebase.json
+  - firestore.rules
+  - storage.rules

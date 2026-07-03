@@ -1,0 +1,133 @@
+/* 일정표 페이지 (pages/intro/schedule.html) */
+
+.fc .fc-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.fc-toolbar-title {
+    font-weight: 800 !important;
+    font-size: 1.6rem !important;
+    color: var(--primary-color);
+
+
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0 !important;
+    white-space: nowrap;
+}
+
+.fc-toolbar-chunk {
+    display: flex;
+    align-items: center;
+    z-index: 10;
+}
+
+.calendar-window {
+    position: relative;
+    max-width: 1140px;
+    margin: 0 auto;
+    overflow: visible;
+}
+.schedule-rail {
+    display: flex;
+    width: 100%;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+}
+.schedule-rail.active { transform: translateX(-400px); }
+
+.fc .fc-button-primary {
+    background-color: transparent !important;
+    border: none !important;
+    color: var(--primary-color) !important;
+    padding: 8px !important;
+    border-radius: 50% !important;
+    transition: all 0.3s ease !important;
+}
+.fc .fc-button-primary:hover {
+    background-color: var(--bg-light) !important;
+    color: var(--primary-point) !important;
+    transform: scale(1.1);
+}
+.fc .fc-button-primary:focus { box-shadow: none !important; }
+
+#calendar { background: #fff; border-radius: 12px; min-height: 650px; }
+
+.fc-day-today .fc-daygrid-day-number {
+    font-weight: 900 !important;
+    color: var(--primary-color) !important;
+    border-radius: 50% !important;
+
+
+    width: 32px !important;
+    height: 32px !important;
+
+
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    margin: 5px 5px 0 auto !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+}
+
+.fc-daygrid-day-number {
+    color: #2c2c2c;
+    text-decoration: none !important;
+    padding: 10px 15px !important;
+}
+
+.fc-day-today {
+    background-color: rgba(0, 0, 0, 0.055) !important;
+}
+
+.fc-col-header-cell .fc-col-header-cell-cushion { color: #2c2c2c; text-decoration: none !important; }
+.fc-col-header-cell.fc-day-sun .fc-col-header-cell-cushion { color: #dc3545 !important; }
+.fc-col-header-cell.fc-day-sat .fc-col-header-cell-cushion { color: #4A90E2 !important; }
+
+.fc-daygrid-day-number { color: #2c2c2c; text-decoration: none !important; padding: 8px !important; }
+.fc-day-sat .fc-daygrid-day-number { color: #4A90E2 !important; }
+.fc-day-sun .fc-daygrid-day-number,
+.fc-day-holiday .fc-daygrid-day-number { color: #dc3545 !important; }
+#calendar-col { flex: 0 0 100%; padding: 0 15px; }
+#detail-col { flex: 0 0 400px; padding: 0 15px; opacity: 0; transition: opacity 0.4s ease; }
+.schedule-rail.active #detail-col { opacity: 1; }
+section { overflow-x: hidden; }
+
+.fc-event {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 2px 6px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+}
+
+
+
+.event-audit-regular {
+    background-color: #50b9b9 !important;
+    border-left: 2px solid rgba(0,0,0,0.1) !important;
+}
+.event-audit-examine {
+    background-color: #808fe5 !important;
+    border-left: 2px solid rgba(0,0,0,0.1) !important;
+}
+.event-meeting-regular {
+    background-color: #63be82 !important;
+    border-left: 2px solid rgba(0,0,0,0.1) !important;
+}
+.event-audit-exceptional {
+    background-color: #ff7c7c !important;
+    border-left: 2px solid rgba(0,0,0,0.1) !important;
+}
+.event-school-activity {
+    background-color: #2070b1 !important;
+    border-left: 2px solid rgba(0,0,0,0.1) !important;
+}

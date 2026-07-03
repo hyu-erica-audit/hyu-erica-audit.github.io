@@ -2,7 +2,7 @@ import {
     fetchPublishedSchedules,
     formatSchedulePeriod,
     toCalendarEvent
-} from "../schedule-service.js?v=20260530-refactor";
+} from "../schedule-service.js";
 
 let calendar;
 
@@ -25,7 +25,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!calendarEl) return;
 
-    const schedules = await loadSchedules();
+    if (typeof window.FullCalendar === "undefined") {
+        console.error("FullCalendar library is not loaded.");
+        showLoadWarning(calendarEl, "달력 라이브러리를 불러오지 못했습니다. 새로고침 후 다시 시도해주세요.");
+        return;
+    }
+
+    const schedules = await loadSchedules(calendarEl);
 
     calendar = new FullCalendar.Calendar(calendarEl, {
         locale: "ko",
@@ -60,13 +66,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     calendar.render();
 });
 
-async function loadSchedules() {
+async function loadSchedules(calendarEl) {
     try {
         return await fetchPublishedSchedules();
     } catch (error) {
         console.error("Schedule load failed:", error);
+        showLoadWarning(calendarEl, "일정을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.");
         return [];
     }
+}
+
+function showLoadWarning(calendarEl, message) {
+    calendarEl.insertAdjacentHTML(
+        "beforebegin",
+        `<div class="alert alert-warning small">${message}</div>`
+    );
 }
 
 function showDetail(event) {
@@ -77,25 +91,3 @@ function showDetail(event) {
         startDate: event.extendedProps.startDate || toDateValue(event.start),
         endDate: event.extendedProps.endDate || event.extendedProps.startDate || toDateValue(event.start)
     });
-    document.getElementById("sideDescription").innerText = event.extendedProps.description || "";
-
-    rail.classList.add("active");
-}
-
-function closeDetail() {
-    const rail = document.getElementById("schedule-rail");
-
-    rail.classList.remove("active");
-}
-
-function toDateValue(date) {
-    if (!(date instanceof Date)) return "";
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
-}
-
-window.closeDetail = closeDetail;

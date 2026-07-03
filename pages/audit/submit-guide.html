@@ -1,32 +1,12 @@
+---
+title: "정기감사 제출 가이드"
+description: "2026학년도 1학기 정기감사 자료 제출 가이드입니다. 결산안 작성 방법, 올바른 지출 증빙, 추가 증빙자료 제출 방법을 안내합니다."
+---
 <!DOCTYPE html>
 <html lang="ko">
 
 <head>
-
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-MMGHX3TF');</script>
-
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-    <title>제출 가이드</title>
-
-
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/common/logo.png?v=1">
-    <link rel="apple-touch-icon" href="/assets/images/common/logo.png">
-
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
-
-
-    <link href="/assets/css/style.css" rel="stylesheet">
+    {% include head-common.html %}
     <link href="/assets/css/submit-guide.css" rel="stylesheet">
 </head>
 
@@ -43,7 +23,7 @@
 
 
 
-    <main>
+    <main id="main-content">
         <section class="guide-hero" aria-labelledby="guide-page-title">
             <div class="container">
                 <p class="guide-eyebrow mb-3">Submission Guide</p>
@@ -366,7 +346,7 @@
                             <p>감사 대상 기간 동안 거래에 사용된 모든 계좌 정보를 입력합니다. 계좌를 4개 이상 사용하여 공간이 부족할 경우 하단 금전출납부 페이지를 복사하여 다른 페이지에 작성 바랍니다.</p>
                         </section>
                         <div class="settlement-screenshot-preview">
-                            <img src="/assets/images/guide/guide_1.png" alt="결산안 기본 정보 입력 예시 화면">
+                            <img src="/assets/images/guide/guide_1.png" loading="lazy" width="700" height="181" alt="결산안 기본 정보 입력 예시 화면">
                         </div>
                     </div>
 
@@ -377,7 +357,7 @@
                             <p>감사 대상 기간 동안 진행한 사업 목록을 입력합니다.</p>
                         </section>
                         <div class="settlement-screenshot-preview">
-                            <img src="/assets/images/guide/guide_2.png" alt="결산안 사업 목록 입력 예시 화면">
+                            <img src="/assets/images/guide/guide_2.png" loading="lazy" width="341" height="268" alt="결산안 사업 목록 입력 예시 화면">
                         </div>
                     </div>
 
@@ -388,7 +368,7 @@
                             <p>금전출납부 내용을 작성합니다. 거래 일시, 출금액, 입금액, 거래 후 잔액은 은행에서 발급받은 공식 Excel 내용을 그대로 붙여넣는 것을 추천드립니다.</p>
                         </section>
                         <div class="settlement-screenshot-preview">
-                            <img src="/assets/images/guide/guide_3.png" alt="결산안 금전출납부 작성 예시 화면">
+                            <img src="/assets/images/guide/guide_3.png" loading="lazy" width="1296" height="484" alt="결산안 금전출납부 작성 예시 화면">
                         </div>
                     </div>
                 </article>
@@ -469,7 +449,7 @@
                     <div class="receipt-example-grid" aria-label="영수증 증빙 예시">
                         <section class="receipt-example receipt-example-valid" aria-labelledby="valid-receipt-title">
                             <div class="receipt-example-image">
-                                <img src="/assets/images/guide/Correct_Receipt.png" alt="날짜, 업소, 카드번호, 세부항목이 확인되는 올바른 영수증 예시">
+                                <img src="/assets/images/guide/Correct_Receipt.png" loading="lazy" width="720" height="960" alt="날짜, 업소, 카드번호, 세부항목이 확인되는 올바른 영수증 예시">
                             </div>
                             <div class="receipt-example-body">
                                 <span class="receipt-example-label">올바른 예시</span>
@@ -485,7 +465,7 @@
 
                         <section class="receipt-example receipt-example-invalid" aria-labelledby="invalid-receipt-title">
                             <div class="receipt-example-image">
-                                <img src="/assets/images/guide/Wrong_Receipt.png" alt="단순 금액만 확인되는 올바르지 않은 영수증 예시">
+                                <img src="/assets/images/guide/Wrong_Receipt.png" loading="lazy" width="720" height="960" alt="단순 금액만 확인되는 올바르지 않은 영수증 예시">
                             </div>
                             <div class="receipt-example-body">
                                 <span class="receipt-example-label">올바르지 않은 예시</span>
@@ -502,7 +482,7 @@
 
                     <section class="receipt-special-case" aria-labelledby="coupang-case-title">
                         <div class="receipt-special-image">
-                            <img src="/assets/images/guide/Coupang.png" alt="거래명세표만 제출한 인정 불가 예시">
+                            <img src="/assets/images/guide/Coupang.png" loading="lazy" width="714" height="455" alt="거래명세표만 제출한 인정 불가 예시">
                         </div>
                         <div>
                             <span class="receipt-special-label">인정 불가</span>
@@ -523,7 +503,7 @@
                             </p>
                         </div>
                         <div class="receipt-special-image">
-                            <img src="/assets/images/guide/Coupang_Correct.png" alt="세부내역, 거래일시, 카드정보가 확인되는 올바른 결제 증빙 예시">
+                            <img src="/assets/images/guide/Coupang_Correct.png" loading="lazy" width="603" height="605" alt="세부내역, 거래일시, 카드정보가 확인되는 올바른 결제 증빙 예시">
                         </div>
                     </section>
                 </article>
@@ -800,7 +780,8 @@
     <div id="footer-placeholder"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets/js/main.js"></script>
-    <script src="/assets/js/pages/submit-guide.js"></script>
+    <script src="/assets/js/main.js?v=20260703"></script>
+    <script src="/assets/js/pages/submit-guide.js?v=20260703"></script>
 </body>
 </html>
+    
