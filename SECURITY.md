@@ -1,6 +1,8 @@
 Security And Operations Policy
 This repository is a Firebase web app. Treat development changes and production operations as separate responsibilities.
 
+Agent-specific operating rules are maintained in `AGENTS.md`. Agents and coding assistants must read `AGENTS.md` before making repository changes.
+
 Key Classification
 Public client configuration may appear in client code:
 

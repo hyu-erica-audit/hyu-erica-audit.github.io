@@ -2,14 +2,18 @@ export const FIRESTORE_TIMEOUT_MS = 20000;
 export const PUBLIC_QUERY_LIMIT = 300;
 
 export function withFirestoreTimeout(promise, timeoutMs = FIRESTORE_TIMEOUT_MS) {
-    return Promise.race([
-        promise,
-        new Promise((_, reject) => {
-            window.setTimeout(() => {
-                reject(new Error("Firestore request timed out. Check network, Firebase project settings, and Firestore rules."));
-            }, timeoutMs);
-        })
-    ]);
+    let timeoutId;
+
+    const timeoutPromise = new Promise((_, reject) => {
+        timeoutId = window.setTimeout(() => {
+            reject(new Error("Firestore request timed out. Check network, Firebase project settings, and Firestore rules."));
+        }, timeoutMs);
+    });
+
+    return Promise.race([promise, timeoutPromise])
+        .finally(() => {
+            window.clearTimeout(timeoutId);
+        });
 }
 
 export function getFirebaseErrorMessage(error, { serviceName = "Firestore", rulesName = "Firestore Rules" } = {}) {

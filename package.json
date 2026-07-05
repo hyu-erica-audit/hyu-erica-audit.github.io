@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "npm run check:js",
+    "check:js": "node scripts/check-js.mjs"
+  }
+}

@@ -10,7 +10,8 @@ const SANITIZE_CONFIG = {
         "table", "thead", "tbody", "tr", "td", "th",
         "hr"
     ],
-    ALLOWED_ATTR: ["href", "target", "rel", "src", "alt", "style", "class"]
+    ALLOWED_ATTR: ["href", "target", "rel", "src", "alt", "class"],
+    ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|[^a-z]|[a-z+.-]+(?:[^a-z+.-:]|$))/i
 };
 
 export function escapeHtml(value) {
