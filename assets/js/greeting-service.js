@@ -1,7 +1,7 @@
 import { db } from "./firebase.js";
 import {
     getFirebaseErrorMessage as getCommonFirebaseErrorMessage,
-    withFirestoreTimeout
+    withFirestoreReadTimeout
 } from "./firestore-utils.js";
 import {
     doc,
@@ -28,7 +28,7 @@ export async function fetchPublishedGreeting() {
     let snapshot;
 
     try {
-        snapshot = await withFirestoreTimeout(getDoc(greetingRef));
+        snapshot = await withFirestoreReadTimeout(getDoc(greetingRef));
     } catch (error) {
         // Firestore Rules상 게시되지 않은 인사말은 공개 조회가 거부되므로 null로 처리한다.
         if (error?.code === "permission-denied") return null;
@@ -44,13 +44,13 @@ export async function fetchPublishedGreeting() {
 }
 
 export async function fetchGreetingForAdmin() {
-    const snapshot = await withFirestoreTimeout(getDoc(greetingRef));
+    const snapshot = await withFirestoreReadTimeout(getDoc(greetingRef));
 
     return snapshot.exists() ? normalizeGreeting(snapshot.data()) : null;
 }
 
 export async function saveGreeting(data) {
-    await withFirestoreTimeout(setDoc(greetingRef, buildGreetingPayload(data), { merge: true }));
+    await setDoc(greetingRef, buildGreetingPayload(data), { merge: true });
 }
 
 function buildGreetingPayload(data) {

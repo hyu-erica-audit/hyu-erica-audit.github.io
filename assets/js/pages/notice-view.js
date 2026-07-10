@@ -30,13 +30,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function renderNotice(notice) {
+    const metadata = document.getElementById("view-metadata");
     const type = document.getElementById("view-type");
     const date = document.getElementById("view-date");
     const title = document.getElementById("view-title");
+    const authorRow = document.getElementById("view-author-row");
     const author = document.getElementById("view-author");
     const content = document.getElementById("view-content");
 
     document.title = notice.title ? `${notice.title} | ERICA 중앙감사위원회` : DEFAULT_TITLE;
+
+    if (metadata) metadata.hidden = false;
+    if (authorRow) authorRow.hidden = false;
 
     if (type) {
         type.textContent = notice.type;
@@ -53,11 +58,13 @@ function showInlineAlert(message) {
     const content = document.getElementById("view-content");
     const title = document.getElementById("view-title");
     const alertHtml = `
-        <div class="alert alert-warning small">
+        <div class="alert alert-warning small" role="alert" aria-live="assertive">
             ${message}
             <a href="/pages/notice/general.html" class="alert-link ms-1">목록으로 돌아가기</a>
         </div>
     `;
+
+    clearNoticeMetadata();
 
     if (title) title.textContent = "공지사항";
 
@@ -67,4 +74,18 @@ function showInlineAlert(message) {
     }
 
     document.querySelector("main, body")?.insertAdjacentHTML("afterbegin", alertHtml);
+}
+
+function clearNoticeMetadata() {
+    const metadata = document.getElementById("view-metadata");
+    const authorRow = document.getElementById("view-author-row");
+    const type = document.getElementById("view-type");
+    const date = document.getElementById("view-date");
+    const author = document.getElementById("view-author");
+
+    if (metadata) metadata.hidden = true;
+    if (authorRow) authorRow.hidden = true;
+    if (type) type.textContent = "";
+    if (date) date.textContent = "";
+    if (author) author.textContent = "";
 }

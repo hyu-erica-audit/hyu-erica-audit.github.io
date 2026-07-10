@@ -184,7 +184,7 @@ async function handleDocumentSubmit(event) {
         getErrorMessage: getFirebaseDocumentErrorMessage,
         messages: {
             created: "문서를 업로드했습니다.",
-            updated: "문서를 수정했습니다.",
+            updated: result => getDocumentUpdateFeedback("문서를 수정했습니다.", result),
             failed: "문서 저장에 실패했습니다.",
             logLabel: "Document save failed:"
         }
@@ -322,11 +322,21 @@ async function saveManagedDocument({ type, fields: targetFields, currentItems, r
         getErrorMessage: getFirebaseDocumentErrorMessage,
         messages: {
             created: messages.created,
-            updated: messages.updated,
+            updated: result => getDocumentUpdateFeedback(messages.updated, result),
             failed: messages.failed,
             logLabel: "Managed document save failed:"
         }
     });
+}
+
+function getDocumentUpdateFeedback(successMessage, result) {
+    if (!result?.oldFileCleanupFailed) return successMessage;
+
+    return {
+        text: `${successMessage} 다만 이전 파일을 정리하지 못했습니다. Storage에서 고아 파일을 확인해주세요.`,
+        type: "warning",
+        duration: 12000
+    };
 }
 
 async function loadDocuments() {
@@ -346,6 +356,7 @@ async function loadDocuments() {
         if (documentList) documentList.innerHTML = dangerRow(errorMessage);
         if (ruleList) ruleList.innerHTML = `<div class="text-center text-danger py-4">${errorMessage}</div>`;
         if (formDocumentList) formDocumentList.innerHTML = dangerRow(errorMessage);
+        throw error;
     }
 }
 

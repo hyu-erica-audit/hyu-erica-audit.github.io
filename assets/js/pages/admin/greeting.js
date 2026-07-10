@@ -78,6 +78,7 @@ async function loadGreeting() {
         console.error("Admin greeting load failed:", error);
         setGreetingSummary(null, "불러오기 실패");
         showMessage(`인사말을 불러오지 못했습니다. ${getFirebaseGreetingErrorMessage(error)}`, "danger", 12000);
+        throw error;
     }
 }
 

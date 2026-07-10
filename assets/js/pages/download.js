@@ -1,10 +1,10 @@
 import {
     fetchPublishedDocuments,
-    getFirebaseDocumentErrorMessage,
-    resolveDocumentDownloadUrl
+    getFirebaseDocumentErrorMessage
 } from "../document-service.js";
 import { getFileIconClass } from "../file-icons.js";
-import { escapeHtml } from "../html-utils.js";
+import { escapeHtml } from "../text-utils.js";
+import { resolveDocumentDownloads } from "./document-page.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("report-container");
@@ -15,10 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         const forms = await fetchPublishedDocuments({ type: "form" });
-        const items = await Promise.all(forms.map(async item => ({
-            ...item,
-            downloadUrl: await resolveDocumentDownloadUrl(item)
-        })));
+        const items = await resolveDocumentDownloads(forms);
 
         renderForms(container, items);
     } catch (error) {
@@ -46,11 +43,25 @@ function renderForms(container, items) {
                         <i class="bi ${getFileIconClass(item)} text-primary" style="font-size: 3rem;"></i>
                     </div>
                     <h5 class="fw-bold mb-4">${escapeHtml(item.title)}</h5>
-                    <a href="${escapeHtml(item.downloadUrl)}" class="btn btn-outline-dark w-100 rounded-pill fw-bold" download target="_blank" rel="noopener">
-                        <i class="bi bi-download me-2"></i> 다운로드
-                    </a>
+                    ${renderFormDownloadAction(item)}
                 </div>
             </div>
         </div>
     `).join("");
+}
+
+function renderFormDownloadAction(item) {
+    if (!item.isDownloadAvailable) {
+        return `
+            <span class="btn btn-outline-secondary w-100 rounded-pill fw-bold disabled" aria-disabled="true">
+                <i class="bi bi-exclamation-circle me-2"></i> 파일 이용 불가
+            </span>
+        `;
+    }
+
+    return `
+        <a href="${escapeHtml(item.downloadUrl)}" class="btn btn-outline-dark w-100 rounded-pill fw-bold" download target="_blank" rel="noopener">
+            <i class="bi bi-download me-2"></i> 다운로드
+        </a>
+    `;
 }

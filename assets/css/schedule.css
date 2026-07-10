@@ -54,6 +54,11 @@
     transform: scale(1.1);
 }
 .fc .fc-button-primary:focus { box-shadow: none !important; }
+.fc .fc-button-primary:focus-visible {
+    box-shadow: 0 0 0 0.25rem rgba(31, 111, 178, 0.3) !important;
+    outline: 2px solid var(--primary-point);
+    outline-offset: 2px;
+}
 
 #calendar { background: #fff; border-radius: 12px; min-height: 650px; }
 
@@ -89,15 +94,26 @@
 
 .fc-col-header-cell .fc-col-header-cell-cushion { color: #2c2c2c; text-decoration: none !important; }
 .fc-col-header-cell.fc-day-sun .fc-col-header-cell-cushion { color: #dc3545 !important; }
-.fc-col-header-cell.fc-day-sat .fc-col-header-cell-cushion { color: #4A90E2 !important; }
+.fc-col-header-cell.fc-day-sat .fc-col-header-cell-cushion { color: var(--primary-point) !important; }
 
 .fc-daygrid-day-number { color: #2c2c2c; text-decoration: none !important; padding: 8px !important; }
-.fc-day-sat .fc-daygrid-day-number { color: #4A90E2 !important; }
+.fc-day-sat .fc-daygrid-day-number { color: var(--primary-point) !important; }
 .fc-day-sun .fc-daygrid-day-number,
 .fc-day-holiday .fc-daygrid-day-number { color: #dc3545 !important; }
 #calendar-col { flex: 0 0 100%; padding: 0 15px; }
-#detail-col { flex: 0 0 400px; padding: 0 15px; opacity: 0; transition: opacity 0.4s ease; }
-.schedule-rail.active #detail-col { opacity: 1; }
+#detail-col {
+    flex: 0 0 400px;
+    opacity: 0;
+    padding: 0 15px;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    visibility: hidden;
+}
+.schedule-rail.active #detail-col {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+}
 section { overflow-x: hidden; }
 
 .fc-event {
@@ -106,7 +122,6 @@ section { overflow-x: hidden; }
     padding: 2px 6px !important;
     font-size: 0.85rem !important;
     font-weight: 600 !important;
-    color: #ffffff !important;
 }
 
 
@@ -114,20 +129,43 @@ section { overflow-x: hidden; }
 .event-audit-regular {
     background-color: #50b9b9 !important;
     border-left: 2px solid rgba(0,0,0,0.1) !important;
+    color: #111827 !important;
 }
 .event-audit-examine {
     background-color: #808fe5 !important;
     border-left: 2px solid rgba(0,0,0,0.1) !important;
+    color: #111827 !important;
 }
 .event-meeting-regular {
     background-color: #63be82 !important;
     border-left: 2px solid rgba(0,0,0,0.1) !important;
+    color: #111827 !important;
 }
 .event-audit-exceptional {
     background-color: #ff7c7c !important;
     border-left: 2px solid rgba(0,0,0,0.1) !important;
+    color: #111827 !important;
 }
 .event-school-activity {
     background-color: #2070b1 !important;
     border-left: 2px solid rgba(0,0,0,0.1) !important;
+    color: #ffffff !important;
+}
+
+@media (max-width: 400px) {
+    #detail-col {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+
+    .schedule-rail.active {
+        transform: translateX(-100%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .schedule-rail,
+    #detail-col {
+        transition: none;
+    }
 }

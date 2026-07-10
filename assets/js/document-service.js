@@ -1,9 +1,16 @@
 import { db, storage } from "./firebase.js";
 import { formatDateForInput, getYearFromDate } from "./date-utils.js";
 import {
+    getFirebaseStoragePathFromDownloadUrl,
+    guessDocumentContentType as guessContentType,
+    isDocumentStoragePathForId,
+    isSafeFirebaseDownloadUrl,
+    validateDocumentFile as validateFile
+} from "./document-file-utils.js";
+import {
     getFirebaseErrorMessage as getCommonFirebaseErrorMessage,
     PUBLIC_QUERY_LIMIT,
-    withFirestoreTimeout
+    withFirestoreReadTimeout
 } from "./firestore-utils.js";
 import {
     collection,
@@ -25,11 +32,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-storage.js";
 
 const documentsRef = collection(db, "documents");
-const ALLOWED_FILE_TYPES = new Set([
-    "application/pdf",
-    "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-]);
+const storageBucket = storage.app?.options?.storageBucket;
 
 export function normalizeDocument(id, data = {}) {
     return {
@@ -74,7 +77,7 @@ export async function fetchPublishedDocuments({ type, year } = {}) {
 
     constraints.push(limit(PUBLIC_QUERY_LIMIT));
 
-    const snapshot = await withFirestoreTimeout(getDocs(query(documentsRef, ...constraints)));
+    const snapshot = await withFirestoreReadTimeout(getDocs(query(documentsRef, ...constraints)));
     const documents = snapshot.docs
         .map(item => normalizeDocument(item.id, item.data()))
         .filter(item => !year || item.year === Number(year));
@@ -83,7 +86,7 @@ export async function fetchPublishedDocuments({ type, year } = {}) {
 }
 
 export async function fetchAllDocuments() {
-    const snapshot = await withFirestoreTimeout(getDocs(documentsRef));
+    const snapshot = await withFirestoreReadTimeout(getDocs(documentsRef));
     const documents = snapshot.docs.map(item => normalizeDocument(item.id, item.data()));
 
     return sortDocuments(documents);
@@ -94,72 +97,151 @@ export async function createDocument(data, file, onProgress) {
         throw new Error("업로드할 파일을 선택해주세요.");
     }
 
-    validateFile(file);
+    const fileMetadata = validateFile(file);
 
     const documentRef = doc(documentsRef);
-    const payload = buildDocumentPayload(data, file, true);
-    const storagePath = getStoragePath(documentRef.id, payload.type, file.name);
+    const payload = buildDocumentPayload(data, file, fileMetadata);
+    const storagePath = getStoragePath(documentRef.id, payload.type, fileMetadata.extension);
 
-    await uploadFile(storagePath, file, onProgress);
+    await uploadFile(storagePath, file, onProgress, fileMetadata.contentType);
 
-    const downloadUrl = await getDownloadURL(ref(storage, storagePath));
+    let downloadUrl;
 
-    await withFirestoreTimeout(setDoc(documentRef, {
-        ...payload,
-        filePath: storagePath,
-        downloadUrl,
-        createdAt: serverTimestamp()
-    }));
+    try {
+        downloadUrl = await getDownloadURL(ref(storage, storagePath));
+    } catch (error) {
+        await compensateUploadedFile(storagePath, error);
+        throw error;
+    }
+
+    try {
+        await setDoc(documentRef, {
+            ...payload,
+            filePath: storagePath,
+            downloadUrl,
+            createdAt: serverTimestamp()
+        });
+    } catch (error) {
+        await handleMetadataWriteFailure(storagePath, error);
+        throw error;
+    }
 
     return documentRef.id;
 }
 
 export async function updateDocument(id, data, file, previousDocument, onProgress) {
-    const payload = buildDocumentPayload(data, file || previousDocument, false);
+    const fileMetadata = file ? validateFile(file) : null;
+    const payload = buildDocumentPayload(data, file || previousDocument, fileMetadata);
+    const documentRef = doc(db, "documents", String(id));
 
     if (file) {
-        validateFile(file);
+        // A versioned object keeps the currently referenced file intact until
+        // the Firestore pointer has been committed successfully.
+        const storagePath = getStoragePath(id, payload.type, fileMetadata.extension);
 
-        const storagePath = getStoragePath(id, payload.type, file.name);
+        await uploadFile(storagePath, file, onProgress, fileMetadata.contentType);
 
-        await uploadFile(storagePath, file, onProgress);
-        payload.filePath = storagePath;
-        payload.downloadUrl = await getDownloadURL(ref(storage, storagePath));
-
-        if (previousDocument?.filePath && previousDocument.filePath !== storagePath) {
-            await deleteStorageFile(previousDocument.filePath);
+        try {
+            payload.downloadUrl = await getDownloadURL(ref(storage, storagePath));
+        } catch (error) {
+            await compensateUploadedFile(storagePath, error);
+            throw error;
         }
+
+        payload.filePath = storagePath;
+
+        try {
+            await updateDoc(documentRef, payload);
+        } catch (error) {
+            await handleMetadataWriteFailure(storagePath, error);
+            throw error;
+        }
+
+        const oldFileCleanupFailed = previousDocument?.filePath && previousDocument.filePath !== storagePath
+            ? await cleanupPreviousFile(previousDocument.filePath, id)
+            : false;
+
+        return { oldFileCleanupFailed };
     }
 
-    await withFirestoreTimeout(updateDoc(doc(db, "documents", String(id)), payload));
+    await updateDoc(documentRef, payload);
+
+    return { oldFileCleanupFailed: false };
 }
 
 export async function removeDocument(documentItem) {
-    if (documentItem?.filePath) {
-        await deleteStorageFile(documentItem.filePath);
+    const documentRef = doc(db, "documents", String(documentItem.id));
+    const legacyFilePath = getFirebaseStoragePathFromDownloadUrl(documentItem.downloadUrl, storageBucket);
+    const filePath = documentItem.filePath || legacyFilePath;
+
+    if (!filePath && documentItem.downloadUrl) {
+        throw new Error("기존 다운로드 URL에서 Storage 경로를 확인할 수 없어 삭제를 중단했습니다.");
     }
 
-    await withFirestoreTimeout(deleteDoc(doc(db, "documents", String(documentItem.id))));
+    if (filePath && !isDocumentStoragePathForId(filePath, documentItem.id)) {
+        throw new Error("문서 ID와 Storage 경로가 일치하지 않아 삭제를 중단했습니다.");
+    }
+
+    if (filePath) {
+        // Stage the document as draft to block Rules-authorized reads before
+        // deleting its object. A retry can continue if either resource is gone.
+        try {
+            await updateDoc(documentRef, {
+                status: "draft",
+                updatedAt: serverTimestamp()
+            });
+        } catch (error) {
+            if (!isDocumentNotFoundError(error)) {
+                throw !isDefinitiveWriteFailure(error) ? markPartialMutation(error) : error;
+            }
+        }
+
+        try {
+            await deleteStorageFile(filePath);
+            await deleteDoc(documentRef);
+        } catch (error) {
+            throw markPartialMutation(error);
+        }
+
+        return;
+    }
+
+    await deleteDoc(documentRef);
 }
 
 export async function resolveDocumentDownloadUrl(documentItem) {
-    if (documentItem.downloadUrl) return documentItem.downloadUrl;
-    if (!documentItem.filePath) return "";
+    const tokenPath = getFirebaseStoragePathFromDownloadUrl(documentItem.downloadUrl, storageBucket);
 
-    return getDownloadURL(ref(storage, documentItem.filePath));
+    if (isSafeFirebaseDownloadUrl(documentItem.downloadUrl, storageBucket) && isDocumentStoragePathForId(tokenPath, documentItem.id)) {
+        return documentItem.downloadUrl;
+    }
+
+    if (!isDocumentStoragePathForId(documentItem.filePath, documentItem.id)) return "";
+
+    const downloadUrl = await getDownloadURL(ref(storage, documentItem.filePath));
+
+    return isSafeFirebaseDownloadUrl(downloadUrl, storageBucket) ? downloadUrl : "";
 }
 
 export function getFirebaseDocumentErrorMessage(error) {
+    if (error?.newFileCleanupFailed) {
+        return "저장에 실패했고 새 업로드 파일도 자동 정리하지 못했습니다. Storage의 고아 파일을 확인해주세요.";
+    }
+
+    if (error?.metadataWriteOutcomeUnknown) {
+        return "저장 결과를 확인할 수 없습니다. 중복 업로드를 피하려면 목록을 새로고침해 반영 여부를 먼저 확인해주세요.";
+    }
+
     return getCommonFirebaseErrorMessage(error, {
         rulesName: "Firestore Rules와 Storage Rules"
     });
 }
 
-function buildDocumentPayload(data, fileLike, isCreate) {
+function buildDocumentPayload(data, fileLike, fileMetadata = null) {
     const date = data.date || formatDateForInput(new Date());
-    const fileName = fileLike?.name || fileLike?.fileName || "";
-    const contentType = fileLike?.type || fileLike?.contentType || "";
-    const fileSize = fileLike?.size || fileLike?.fileSize || 0;
+    const fileName = fileMetadata?.fileName ?? fileLike?.fileName ?? fileLike?.name ?? "";
+    const contentType = fileMetadata?.contentType ?? fileLike?.contentType ?? "";
+    const fileSize = fileMetadata?.fileSize ?? fileLike?.fileSize ?? fileLike?.size ?? 0;
 
     return {
         type: data.type || "report",
@@ -179,10 +261,10 @@ function buildDocumentPayload(data, fileLike, isCreate) {
     };
 }
 
-function uploadFile(storagePath, file, onProgress) {
+function uploadFile(storagePath, file, onProgress, contentType) {
     return new Promise((resolve, reject) => {
         const task = uploadBytesResumable(ref(storage, storagePath), file, {
-            contentType: file.type || guessContentType(file.name),
+            contentType: contentType || guessContentType(file.name),
             contentDisposition: `attachment; filename*=UTF-8''${encodeRFC5987ValueChars(file.name)}`,
             customMetadata: {
                 originalName: file.name
@@ -206,14 +288,6 @@ function uploadFile(storagePath, file, onProgress) {
     });
 }
 
-function validateFile(file) {
-    const contentType = file.type || guessContentType(file.name);
-
-    if (!ALLOWED_FILE_TYPES.has(contentType)) {
-        throw new Error("PDF, DOC, DOCX 파일만 업로드할 수 있습니다.");
-    }
-}
-
 async function deleteStorageFile(filePath) {
     try {
         await deleteObject(ref(storage, filePath));
@@ -224,7 +298,7 @@ async function deleteStorageFile(filePath) {
     }
 }
 
-function getStoragePath(id, type, fileName) {
+function getStoragePath(id, type, extension) {
     const typeMap = {
         minutes: "minutes",
         report: "reports",
@@ -233,19 +307,82 @@ function getStoragePath(id, type, fileName) {
         form: "forms"
     };
     const safeType = typeMap[type] || "documents";
-    const extension = fileName.includes(".") ? fileName.split(".").pop().toLowerCase() : "file";
+    const version = createStorageVersion();
 
-    return `public/${safeType}/${id}/document.${extension}`;
+    return `public/${safeType}/${id}/document-${version}.${extension}`;
 }
 
-function guessContentType(fileName) {
-    const extension = String(fileName || "").split(".").pop().toLowerCase();
+function createStorageVersion() {
+    return globalThis.crypto?.randomUUID?.()
+        || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+}
 
-    if (extension === "pdf") return "application/pdf";
-    if (extension === "doc") return "application/msword";
-    if (extension === "docx") return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+async function compensateUploadedFile(filePath, originalError) {
+    try {
+        await deleteStorageFile(filePath);
+    } catch (cleanupError) {
+        console.error("New document file cleanup failed after metadata save failure:", cleanupError);
 
-    return "";
+        if (originalError && typeof originalError === "object" && Object.isExtensible(originalError)) {
+            originalError.newFileCleanupFailed = true;
+        }
+    }
+}
+
+async function handleMetadataWriteFailure(filePath, originalError) {
+    if (isDefinitiveWriteFailure(originalError)) {
+        await compensateUploadedFile(filePath, originalError);
+        return;
+    }
+
+    if (originalError && typeof originalError === "object" && Object.isExtensible(originalError)) {
+        originalError.metadataWriteOutcomeUnknown = true;
+    }
+}
+
+async function cleanupPreviousFile(filePath, documentId) {
+    if (!isDocumentStoragePathForId(filePath, documentId)) {
+        console.error("Previous document file cleanup skipped because its path does not match the document ID.");
+        return true;
+    }
+
+    try {
+        await deleteStorageFile(filePath);
+        return false;
+    } catch (error) {
+        console.error("Previous document file cleanup failed after metadata update:", error);
+        return true;
+    }
+}
+
+function isDocumentNotFoundError(error) {
+    return error?.code === "not-found" || error?.code === "firestore/not-found";
+}
+
+function isDefinitiveWriteFailure(error) {
+    return [
+        "already-exists",
+        "failed-precondition",
+        "invalid-argument",
+        "not-found",
+        "out-of-range",
+        "permission-denied",
+        "unauthenticated",
+        "unimplemented"
+    ].includes(String(error?.code || "").replace(/^firestore\//, ""));
+}
+
+function markPartialMutation(error) {
+    if (error && typeof error === "object" && Object.isExtensible(error)) {
+        error.mutationPartiallyApplied = true;
+        return error;
+    }
+
+    const wrappedError = new Error(error?.message || "Document deletion was partially applied.", { cause: error });
+    wrappedError.code = error?.code;
+    wrappedError.mutationPartiallyApplied = true;
+
+    return wrappedError;
 }
 
 function encodeRFC5987ValueChars(value) {

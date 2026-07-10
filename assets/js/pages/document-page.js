@@ -4,7 +4,8 @@ import {
     resolveDocumentDownloadUrl
 } from "../document-service.js";
 import { formatDisplayDate } from "../date-utils.js";
-import { escapeHtml } from "../html-utils.js";
+import { getFileIconClass } from "../file-icons.js";
+import { escapeHtml } from "../text-utils.js";
 
 export async function renderDocumentPage({ type, year, containerId = "document-container", emptyId = "document-empty" }) {
     const container = document.getElementById(containerId);
@@ -17,10 +18,7 @@ export async function renderDocumentPage({ type, year, containerId = "document-c
 
     try {
         const documents = await fetchPublishedDocuments({ type, year });
-        const items = await Promise.all(documents.map(async item => ({
-            ...item,
-            downloadUrl: await resolveDocumentDownloadUrl(item)
-        })));
+        const items = await resolveDocumentDownloads(documents);
 
         renderDocumentCards(container, empty, items);
     } catch (error) {
@@ -58,9 +56,7 @@ function renderDocumentCards(container, empty, items) {
                                 <p class="text-muted small mb-0 ms-md-3">${escapeHtml(item.fileName || "")}</p>
                             </div>
                             <div class="col-md-3 text-md-end">
-                                <a href="${escapeHtml(item.downloadUrl)}" class="btn btn-primary rounded-pill px-4 fw-bold w-100 w-md-auto" download target="_blank" rel="noopener">
-                                    <i class="bi ${iconClass} me-1"></i> 다운로드
-                                </a>
+                                ${renderDocumentDownloadAction(item, iconClass)}
                             </div>
                         </div>
                     </div>
@@ -78,13 +74,32 @@ function showInlineMessage(container, text) {
     `);
 }
 
-function getFileIconClass(item) {
-    const fileName = String(item.fileName || "").toLowerCase();
-    const contentType = String(item.contentType || "").toLowerCase();
+export async function resolveDocumentDownloads(documents) {
+    return Promise.all(documents.map(async item => {
+        try {
+            const downloadUrl = await resolveDocumentDownloadUrl(item);
 
-    if (fileName.endsWith(".doc") || fileName.endsWith(".docx") || contentType.includes("word")) {
-        return "bi-file-earmark-word";
+            return { ...item, downloadUrl, isDownloadAvailable: Boolean(downloadUrl) };
+        } catch (error) {
+            console.error("Document download URL resolution failed:", item.id, error);
+
+            return { ...item, downloadUrl: "", isDownloadAvailable: false };
+        }
+    }));
+}
+
+function renderDocumentDownloadAction(item, iconClass) {
+    if (!item.isDownloadAvailable) {
+        return `
+            <span class="btn btn-secondary rounded-pill px-4 fw-bold w-100 disabled" aria-disabled="true">
+                <i class="bi bi-exclamation-circle me-1"></i> 파일 이용 불가
+            </span>
+        `;
     }
 
-    return "bi-file-earmark-pdf";
+    return `
+        <a href="${escapeHtml(item.downloadUrl)}" class="btn btn-primary rounded-pill px-4 fw-bold w-100" download target="_blank" rel="noopener">
+            <i class="bi ${iconClass} me-1"></i> 다운로드
+        </a>
+    `;
 }

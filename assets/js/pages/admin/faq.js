@@ -12,6 +12,7 @@ import {
     dangerRow,
     deleteEntity,
     mutedRow,
+    nextOrder,
     registerEditor,
     saveEntity,
     setEditorHtml,
@@ -106,10 +107,16 @@ async function loadFaqs() {
 
     try {
         faqs = await fetchAllFaqs();
+
+        if (!faqFields.id.value) {
+            faqFields.order.value = nextOrder(faqs);
+        }
+
         renderFaqRows();
     } catch (error) {
         console.error("Admin FAQ load failed:", error);
         faqList.innerHTML = dangerRow(`FAQ를 불러오지 못했습니다. ${escapeHtml(getFirebaseErrorMessage(error))}`);
+        throw error;
     }
 }
 
@@ -166,7 +173,7 @@ function resetFaqForm() {
     faqForm?.reset();
 
     faqFields.id.value = "";
-    faqFields.order.value = faqs.length + 1;
+    faqFields.order.value = nextOrder(faqs);
     faqFields.status.value = "published";
     setEditorHtml("faq", "");
 

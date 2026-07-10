@@ -14,6 +14,7 @@ import {
     deleteEntity,
     groupHeaderRow,
     mutedRow,
+    nextOrder,
     saveEntity,
     statusBadge
 } from "./shared.js";
@@ -105,10 +106,16 @@ async function loadOrganizationMembers() {
 
     try {
         organizationMembers = await fetchAllOrganizationMembers();
+
+        if (!organizationFields.id.value) {
+            organizationFields.order.value = nextOrder(organizationMembers);
+        }
+
         renderOrganizationRows();
     } catch (error) {
         console.error("Admin organization load failed:", error);
         organizationList.innerHTML = dangerRow(`조직도를 불러오지 못했습니다. ${escapeHtml(getFirebaseOrganizationErrorMessage(error))}`);
+        throw error;
     }
 }
 
@@ -232,7 +239,7 @@ function resetOrganizationForm() {
 
     organizationFields.id.value = "";
     organizationFields.team.value = "";
-    organizationFields.order.value = organizationMembers.length + 1;
+    organizationFields.order.value = nextOrder(organizationMembers);
     organizationFields.status.value = "published";
 
     organizationEditorTitle.textContent = "새 조직원 작성";

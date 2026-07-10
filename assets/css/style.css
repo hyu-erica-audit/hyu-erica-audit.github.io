@@ -9,7 +9,8 @@ html {
     --primary-color: #2c2c2c;
     --primary-hover: #1a1a1a;
     --primary-rgb: 44, 44, 44;
-    --primary-point: #4A90E2;
+    --primary-point: #1f6fb2;
+    --primary-point-on-dark: #8fc5ff;
 
 
     --text-dark: #212529;
@@ -83,13 +84,21 @@ main {
     }
 
     .navbar-nav .dropdown-menu {
-        display: block;
+        display: none;
         border: none;
         background-color: transparent;
         padding-left: 20px;
         padding-top: 0;
         padding-bottom: 10px;
         box-shadow: none;
+    }
+
+    .navbar-nav .dropdown-menu.show {
+        display: block;
+    }
+
+    .navbar-nav .dropdown-toggle::after {
+        display: inline-block !important;
     }
 
     .navbar-nav .nav-link {
@@ -130,8 +139,8 @@ main {
     .navbar-nav .nav-link {
         padding-top: 25px !important;
         padding-bottom: 25px !important;
-        padding-left: 40px !important;
-        padding-right: 40px !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
         position: relative;
         display: flex;
         align-items: center;
@@ -184,6 +193,20 @@ main {
 
 }
 
+@media (min-width: 1200px) {
+    .navbar-nav .nav-link {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+}
+
+@media (min-width: 1400px) {
+    .navbar-nav .nav-link {
+        padding-left: 32px !important;
+        padding-right: 32px !important;
+    }
+}
+
 
 .navbar-nav .nav-link.active {
     color: var(--text-white) !important;
@@ -201,7 +224,7 @@ main {
 
 @media (min-width: 992px) {
     .insta-hover:hover {
-        color: var(--primary-point) !important;
+        color: var(--primary-point-on-dark) !important;
         transform: scale(1.1);
     }
 }
@@ -301,7 +324,7 @@ main {
 }
 
 .page-header-eyebrow {
-    color: var(--primary-point);
+    color: var(--primary-point-on-dark);
     font-size: 0.9rem;
     font-weight: 800;
     letter-spacing: 0;
@@ -348,7 +371,7 @@ main {
 
 
 .text-highlight {
-    color: var(--primary-point);
+    color: var(--primary-point-on-dark);
 }
 
 

@@ -19,6 +19,7 @@ import {
     deleteEntity,
     groupHeaderRow,
     mutedRow,
+    nextOrder,
     saveEntity,
     statusBadge
 } from "./shared.js";
@@ -186,6 +187,15 @@ async function loadContributors() {
             fetchAllContributorSections(),
             fetchAllContributors()
         ]);
+
+        if (!contributorSectionFields.id.value) {
+            contributorSectionFields.order.value = nextOrder(contributorSections);
+        }
+
+        if (!contributorFields.id.value) {
+            contributorFields.order.value = nextOrder(contributors);
+        }
+
         renderContributorSectionOptions();
         renderContributorSectionRows();
         renderContributorRows();
@@ -194,6 +204,7 @@ async function loadContributors() {
         const messageText = `기여자를 불러오지 못했습니다. ${escapeHtml(getFirebaseContributorErrorMessage(error))}`;
         contributorSectionList.innerHTML = dangerRow(messageText);
         contributorList.innerHTML = dangerRow(messageText);
+        throw error;
     }
 }
 
@@ -339,7 +350,7 @@ function resetContributorSectionForm() {
     contributorSectionForm?.reset();
 
     contributorSectionFields.id.value = "";
-    contributorSectionFields.order.value = contributorSections.length + 1;
+    contributorSectionFields.order.value = nextOrder(contributorSections);
     contributorSectionFields.status.value = "published";
 
     contributorSectionEditorTitle.textContent = "새 섹션 작성";
@@ -351,7 +362,7 @@ function resetContributorForm() {
 
     contributorFields.id.value = "";
     contributorFields.sectionId.value = contributorSections[0]?.id || "";
-    contributorFields.order.value = contributors.length + 1;
+    contributorFields.order.value = nextOrder(contributors);
     contributorFields.status.value = "published";
 
     contributorEditorTitle.textContent = "새 기여자 작성";

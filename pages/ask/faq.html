@@ -19,7 +19,7 @@ description: "중앙감사위원회 감사 절차, 자료 제출, 증빙 방법 
 
 
 
-    <div id="navbar-placeholder"></div>
+    {% include navbar.html %}
 
 
     <main id="main-content">
@@ -34,14 +34,22 @@ description: "중앙감사위원회 감사 절차, 자료 제출, 증빙 방법 
                     <div class="col-lg-9">
 
                         <div class="mb-5">
+                            <label for="faqSearch" class="visually-hidden">자주 묻는 질문 검색</label>
                             <div class="input-group input-group-lg shadow-sm">
                                 <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
-                                <input type="text" id="faqSearch" class="form-control border-start-0" placeholder="키워드를 입력하세요.">
+                                <input type="search" id="faqSearch" class="form-control border-start-0" placeholder="키워드를 입력하세요."
+                                    aria-controls="faqAccordion" aria-describedby="faqStatus" autocomplete="off">
                             </div>
+                            <div id="faqStatus" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
                         </div>
 
                         <div class="accordion accordion-flush shadow-sm rounded-4 overflow-hidden" id="faqAccordion">
                             </div>
+
+                        <div id="faqEmpty" class="text-center py-5 d-none">
+                            <i class="bi bi-patch-question text-light" style="font-size: 4rem;"></i>
+                            <p class="text-muted mt-3">등록된 자주 묻는 질문이 없습니다.</p>
+                        </div>
 
                         <div id="noResults" class="text-center py-5 d-none">
                             <i class="bi bi-patch-question text-light" style="font-size: 4rem;"></i>
@@ -54,15 +62,15 @@ description: "중앙감사위원회 감사 절차, 자료 제출, 증빙 방법 
         </section>
     </main>
 
-    <script type="module" src="/assets/js/pages/faq.js?v=20260703"></script>
+    <script type="module" src="/assets/js/pages/faq.js?v=20260710"></script>
 
 
 
 
 
-    <div id="footer-placeholder"></div>
+    {% include footer.html %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets/js/main.js?v=20260703"></script>
+    <script src="/assets/js/main.js?v=20260710"></script>
 </body>
 </html>

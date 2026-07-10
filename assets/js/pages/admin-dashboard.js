@@ -1,4 +1,5 @@
 import { requireAdmin, logoutAdmin } from "../admin-auth.js";
+import { auth } from "../firebase.js";
 import { initEditorToolbar } from "./admin/shared.js";
 import { initNotices } from "./admin/notices.js";
 import { initFaq } from "./admin/faq.js";
@@ -9,6 +10,10 @@ import { initContributors } from "./admin/contributors.js";
 import { initDocuments } from "./admin/documents.js";
 
 const loading = document.getElementById("admin-loading");
+const loadingSpinner = document.getElementById("admin-loading-spinner");
+const loadingMessage = document.getElementById("admin-loading-message");
+const retryButton = document.getElementById("admin-auth-retry");
+const authErrorLogoutButton = document.getElementById("admin-auth-logout");
 const app = document.getElementById("admin-app");
 const email = document.getElementById("admin-user-email");
 const logoutButton = document.getElementById("admin-logout-button");
@@ -30,6 +35,8 @@ const sectionLoaders = [
 initEditorToolbar();
 
 logoutButton?.addEventListener("click", logoutAdmin);
+retryButton?.addEventListener("click", () => window.location.reload());
+authErrorLogoutButton?.addEventListener("click", logoutAdmin);
 
 viewLinks.forEach(link => {
     link.addEventListener("click", event => {
@@ -41,13 +48,12 @@ viewLinks.forEach(link => {
 setAdminView(getInitialView(), false);
 
 requireAdmin({
-    onAllowed: async ({ profile }) => {
+    onAllowed: async ({ profile, user }) => {
+        setLoadingState("관리 데이터를 불러오는 중입니다.");
+
         if (email) {
             email.textContent = profile.email || "";
         }
-
-        loading?.classList.add("d-none");
-        app?.classList.remove("d-none");
 
         // Load all sections in parallel; each loader renders its own error
         // state, so a failed section never blocks the others.
@@ -58,8 +64,46 @@ requireAdmin({
                 console.error("Admin section load failed:", result.reason);
             }
         });
+
+        if (auth.currentUser?.uid !== user.uid) return;
+
+        if (results.some(result => result.status === "rejected")) {
+            showAdminError("일부 관리 데이터를 불러오지 못했습니다. 다시 시도해주세요.");
+            return;
+        }
+
+        loading?.classList.add("d-none");
+        app?.classList.remove("d-none");
+    },
+    onError: error => {
+        console.error("Admin access could not be verified:", error);
+        showAdminError();
     }
 });
+
+function setLoadingState(text) {
+    app?.classList.add("d-none");
+    loading?.classList.remove("d-none");
+    loadingSpinner?.classList.remove("d-none");
+    retryButton?.classList.add("d-none");
+    authErrorLogoutButton?.classList.add("d-none");
+
+    if (loadingMessage) {
+        loadingMessage.textContent = text;
+    }
+}
+
+function showAdminError(text = "관리자 권한을 확인하지 못했습니다. 계정 권한, App Check, 네트워크 상태를 확인한 뒤 다시 시도해주세요.") {
+    app?.classList.add("d-none");
+    loading?.classList.remove("d-none");
+    loadingSpinner?.classList.add("d-none");
+    retryButton?.classList.remove("d-none");
+    authErrorLogoutButton?.classList.remove("d-none");
+
+    if (loadingMessage) {
+        loadingMessage.textContent = text;
+    }
+}
 
 function getInitialView() {
     const hash = window.location.hash.replace("#", "");
@@ -88,7 +132,15 @@ function setAdminView(view, updateHash) {
     });
 
     viewLinks.forEach(link => {
-        link.classList.toggle("active", link.dataset.adminView === nextView);
+        const isActive = link.dataset.adminView === nextView;
+
+        link.classList.toggle("active", isActive);
+
+        if (isActive) {
+            link.setAttribute("aria-current", "page");
+        } else {
+            link.removeAttribute("aria-current");
+        }
     });
 
     if (topbarTitle) {

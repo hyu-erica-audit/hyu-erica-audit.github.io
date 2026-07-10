@@ -11,11 +11,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
     <link href="/assets/css/style.css" rel="stylesheet">
-    <link href="/assets/css/admin.css?v=20260530-refactor" rel="stylesheet">
+    <link href="/assets/css/admin.css?v=20260710" rel="stylesheet">
 </head>
 <body class="admin-body">
     <div id="admin-loading" class="admin-loading">
-        <div class="spinner-border text-dark" role="status"></div>
+        <div class="text-center">
+            <div id="admin-loading-spinner" class="spinner-border text-dark" role="status" aria-label="관리자 권한 확인 중"></div>
+            <p id="admin-loading-message" class="text-muted mt-3 mb-0" aria-live="polite">관리자 권한을 확인하는 중입니다.</p>
+            <button id="admin-auth-retry" type="button" class="btn btn-outline-dark btn-sm mt-3 d-none">다시 시도</button>
+            <button id="admin-auth-logout" type="button" class="btn btn-link btn-sm mt-3 d-none">로그아웃</button>
+        </div>
     </div>
 
     <main id="admin-app" class="admin-shell d-none">
@@ -107,10 +112,10 @@
                         <table class="table align-middle admin-table">
                             <thead>
                                 <tr>
-                                    <th>상태</th>
-                                    <th>제목</th>
-                                    <th>작성일</th>
-                                    <th></th>
+                                    <th scope="col">상태</th>
+                                    <th scope="col">제목</th>
+                                    <th scope="col">작성일</th>
+                                    <th scope="col"><span class="visually-hidden">작업</span></th>
                                 </tr>
                             </thead>
                             <tbody id="admin-notice-list">
@@ -168,8 +173,8 @@
                         </div>
 
                         <div class="mt-3">
-                            <label for="notice-editor" class="form-label">내용</label>
-                            <div class="admin-editor-toolbar" aria-label="공지 편집 도구">
+                            <label id="notice-editor-label" for="notice-editor" class="form-label">내용</label>
+                            <div class="admin-editor-toolbar" role="toolbar" aria-label="공지 편집 도구">
                                 <button type="button" class="btn btn-outline-dark btn-sm" data-editor-command="formatBlock" data-editor-target="notice" data-editor-value="h3" title="제목">
                                     <i class="bi bi-type-h3"></i>
                                 </button>
@@ -198,7 +203,7 @@
                                     <i class="bi bi-link-45deg"></i>
                                 </button>
                             </div>
-                            <div id="notice-editor" class="admin-content-editor" contenteditable="true" role="textbox" aria-multiline="true"></div>
+                            <div id="notice-editor" class="admin-content-editor" contenteditable="true" data-placeholder="공지 내용을 입력하세요." role="textbox" aria-labelledby="notice-editor-label" aria-multiline="true"></div>
                             <textarea id="notice-content" class="d-none"></textarea>
                         </div>
 
@@ -237,10 +242,10 @@
                         <table class="table align-middle admin-table">
                             <thead>
                                 <tr>
-                                    <th>상태</th>
-                                    <th>질문</th>
-                                    <th>순서</th>
-                                    <th></th>
+                                    <th scope="col">상태</th>
+                                    <th scope="col">질문</th>
+                                    <th scope="col">순서</th>
+                                    <th scope="col"><span class="visually-hidden">작업</span></th>
                                 </tr>
                             </thead>
                             <tbody id="admin-faq-list">
@@ -282,8 +287,8 @@
                         </div>
 
                         <div class="mt-3">
-                            <label for="faq-editor" class="form-label">답변</label>
-                            <div class="admin-editor-toolbar" aria-label="FAQ 편집 도구">
+                            <label id="faq-editor-label" for="faq-editor" class="form-label">답변</label>
+                            <div class="admin-editor-toolbar" role="toolbar" aria-label="FAQ 편집 도구">
                                 <button type="button" class="btn btn-outline-dark btn-sm" data-editor-command="formatBlock" data-editor-target="faq" data-editor-value="h3" title="제목">
                                     <i class="bi bi-type-h3"></i>
                                 </button>
@@ -312,7 +317,7 @@
                                     <i class="bi bi-link-45deg"></i>
                                 </button>
                             </div>
-                            <div id="faq-editor" class="admin-content-editor" contenteditable="true" role="textbox" aria-multiline="true"></div>
+                            <div id="faq-editor" class="admin-content-editor" contenteditable="true" data-placeholder="FAQ 답변을 입력하세요." role="textbox" aria-labelledby="faq-editor-label" aria-multiline="true"></div>
                             <textarea id="faq-answer" class="d-none"></textarea>
                         </div>
 
@@ -351,10 +356,10 @@
                         <table class="table align-middle admin-table">
                             <thead>
                                 <tr>
-                                    <th>상태</th>
-                                    <th>제목</th>
-                                    <th>기간</th>
-                                    <th></th>
+                                    <th scope="col">상태</th>
+                                    <th scope="col">제목</th>
+                                    <th scope="col">기간</th>
+                                    <th scope="col"><span class="visually-hidden">작업</span></th>
                                 </tr>
                             </thead>
                             <tbody id="admin-schedule-list">
@@ -489,8 +494,8 @@
                             </div>
 
                             <div class="mt-3">
-                                <label for="greeting-editor" class="form-label">본문</label>
-                                <div class="admin-editor-toolbar" aria-label="인사말 편집 도구">
+                                <label id="greeting-editor-label" for="greeting-editor" class="form-label">본문</label>
+                                <div class="admin-editor-toolbar" role="toolbar" aria-label="인사말 편집 도구">
                                     <button type="button" class="btn btn-outline-dark btn-sm" data-editor-command="formatBlock" data-editor-target="greeting" data-editor-value="h3" title="제목">
                                         <i class="bi bi-type-h3"></i>
                                     </button>
@@ -519,7 +524,7 @@
                                         <i class="bi bi-link-45deg"></i>
                                     </button>
                                 </div>
-                                <div id="greeting-editor" class="admin-content-editor" contenteditable="true" data-placeholder="인사말 본문을 입력하세요." role="textbox" aria-multiline="true"></div>
+                                <div id="greeting-editor" class="admin-content-editor" contenteditable="true" data-placeholder="인사말 본문을 입력하세요." role="textbox" aria-labelledby="greeting-editor-label" aria-multiline="true"></div>
                                 <textarea id="greeting-body" class="d-none"></textarea>
                             </div>
 
@@ -554,10 +559,10 @@
                             <table class="table align-middle admin-table">
                                 <thead>
                                     <tr>
-                                        <th>상태</th>
-                                        <th>조직원</th>
-                                        <th>위치</th>
-                                        <th></th>
+                                        <th scope="col">상태</th>
+                                        <th scope="col">조직원</th>
+                                        <th scope="col">위치</th>
+                                        <th scope="col"><span class="visually-hidden">작업</span></th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-organization-list">
@@ -647,10 +652,10 @@
                             <table class="table align-middle admin-table">
                                 <thead>
                                     <tr>
-                                        <th>상태</th>
-                                        <th>섹션</th>
-                                        <th>순서</th>
-                                        <th></th>
+                                        <th scope="col">상태</th>
+                                        <th scope="col">섹션</th>
+                                        <th scope="col">순서</th>
+                                        <th scope="col"><span class="visually-hidden">작업</span></th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-contributor-section-list">
@@ -665,10 +670,10 @@
                             <table class="table align-middle admin-table">
                                 <thead>
                                     <tr>
-                                        <th>상태</th>
-                                        <th>기여자</th>
-                                        <th>섹션/순서</th>
-                                        <th></th>
+                                        <th scope="col">상태</th>
+                                        <th scope="col">기여자</th>
+                                        <th scope="col">섹션/순서</th>
+                                        <th scope="col"><span class="visually-hidden">작업</span></th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-contributor-list">
@@ -791,10 +796,10 @@
                         <table class="table align-middle admin-table">
                             <thead>
                                 <tr>
-                                    <th>상태</th>
-                                    <th>문서</th>
-                                    <th>날짜</th>
-                                    <th></th>
+                                    <th scope="col">상태</th>
+                                    <th scope="col">문서</th>
+                                    <th scope="col">날짜</th>
+                                    <th scope="col"><span class="visually-hidden">작업</span></th>
                                 </tr>
                             </thead>
                             <tbody id="admin-document-list">
@@ -858,7 +863,7 @@
                             <label class="form-check-label" for="document-important">중요 표시</label>
                         </div>
 
-                        <div id="document-upload-progress" class="progress admin-upload-progress d-none" role="progressbar" aria-label="업로드 진행률">
+                        <div id="document-upload-progress" class="progress admin-upload-progress d-none" role="progressbar" aria-label="업로드 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                             <div class="progress-bar" style="width: 0%">0%</div>
                         </div>
 
@@ -941,7 +946,7 @@
                                 </div>
                             </div>
                             <p id="rule-current-file" class="text-muted small mb-0 mt-2"></p>
-                            <div id="rule-upload-progress" class="progress admin-upload-progress d-none" role="progressbar" aria-label="세칙 업로드 진행률">
+                            <div id="rule-upload-progress" class="progress admin-upload-progress d-none" role="progressbar" aria-label="세칙 업로드 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                                 <div class="progress-bar" style="width: 0%">0%</div>
                             </div>
                             <div class="admin-editor-actions">
@@ -979,10 +984,10 @@
                         <table class="table align-middle admin-table">
                             <thead>
                                 <tr>
-                                    <th>상태</th>
-                                    <th>아이콘</th>
-                                    <th>서식</th>
-                                    <th></th>
+                                    <th scope="col">상태</th>
+                                    <th scope="col">아이콘</th>
+                                    <th scope="col">서식</th>
+                                    <th scope="col"><span class="visually-hidden">작업</span></th>
                                 </tr>
                             </thead>
                             <tbody id="admin-form-document-list">
@@ -1039,7 +1044,7 @@
                             </div>
                         </div>
                         <p id="form-document-current-file" class="text-muted small mb-0 mt-2"></p>
-                        <div id="form-document-upload-progress" class="progress admin-upload-progress d-none" role="progressbar" aria-label="서식 업로드 진행률">
+                        <div id="form-document-upload-progress" class="progress admin-upload-progress d-none" role="progressbar" aria-label="서식 업로드 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                             <div class="progress-bar" style="width: 0%">0%</div>
                         </div>
                         <div class="admin-editor-actions">
@@ -1059,6 +1064,6 @@
         </section>
     </main>
 
-    <script type="module" src="/assets/js/pages/admin-dashboard.js?v=20260703"></script>
+    <script type="module" src="/assets/js/pages/admin-dashboard.js?v=20260710"></script>
 </body>
 </html>

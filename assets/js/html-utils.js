@@ -1,4 +1,5 @@
 import DOMPurify from "https://cdn.jsdelivr.net/npm/dompurify@3.2.4/+esm";
+export { escapeHtml } from "./text-utils.js";
 
 const SANITIZE_CONFIG = {
     ALLOWED_TAGS: [
@@ -14,14 +15,14 @@ const SANITIZE_CONFIG = {
     ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|[^a-z]|[a-z+.-]+(?:[^a-z+.-:]|$))/i
 };
 
-export function escapeHtml(value) {
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
+DOMPurify.addHook("afterSanitizeAttributes", node => {
+    if (node.tagName !== "A" || node.getAttribute("target") !== "_blank") return;
+
+    const relValues = new Set(String(node.getAttribute("rel") || "").split(/\s+/).filter(Boolean));
+    relValues.add("noopener");
+    relValues.add("noreferrer");
+    node.setAttribute("rel", Array.from(relValues).join(" "));
+});
 
 export function sanitizeHtml(html) {
     return DOMPurify.sanitize(String(html ?? ""), SANITIZE_CONFIG);

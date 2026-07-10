@@ -64,7 +64,11 @@ export function initNotices() {
 async function handleSubmit(event) {
     event.preventDefault();
 
-    const payload = readForm();
+    const currentNotice = notices.find(item => item.id === fields.id.value);
+    const payload = {
+        ...readForm(),
+        publishedAt: currentNotice?.publishedAt || null
+    };
 
     await saveEntity({
         id: fields.id.value,
@@ -114,6 +118,7 @@ async function loadNotices() {
     } catch (error) {
         console.error("Admin notice load failed:", error);
         list.innerHTML = dangerRow(`공지사항을 불러오지 못했습니다. ${escapeHtml(getFirebaseErrorMessage(error))}`);
+        throw error;
     }
 }
 

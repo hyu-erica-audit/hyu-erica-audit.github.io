@@ -5,6 +5,8 @@ import {
 } from "../schedule-service.js";
 
 let calendar;
+let lastFocusedEventElement = null;
+let detailOpenFrameId = null;
 
 const holidays = [
     "2026-01-01",
@@ -22,8 +24,19 @@ const holidays = [
 
 document.addEventListener("DOMContentLoaded", async () => {
     const calendarEl = document.getElementById("calendar");
+    const detailCloseButton = document.getElementById("schedule-detail-close");
 
     if (!calendarEl) return;
+
+    detailCloseButton?.addEventListener("click", closeDetail);
+    document.addEventListener("keydown", event => {
+        const detailPanel = document.getElementById("detail-col");
+
+        if (event.key !== "Escape" || detailPanel?.hidden) return;
+
+        event.preventDefault();
+        closeDetail();
+    });
 
     if (typeof window.FullCalendar === "undefined") {
         console.error("FullCalendar library is not loaded.");
@@ -59,7 +72,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
         events: schedules.map(toCalendarEvent),
         eventClick(info) {
-            showDetail(info.event);
+            showDetail(info.event, info.el);
         }
     });
 
@@ -83,23 +96,65 @@ function showLoadWarning(calendarEl, message) {
     );
 }
 
-function showDetail(event) {
+function showDetail(event, triggerElement) {
     const rail = document.getElementById("schedule-rail");
+    const detailPanel = document.getElementById("detail-col");
+    const detailCloseButton = document.getElementById("schedule-detail-close");
+    const title = document.getElementById("sideTitle");
+    const date = document.getElementById("sideDate");
+    const description = document.getElementById("sideDescription");
 
-    document.getElementById("sideTitle").innerText = event.title;
-    document.getElementById("sideDate").innerText = formatSchedulePeriod({
+    if (!rail || !detailPanel || !detailCloseButton || !title || !date || !description) return;
+
+    lastFocusedEventElement = triggerElement instanceof HTMLElement
+        ? triggerElement
+        : document.activeElement instanceof HTMLElement
+            ? document.activeElement
+            : null;
+
+    title.innerText = event.title;
+    date.innerText = formatSchedulePeriod({
         startDate: event.extendedProps.startDate || toDateValue(event.start),
         endDate: event.extendedProps.endDate || event.extendedProps.startDate || toDateValue(event.start)
     });
-    document.getElementById("sideDescription").innerText = event.extendedProps.description || "";
+    description.innerText = event.extendedProps.description || "";
 
-    rail.classList.add("active");
+    detailPanel.hidden = false;
+    detailPanel.removeAttribute("inert");
+    detailPanel.setAttribute("aria-hidden", "false");
+
+    if (detailOpenFrameId !== null) {
+        window.cancelAnimationFrame(detailOpenFrameId);
+    }
+
+    detailOpenFrameId = window.requestAnimationFrame(() => {
+        rail.classList.add("active");
+        detailCloseButton.focus({ preventScroll: true });
+        detailOpenFrameId = null;
+    });
 }
 
 function closeDetail() {
     const rail = document.getElementById("schedule-rail");
+    const detailPanel = document.getElementById("detail-col");
+
+    if (!rail || !detailPanel || detailPanel.hidden) return;
+
+    if (detailOpenFrameId !== null) {
+        window.cancelAnimationFrame(detailOpenFrameId);
+        detailOpenFrameId = null;
+    }
 
     rail.classList.remove("active");
+    detailPanel.hidden = true;
+    detailPanel.setAttribute("inert", "");
+    detailPanel.setAttribute("aria-hidden", "true");
+
+    if (lastFocusedEventElement?.isConnected) {
+        lastFocusedEventElement.focus({ preventScroll: true });
+    }
+
+    lastFocusedEventElement = null;
 }
 
 function toDateValue(date) {
@@ -111,5 +166,3 @@ function toDateValue(date) {
 
     return `${year}-${month}-${day}`;
 }
-
-window.closeDetail = closeDetail;

@@ -1,10 +1,10 @@
 import {
     fetchPublishedDocuments,
-    getFirebaseDocumentErrorMessage,
-    resolveDocumentDownloadUrl
+    getFirebaseDocumentErrorMessage
 } from "../document-service.js";
 import { formatDisplayDate } from "../date-utils.js";
-import { escapeHtml } from "../html-utils.js";
+import { escapeHtml } from "../text-utils.js";
+import { resolveDocumentDownloads } from "./document-page.js";
 
 const RULE_SLOTS = ["중앙감사 세칙", "감사 시행 별칙"];
 
@@ -17,10 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         const rules = await fetchPublishedDocuments({ type: "rule" });
-        const items = await Promise.all(rules.map(async item => ({
-            ...item,
-            downloadUrl: await resolveDocumentDownloadUrl(item)
-        })));
+        const items = await resolveDocumentDownloads(rules);
 
         renderRules(container, items);
     } catch (error) {
@@ -60,9 +57,7 @@ function renderRules(container, items) {
                             <span class="badge bg-secondary mt-2">${escapeHtml(formatDisplayDate(item.date))}</span>
                         </p>
                         ${item.description ? `<p class="card-text text-secondary mb-5 small keep-all rule-description">${escapeHtml(item.description)}</p>` : ""}
-                        <a href="${escapeHtml(item.downloadUrl)}" class="btn ${card.buttonClass} w-100 py-3 rounded-pill fw-bold" download target="_blank" rel="noopener">
-                            <i class="bi bi-download me-2"></i> PDF 다운로드
-                        </a>
+                        ${renderRuleDownloadAction(item, card.buttonClass)}
                     </div>
                 </div>
             </div>
@@ -84,4 +79,20 @@ function getRuleCardStyle(item) {
         iconColor: "text-primary",
         buttonClass: "btn-primary"
     };
+}
+
+function renderRuleDownloadAction(item, buttonClass) {
+    if (!item.isDownloadAvailable) {
+        return `
+            <span class="btn btn-outline-secondary w-100 py-3 rounded-pill fw-bold disabled" aria-disabled="true">
+                <i class="bi bi-exclamation-circle me-2"></i> 파일 이용 불가
+            </span>
+        `;
+    }
+
+    return `
+        <a href="${escapeHtml(item.downloadUrl)}" class="btn ${buttonClass} w-100 py-3 rounded-pill fw-bold" download target="_blank" rel="noopener">
+            <i class="bi bi-download me-2"></i> PDF 다운로드
+        </a>
+    `;
 }

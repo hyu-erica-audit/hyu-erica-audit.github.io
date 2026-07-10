@@ -7,7 +7,7 @@ lang: ko
 
 exclude:
   - README.md
-  - SECURITY.md
+  - AGENTS.md
   - firebase.json
   - firestore.rules
   - storage.rules

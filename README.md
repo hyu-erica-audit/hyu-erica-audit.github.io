@@ -23,8 +23,9 @@
 ├── admin/
 │   ├── index.html          # 관리자 콘텐츠 관리 화면
 │   └── login.html          # 관리자 로그인 화면
+├── _includes/              # Jekyll 공통 head, navbar, footer
 ├── assets/
-│   ├── components/         # 공통 navbar, footer HTML
+│   ├── components/         # 기존 동적 로더용 호환 엔드포인트
 │   ├── css/                # 페이지별/관리자 CSS
 │   ├── images/             # 로고, 배경 이미지
 │   └── js/
@@ -87,3 +88,11 @@
 3. 공개 여부는 각 콘텐츠의 상태값으로 관리합니다.
 4. GitHub Pages 배포는 저장소에 push된 정적 파일을 기준으로 반영됩니다.
 5. Firebase Rules 변경은 별도 배포가 필요합니다.
+
+## 로컬 검증
+
+변경 후 아래 명령으로 JavaScript 문법, 로컬 링크와 모듈 경로, 중복 HTML ID, 공통 유틸리티 테스트를 한 번에 확인합니다.
+
+```bash
+npm run check
+```

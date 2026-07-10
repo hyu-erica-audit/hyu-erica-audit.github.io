@@ -528,6 +528,11 @@
     color: #b42318;
 }
 
+.admin-alert-warning {
+    background: #fff8e1;
+    color: #7a4d00;
+}
+
 @media (max-width: 768px) {
     .admin-login-panel {
         padding: 28px 22px;

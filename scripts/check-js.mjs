@@ -1,20 +1,20 @@
-import { readdirSync, statSync } from "node:fs";
-import { join } from "node:path";
-import { spawnSync } from "node:child_process";
+import { readFileSync, readdirSync, statSync } from "node:fs";
+import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+import { SourceTextModule } from "node:vm";
 
 const roots = ["assets/js"];
 const files = roots.flatMap(root => collectJavaScriptFiles(root));
 let hasFailure = false;
 
 for (const file of files) {
-  const result = spawnSync(process.execPath, ["--check", file], {
-    encoding: "utf8",
-    stdio: "pipe"
-  });
-
-  if (result.status !== 0) {
+  try {
+    new SourceTextModule(readFileSync(file, "utf8"), {
+      identifier: pathToFileURL(resolve(file)).href
+    });
+  } catch (error) {
     hasFailure = true;
-    process.stderr.write(result.stderr || result.stdout || `${file} failed syntax check\n`);
+    process.stderr.write(`${file} failed syntax check\n${error.stack || error}\n`);
   }
 }
 

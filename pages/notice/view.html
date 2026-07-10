@@ -14,7 +14,7 @@ description: "중앙감사위원회 공지사항의 상세 내용을 확인하�
 
 
 
-    <div id="navbar-placeholder"></div>
+    {% include navbar.html %}
 
     <main id="main-content">
         <div id="page-header-placeholder"
@@ -27,12 +27,12 @@ description: "중앙감사위원회 공지사항의 상세 내용을 확인하�
 
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-white p-4 border-bottom">
-                        <div class="mb-2">
-                            <span id="view-type" class="badge bg-secondary">분류</span>
-                            <span id="view-date" class="text-muted small ms-2">2026.01.01</span>
+                        <div class="mb-2" id="view-metadata" hidden>
+                            <span id="view-type" class="badge bg-secondary"></span>
+                            <span id="view-date" class="text-muted small ms-2"></span>
                         </div>
-                        <h3 id="view-title" class="fw-bold mb-0">제목이 로딩 중입니다...</h3>
-                        <p class="text-muted mt-2 mb-0 small">작성자: <span id="view-author">관리자</span></p>
+                        <h2 id="view-title" class="h3 fw-bold mb-0">제목이 로딩 중입니다...</h2>
+                        <p class="text-muted mt-2 mb-0 small" id="view-author-row" hidden>작성자: <span id="view-author"></span></p>
                     </div>
 
                     <div class="card-body p-4">
@@ -51,11 +51,11 @@ description: "중앙감사위원회 공지사항의 상세 내용을 확인하�
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    {% include footer.html %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="/assets/js/main.js?v=20260703"></script>
+    <script src="/assets/js/main.js?v=20260710"></script>
 
-    <script type="module" src="/assets/js/pages/notice-view.js?v=20260703"></script>
+    <script type="module" src="/assets/js/pages/notice-view.js?v=20260710"></script>
 </body>
 </html>

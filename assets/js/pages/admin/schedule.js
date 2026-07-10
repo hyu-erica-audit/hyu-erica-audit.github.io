@@ -118,6 +118,7 @@ async function loadSchedules() {
     } catch (error) {
         console.error("Admin schedule load failed:", error);
         scheduleList.innerHTML = dangerRow(`일정을 불러오지 못했습니다. ${escapeHtml(getFirebaseErrorMessage(error))}`);
+        throw error;
     }
 }
 

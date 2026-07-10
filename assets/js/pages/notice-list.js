@@ -1,5 +1,5 @@
 import { compareNoticesForNumbering, fetchPublishedNotices } from "../notice-service.js";
-import { escapeHtml } from "../html-utils.js";
+import { escapeHtml } from "../text-utils.js";
 
 const ITEMS_PER_PAGE = 10;
 

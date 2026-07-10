@@ -2,7 +2,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "npm run check:js",
-    "check:js": "node scripts/check-js.mjs"
+    "check": "npm run check:js && npm run check:site && npm test",
+    "check:js": "node --no-warnings --experimental-vm-modules scripts/check-js.mjs",
+    "check:site": "node scripts/check-site.mjs",
+    "test": "node test/all.test.mjs"
   }
 }

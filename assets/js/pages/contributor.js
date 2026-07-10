@@ -4,7 +4,7 @@ import {
     getFirebaseContributorErrorMessage,
     sortContributors
 } from "../contributor-service.js";
-import { escapeHtml } from "../html-utils.js";
+import { escapeHtml } from "../text-utils.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const wrapper = document.getElementById("sections-wrapper");

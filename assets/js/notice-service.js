@@ -50,7 +50,7 @@ function buildNoticePayload(data, isCreate) {
     }, isCreate);
 
     if (status === "published") {
-        payload.publishedAt = serverTimestamp();
+        payload.publishedAt = data.publishedAt || serverTimestamp();
     }
 
     return payload;

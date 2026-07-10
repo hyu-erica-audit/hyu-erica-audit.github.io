@@ -1,4 +1,5 @@
 import { auth, db } from "./firebase.js";
+import { withFirestoreReadTimeout } from "./firestore-utils.js";
 import {
     onAuthStateChanged,
     signOut
@@ -20,50 +21,72 @@ export async function getAdminProfile(user) {
         name: user.displayName || user.email
     };
 
-    try {
-        const token = await user.getIdTokenResult();
+    // Firestore Rules상 관리자만 초안(draft) 목록을 조회할 수 있으므로,
+    // 이 쿼리가 성공하면 실제 Rules와 동일한 관리자 권한이 있는 것으로 판단한다.
+    // A custom claim alone is not accepted because the deployed Rules may use a
+    // different policy (for example, a verified-email allowlist).
+    await withFirestoreReadTimeout(
+        getDocs(query(collection(db, "notices"), where("status", "==", "draft"), limit(1)))
+    );
 
-        if (token.claims.admin === true) return profile;
-    } catch (error) {
-        console.error("Admin claim check failed:", error);
-    }
-
-    try {
-        // Firestore Rules상 관리자만 초안(draft) 목록을 조회할 수 있으므로,
-        // 이 쿼리가 성공하면 관리자 권한이 있는 것으로 판단한다.
-        await getDocs(query(collection(db, "notices"), where("status", "==", "draft"), limit(1)));
-
-        return profile;
-    } catch (error) {
-        console.error("Admin permission probe failed:", error);
-
-        return null;
-    }
+    return profile;
 }
 
-export function requireAdmin({ onAllowed, onDenied } = {}) {
+export function requireAdmin({ onAllowed, onDenied, onError } = {}) {
+    let checkSequence = 0;
+
     return onAuthStateChanged(auth, async user => {
+        const currentCheck = ++checkSequence;
+
         if (!user) {
             window.location.replace("/admin/login.html");
             return;
         }
 
-        const profile = await getAdminProfile(user);
+        let profile;
 
-        if (!profile) {
-            await signOut(auth);
+        try {
+            profile = await getAdminProfile(user);
+        } catch (error) {
+            if (currentCheck !== checkSequence) return;
 
-            if (typeof onDenied === "function") {
-                onDenied();
+            if (isPermissionDenied(error)) {
+                if (typeof onDenied === "function") {
+                    onDenied(error);
+                } else if (typeof onError === "function") {
+                    onError(error);
+                }
+
                 return;
             }
 
-            window.location.replace("/admin/login.html");
+            console.error("Admin permission probe failed:", error);
+
+            if (typeof onError === "function") {
+                onError(error);
+            }
+
             return;
         }
 
+        if (currentCheck !== checkSequence || auth.currentUser?.uid !== user.uid) return;
+
         if (typeof onAllowed === "function") {
-            onAllowed({ user, profile });
+            try {
+                await onAllowed({ user, profile });
+            } catch (error) {
+                console.error("Admin initialization failed:", error);
+
+                if (typeof onError === "function") {
+                    onError(error);
+                }
+            }
+        }
+    }, error => {
+        console.error("Admin authentication observer failed:", error);
+
+        if (typeof onError === "function") {
+            onError(error);
         }
     });
 }
@@ -71,4 +94,8 @@ export function requireAdmin({ onAllowed, onDenied } = {}) {
 export async function logoutAdmin() {
     await signOut(auth);
     window.location.replace("/admin/login.html");
+}
+
+function isPermissionDenied(error) {
+    return String(error?.code || "").endsWith("permission-denied");
 }

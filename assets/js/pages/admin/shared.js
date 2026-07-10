@@ -46,6 +46,16 @@ export function createBusySetter({ form = null, buttons = [], editor = null, con
     };
 }
 
+export function nextOrder(items = []) {
+    const highestOrder = items.reduce((highest, item) => {
+        const order = Number(item?.order);
+
+        return Number.isFinite(order) ? Math.max(highest, order) : highest;
+    }, 0);
+
+    return highestOrder + 1;
+}
+
 export function statusBadge(status) {
     const isPublished = status === "published";
 
@@ -98,30 +108,53 @@ export async function saveEntity({
 
     if (validationError) {
         showMessage(validationError, "danger");
-        return;
+        return { ok: false, validationError };
     }
 
     setBusy(true);
-    onStart?.();
+    let preserveBusyState = false;
 
     try {
-        await ensureFirestoreAuth();
+        let mutationResult;
+        const action = id ? "update" : "create";
 
-        if (id) {
-            await update(id);
-            showMessage(messages.updated, "success");
-        } else {
-            await create();
-            showMessage(messages.created, "success");
+        try {
+            onStart?.();
+            await ensureFirestoreAuth();
+
+            mutationResult = id
+                ? await update(id)
+                : await create();
+        } catch (error) {
+            console.error(messages.logLabel || "Save failed:", error);
+            showMessage(`${messages.failed} ${getErrorMessage(error)}`, "danger", 12000);
+
+            return { ok: false, error };
         }
 
-        await reload();
-        reset?.();
-    } catch (error) {
-        console.error(messages.logLabel || "Save failed:", error);
-        showMessage(`${messages.failed} ${getErrorMessage(error)}`, "danger", 12000);
+        const postMutation = await finishMutation({
+            reload,
+            reset,
+            logLabel: messages.logLabel || "Save"
+        });
+        preserveBusyState = hasPostMutationFailure(postMutation);
+        const feedback = resolveSuccessFeedback(
+            id ? messages.updated : messages.created,
+            mutationResult,
+            { action, id }
+        );
+
+        showMutationFeedback(feedback, postMutation);
+
+        return {
+            ok: true,
+            result: mutationResult,
+            ...postMutation
+        };
     } finally {
-        setBusy(false);
+        if (!preserveBusyState) {
+            setBusy(false);
+        }
     }
 }
 
@@ -150,19 +183,147 @@ export async function deleteEntity({
     if (!window.confirm(confirmMessage)) return;
 
     setBusy(true);
+    let preserveBusyState = false;
 
     try {
-        await ensureFirestoreAuth();
-        await remove();
-        showMessage(messages.success, "success");
-        reset();
-        await reload();
-    } catch (error) {
-        console.error(messages.logLabel || "Delete failed:", error);
-        showMessage(`${messages.failed} ${getErrorMessage(error)}`, "danger", 12000);
+        let mutationResult;
+
+        try {
+            await ensureFirestoreAuth();
+            mutationResult = await remove();
+        } catch (error) {
+            if (error?.mutationPartiallyApplied) {
+                console.warn(messages.logLabel || "Delete partially applied:", error);
+
+                const postMutation = await finishMutation({
+                    reload,
+                    reset,
+                    logLabel: messages.logLabel || "Delete"
+                });
+                preserveBusyState = hasPostMutationFailure(postMutation);
+                const feedback = {
+                    text: messages.partial || "삭제가 일부 반영되었습니다. 현재 목록을 확인한 뒤 다시 시도해주세요.",
+                    type: "warning",
+                    duration: 12000
+                };
+
+                showMutationFeedback(feedback, postMutation);
+
+                return {
+                    ok: false,
+                    partial: true,
+                    error,
+                    ...postMutation
+                };
+            }
+
+            console.error(messages.logLabel || "Delete failed:", error);
+            showMessage(`${messages.failed} ${getErrorMessage(error)}`, "danger", 12000);
+
+            return { ok: false, error };
+        }
+
+        const postMutation = await finishMutation({
+            reload,
+            reset,
+            logLabel: messages.logLabel || "Delete"
+        });
+        preserveBusyState = hasPostMutationFailure(postMutation);
+        const feedback = resolveSuccessFeedback(
+            messages.success,
+            mutationResult,
+            { action: "delete", item }
+        );
+
+        showMutationFeedback(feedback, postMutation);
+
+        return {
+            ok: true,
+            result: mutationResult,
+            ...postMutation
+        };
     } finally {
-        setBusy(false);
+        if (!preserveBusyState) {
+            setBusy(false);
+        }
     }
+}
+
+async function finishMutation({ reload, reset, logLabel }) {
+    let reloadError = null;
+    let resetError = null;
+
+    try {
+        await reload?.();
+    } catch (error) {
+        reloadError = error;
+        console.error(`${logLabel} refresh failed:`, error);
+    }
+
+    if (!reloadError) {
+        try {
+            await reset?.();
+        } catch (error) {
+            resetError = error;
+            console.error(`${logLabel} form reset failed:`, error);
+        }
+    }
+
+    return { reloadError, resetError };
+}
+
+function hasPostMutationFailure({ reloadError, resetError }) {
+    return Boolean(reloadError || resetError);
+}
+
+function resolveSuccessFeedback(message, result, context) {
+    let resolved;
+
+    try {
+        resolved = typeof message === "function"
+            ? message(result, context)
+            : message;
+    } catch (error) {
+        console.error("Success feedback resolution failed:", error);
+        resolved = "작업을 완료했습니다.";
+    }
+
+    if (resolved && typeof resolved === "object") {
+        return {
+            text: String(resolved.text || resolved.message || "작업을 완료했습니다."),
+            type: resolved.type || "success",
+            duration: Number(resolved.duration) || 5000
+        };
+    }
+
+    return {
+        text: String(resolved || "작업을 완료했습니다."),
+        type: "success",
+        duration: 5000
+    };
+}
+
+function showMutationFeedback(feedback, { reloadError, resetError }) {
+    const followUpMessages = [];
+
+    if (reloadError) {
+        followUpMessages.push("목록을 새로고치지 못했습니다.");
+    }
+
+    if (resetError) {
+        followUpMessages.push("입력 폼을 초기화하지 못했습니다.");
+    }
+
+    if (followUpMessages.length > 0) {
+        showMessage(
+            `${feedback.text} 다만 ${followUpMessages.join(" ")} 페이지를 새로고침해주세요.`,
+            "warning",
+            12000
+        );
+        return;
+    }
+
+    showMessage(feedback.text, feedback.type, feedback.duration);
 }
 
 export function createUploadProgress(progressElement) {
@@ -172,14 +333,18 @@ export function createUploadProgress(progressElement) {
         set(progress) {
             if (!progressElement || !progressBar) return;
 
+            const safeProgress = Math.min(Math.max(Number(progress) || 0, 0), 100);
+
             progressElement.classList.remove("d-none");
-            progressBar.style.width = `${progress}%`;
-            progressBar.textContent = `${progress}%`;
+            progressElement.setAttribute("aria-valuenow", String(safeProgress));
+            progressBar.style.width = `${safeProgress}%`;
+            progressBar.textContent = `${safeProgress}%`;
         },
         reset() {
             if (!progressElement || !progressBar) return;
 
             progressElement.classList.add("d-none");
+            progressElement.setAttribute("aria-valuenow", "0");
             progressBar.style.width = "0%";
             progressBar.textContent = "0%";
         }
@@ -189,12 +354,16 @@ export function createUploadProgress(progressElement) {
 // --- Rich-text editor helpers (notice / faq / greeting) ---
 
 const editors = new Map();
+const TOGGLE_EDITOR_COMMANDS = new Set(["bold", "italic", "underline", "strikeThrough"]);
 
 export function registerEditor(target, editor, textarea) {
     editors.set(target, { editor, textarea });
 
     editor?.addEventListener("input", () => syncEditorToTextarea(target));
     editor?.addEventListener("paste", event => handleEditorPaste(event, target));
+    editor?.addEventListener("keyup", () => updateEditorToolbarState(target));
+    editor?.addEventListener("mouseup", () => updateEditorToolbarState(target));
+    editor?.addEventListener("focus", () => updateEditorToolbarState(target));
 }
 
 export function setEditorHtml(target, html) {
@@ -219,11 +388,19 @@ export function syncEditorToTextarea(target = "notice") {
 }
 
 function normalizeEditorHtml(html) {
-    const trimmed = String(html || "").trim();
+    const safeHtml = sanitizeHtml(String(html || "").trim());
 
-    if (!trimmed || trimmed === "<br>") return "";
+    if (!safeHtml) return "";
 
-    return trimmed;
+    const template = document.createElement("template");
+    template.innerHTML = safeHtml;
+
+    const text = String(template.content.textContent || "")
+        .replaceAll("\u00a0", " ")
+        .trim();
+    const hasNonTextContent = Boolean(template.content.querySelector('img[src]:not([src=""])'));
+
+    return text || hasNonTextContent ? safeHtml : "";
 }
 
 function handleEditorPaste(event, target) {
@@ -243,6 +420,16 @@ function handleEditorPaste(event, target) {
 
 export function initEditorToolbar() {
     document.querySelectorAll("[data-editor-command]").forEach(button => {
+        const command = button.dataset.editorCommand;
+
+        if (!button.hasAttribute("aria-label") && button.title) {
+            button.setAttribute("aria-label", button.title);
+        }
+
+        if (TOGGLE_EDITOR_COMMANDS.has(command)) {
+            button.setAttribute("aria-pressed", "false");
+        }
+
         button.addEventListener("click", () => runEditorCommand(button));
     });
 }
@@ -270,4 +457,23 @@ function runEditorCommand(button) {
 
     document.execCommand(command, false, value);
     syncEditorToTextarea(target);
+    updateEditorToolbarState(target);
+}
+
+function updateEditorToolbarState(target) {
+    document.querySelectorAll(`[data-editor-target="${target}"][data-editor-command]`).forEach(button => {
+        const command = button.dataset.editorCommand;
+
+        if (!TOGGLE_EDITOR_COMMANDS.has(command)) return;
+
+        let isActive = false;
+
+        try {
+            isActive = document.queryCommandState(command);
+        } catch {
+            isActive = false;
+        }
+
+        button.setAttribute("aria-pressed", String(isActive));
+    });
 }

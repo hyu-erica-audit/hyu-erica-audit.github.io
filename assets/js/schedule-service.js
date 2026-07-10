@@ -1,5 +1,7 @@
 import { toDateInputValue } from "./date-utils.js";
+import { getContrastTextColor } from "./color-utils.js";
 import { createCrudService, withTimestamps } from "./service-factory.js";
+import { deleteField } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-lite.js";
 
 export const scheduleCategories = [
     { value: "event-audit-regular", label: "정기감사", color: "#50b9b9" },
@@ -41,7 +43,7 @@ export function sortSchedules(schedules) {
 }
 
 function buildSchedulePayload(data, isCreate) {
-    return withTimestamps({
+    const payload = withTimestamps({
         title: data.title || "",
         startDate: data.startDate || "",
         endDate: data.endDate || data.startDate || "",
@@ -50,6 +52,15 @@ function buildSchedulePayload(data, isCreate) {
         description: data.description || "",
         status: data.status || "draft"
     }, isCreate);
+
+    if (!isCreate) {
+        payload.start = deleteField();
+        payload.end = deleteField();
+        payload.className = deleteField();
+        payload.backgroundColor = deleteField();
+    }
+
+    return payload;
 }
 
 const scheduleService = createCrudService({
@@ -76,7 +87,7 @@ export function toCalendarEvent(schedule) {
         end: getCalendarExclusiveEnd(normalized.startDate, endDate),
         backgroundColor: normalized.color,
         borderColor: normalized.color,
-        textColor: "#ffffff",
+        textColor: getContrastTextColor(normalized.color),
         extendedProps: {
             category: normalized.category,
             color: normalized.color,

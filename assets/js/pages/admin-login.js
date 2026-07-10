@@ -1,6 +1,8 @@
 import { auth } from "../firebase.js";
+import { getAdminProfile } from "../admin-auth.js";
 import {
     onAuthStateChanged,
+    signOut,
     signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
@@ -11,6 +13,9 @@ const message = document.getElementById("admin-login-message");
 const submitButton = form?.querySelector("button[type='submit']");
 const submitLabel = submitButton?.querySelector(".admin-submit-label");
 const submitSpinner = submitButton?.querySelector(".admin-submit-spinner");
+const signOutButton = document.getElementById("admin-login-signout");
+let verificationSequence = 0;
+let currentVerification = null;
 
 function setLoading(isLoading) {
     if (!submitButton || !submitLabel || !submitSpinner) return;
@@ -42,7 +47,28 @@ function getLoginErrorMessage(errorCode) {
 
 onAuthStateChanged(auth, user => {
     if (user) {
-        window.location.replace("/admin/index.html");
+        void verifyAdminAccess(user);
+        return;
+    }
+
+    verificationSequence += 1;
+    currentVerification = null;
+    signOutButton?.classList.add("d-none");
+    setLoading(false);
+});
+
+signOutButton?.addEventListener("click", async () => {
+    setLoading(true);
+
+    try {
+        await signOut(auth);
+        showMessage("로그아웃했습니다. 다른 관리자 계정으로 로그인해주세요.", "muted");
+        emailInput?.focus();
+    } catch (error) {
+        console.error("Admin login sign-out failed:", error);
+        showMessage("로그아웃하지 못했습니다. 페이지를 새로고침해주세요.");
+    } finally {
+        setLoading(false);
     }
 });
 
@@ -55,11 +81,46 @@ form?.addEventListener("submit", async event => {
     const password = passwordInput.value;
 
     try {
-        // Redirect is handled by the onAuthStateChanged listener above.
-        await signInWithEmailAndPassword(auth, email, password);
+        const credential = await signInWithEmailAndPassword(auth, email, password);
+        await verifyAdminAccess(credential.user);
     } catch (error) {
         showMessage(getLoginErrorMessage(error.code));
-    } finally {
         setLoading(false);
     }
 });
+
+function verifyAdminAccess(user) {
+    if (currentVerification?.uid === user.uid) {
+        return currentVerification.promise;
+    }
+
+    const sequence = ++verificationSequence;
+    const promise = (async () => {
+        setLoading(true);
+        signOutButton?.classList.add("d-none");
+        showMessage("관리자 권한을 확인하는 중입니다.", "muted");
+
+        try {
+            await getAdminProfile(user);
+
+            if (sequence !== verificationSequence || auth.currentUser?.uid !== user.uid) return;
+
+            window.location.replace("/admin/index.html");
+        } catch (error) {
+            if (sequence !== verificationSequence || auth.currentUser?.uid !== user.uid) return;
+
+            console.error("Admin login permission probe failed:", error);
+            showMessage("관리자 권한 또는 App Check 상태를 확인하지 못했습니다. 다시 시도하거나 다른 계정으로 로그인해주세요.");
+            signOutButton?.classList.remove("d-none");
+        } finally {
+            if (sequence === verificationSequence && auth.currentUser?.uid === user.uid) {
+                currentVerification = null;
+                setLoading(false);
+            }
+        }
+    })();
+
+    currentVerification = { uid: user.uid, promise };
+
+    return promise;
+}

@@ -54,10 +54,21 @@ function renderAuditCalendar() {
     if (!calendar) return;
 
     calendar.innerHTML = `
-        <div class="calendar-weekdays" aria-hidden="true">
-            ${["일", "월", "화", "수", "목", "금", "토"].map(day => `<span>${day}</span>`).join("")}
+        <div class="calendar-grid" role="grid" aria-label="${calendarMonth.year}년 ${calendarMonth.month + 1}월 감사 일정 달력">
+        <div class="calendar-weekdays" role="row">
+            ${[
+                ["일", "일요일"],
+                ["월", "월요일"],
+                ["화", "화요일"],
+                ["수", "수요일"],
+                ["목", "목요일"],
+                ["금", "금요일"],
+                ["토", "토요일"]
+            ].map(([shortLabel, fullLabel]) => `<span role="columnheader" aria-label="${fullLabel}">${shortLabel}</span>`).join("")}
         </div>
         ${buildCalendarWeeks().map(renderCalendarWeek).join("")}
+        </div>
+        ${renderAccessibleSchedule()}
     `;
 }
 
@@ -66,7 +77,10 @@ function buildCalendarWeeks() {
     const startDate = new Date(firstDay);
     startDate.setDate(firstDay.getDate() - firstDay.getDay());
 
-    return Array.from({ length: 5 }, (_, weekIndex) => {
+    const lastDay = new Date(calendarMonth.year, calendarMonth.month + 1, 0);
+    const weekCount = Math.ceil((firstDay.getDay() + lastDay.getDate()) / 7);
+
+    return Array.from({ length: weekCount }, (_, weekIndex) => {
         return Array.from({ length: 7 }, (_, dayIndex) => {
             const date = new Date(startDate);
             date.setDate(startDate.getDate() + weekIndex * 7 + dayIndex);
@@ -83,11 +97,11 @@ function renderCalendarWeek(days) {
         .filter(Boolean);
 
     return `
-        <div class="calendar-week">
-            <div class="calendar-days">
+        <div class="calendar-week" role="rowgroup">
+            <div class="calendar-days" role="row">
                 ${days.map(renderCalendarDay).join("")}
             </div>
-            <div class="calendar-events">
+            <div class="calendar-events" aria-hidden="true">
                 ${weekEvents.map(renderCalendarEvent).join("")}
             </div>
         </div>
@@ -104,8 +118,8 @@ function renderCalendarDay(date) {
     ].filter(Boolean).join(" ");
 
     return `
-        <div class="${dayClass}">
-            <time datetime="${toDateKey(date)}">${date.getDate()}</time>
+        <div class="${dayClass}" role="gridcell" aria-label="${formatAccessibleDate(date)}">
+            <time datetime="${toDateKey(date)}" aria-hidden="true">${date.getDate()}</time>
         </div>
     `;
 }
@@ -147,6 +161,40 @@ function toDateKey(date) {
     const day = String(date.getDate()).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
+}
+
+function renderAccessibleSchedule() {
+    return `
+        <div class="visually-hidden">
+            <p id="audit-calendar-agenda-title">감사 일정 목록</p>
+            <ul aria-labelledby="audit-calendar-agenda-title">
+                ${auditSchedule.map(event => `
+                    <li>
+                        <strong>${event.title}</strong>:
+                        <time datetime="${event.start}">${formatDateValue(event.start)}</time>
+                        ${event.end !== event.start ? `부터 <time datetime="${event.end}">${formatDateValue(event.end)}</time>까지` : ""}
+                    </li>
+                `).join("")}
+            </ul>
+        </div>
+    `;
+}
+
+function formatAccessibleDate(date) {
+    return new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long"
+    }).format(date);
+}
+
+function formatDateValue(value) {
+    return new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    }).format(parseDate(value));
 }
 
 document.addEventListener("DOMContentLoaded", renderAuditCalendar);

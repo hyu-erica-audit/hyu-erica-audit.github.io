@@ -5,7 +5,7 @@ import {
     isViceChairMember,
     sortOrganizationMembers
 } from "../organization-service.js";
-import { escapeHtml } from "../html-utils.js";
+import { escapeHtml } from "../text-utils.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("organization-container");

@@ -1,5 +1,6 @@
 import { getFirebaseErrorMessage as getCommonFirebaseErrorMessage } from "./firestore-utils.js";
 import { createCrudService, withTimestamps } from "./service-factory.js";
+import { deleteField } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-lite.js";
 
 export function normalizeContributorSection(id, data = {}) {
     return {
@@ -57,7 +58,7 @@ function buildSectionPayload(data, isCreate) {
 }
 
 function buildContributorPayload(data, isCreate) {
-    return withTimestamps({
+    const payload = withTimestamps({
         sectionId: data.sectionId || "",
         role: data.role || "",
         name: data.name || "",
@@ -65,6 +66,12 @@ function buildContributorPayload(data, isCreate) {
         order: Number(data.order || 0),
         status: data.status || "draft"
     }, isCreate);
+
+    if (!isCreate) {
+        payload.department = deleteField();
+    }
+
+    return payload;
 }
 
 const sectionService = createCrudService({
